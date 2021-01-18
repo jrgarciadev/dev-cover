@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { hexa } from '@utils';
 
 export const StyledMainContainer = styled.section`
@@ -66,21 +66,26 @@ export const NumberedHeading = styled.h2`
 
   ${({ overline, theme }) =>
     overline &&
-    `
-    display: block;
-    margin-bottom: 20px;
-    color: ${theme.brand.primary};
-    font-family: ${theme.fontFamily.fontMono};
-    font-size: ${theme.fontSize.md};
-    font-weight: 400;
+    css`
+      display: block;
+      margin-bottom: 20px;
+      color: ${theme.brand.primary};
+      font-family: ${theme.fontFamily.fontMono};
+      font-size: ${theme.fontSize.md};
+      font-weight: 400;
 
-    &:before {
-      bottom: 0;
-      font-size: ${theme.fontSize.sm};
-    }
+      &:before {
+        bottom: 0;
+        font-size: ${theme.fontSize.sm};
+      }
 
-    &:after {
-      display: none;
-    }
-  `}
+      &:after {
+        display: none;
+      }
+    `}
 `;
+
+export const Gradient = (g1, g2) =>
+  css`
+    background-image: radial-gradient(ellipse farthest-corner at top left, ${g1} 0%, ${g2} 100%);
+  `;

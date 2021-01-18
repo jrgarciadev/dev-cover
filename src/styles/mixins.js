@@ -111,11 +111,11 @@ const mixins = {
   `,
 
   bigButton: css`
-    color: ${(props) => props.theme.brand.primary};
-    background-color: transparent;
-    border: 2px solid ${(props) => props.theme.brand.primary};
-    border-radius: ${(props) => props.theme.borderRadiusButton};
     padding: 1.25rem 1.75rem;
+    background-color: transparent;
+    color: ${(props) => props.theme.brand.primary};
+    border: 2px solid ${(props) => props.theme.brand.primary};
+    border-radius: ${(props) => props.theme.borderRadius};
     font-size: ${(props) => props.theme.fontSize.sm};
     font-family: ${(props) => props.theme.fontFamily.fontMono};
     line-height: 1;
@@ -141,7 +141,6 @@ const mixins = {
     width: 300px;
     border-radius: ${({ theme }) => theme.borderRadius};
     padding: 1.5rem 1rem;
-    margin: 1rem 0;
     display: block;
     text-align: center;
     font-size: ${({ theme }) => theme.fontSize.xl};

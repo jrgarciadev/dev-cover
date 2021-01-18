@@ -2,6 +2,7 @@ export const NAV_SCROLL_HEIGHT = 90;
 export const NAV_SCROLL_HEIGHT_MOBILE = 70;
 export const NAV_HEIGHT = 90;
 export const NAV_DELAY = 1000;
+export const HERO_TITLE_DELAY = 1000;
 export const LOADER_DELAY = 2000;
 export const PROJECTS_GRID_LIMIT = 6;
 export const GA_TRACKING_ID = 'G-GBP7Y41Z1Q';

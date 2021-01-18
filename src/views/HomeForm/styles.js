@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { Gradient } from '@common/styles';
 
 export const StyledContainer = styled.div`
   ${({ theme }) => theme.mixins.flexCenter};
@@ -35,6 +36,43 @@ export const HeroTitle = styled.h1`
 `;
 
 export const StyledInput = styled.input`
-  font-size: ${({ theme }) => theme.fontSize.xxl};
   ${({ theme }) => theme.mixins.bigInput};
+  font-size: ${({ theme }) => theme.fontSize.xxl};
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    width: 260px;
+    &:focus {
+      width: 300px;
+    }
+  }
+`;
+
+export const StyledButton = styled.button`
+  ${({ theme }) => theme.mixins.bigButton};
+  ${({ theme }) => Gradient(theme.brand.primary, theme.bg.reverse)};
+  transition: ${({ theme }) => theme.transitions.default};
+  &:hover {
+    transform: translateX(14px);
+  }
+`;
+
+export const StyledForm = styled.form`
+  display: flex;
+  flex-wrap: wrap;
+  ${StyledInput} {
+    margin-right: 2rem;
+  }
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    ${StyledInput} {
+      margin-right: 1rem;
+    }
+  }
+  @media (max-width: ${(props) => props.theme.breakpoints.xs}) {
+    ${StyledInput} {
+      width: 100%;
+      margin-bottom: 1rem;
+    }
+    ${StyledButton} {
+      width: 100%;
+    }
+  }
 `;
