@@ -43,3 +43,19 @@ export const hexa = (hex, alpha) => {
     return '';
   }
 };
+
+export const getLogestString = (strings = []) => {
+  if (!strings || !Array.isArray(strings)) {
+    return '';
+  }
+  let longest = strings[0];
+  if (strings.length === 1) {
+    return longest;
+  }
+  strings.forEach((s) => {
+    if (s && s.length > longest.length) {
+      longest = s;
+    }
+  });
+  return longest;
+};

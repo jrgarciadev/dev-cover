@@ -3,9 +3,10 @@ import { useState, useEffect } from 'react';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { email } from '@config';
 import { NAV_DELAY, LOADER_DELAY } from '@lib/constants';
+import PropTypes from 'prop-types';
 import { StyledHeroSection, StyledBigTitle } from './styles';
 
-const Hero = () => {
+const Hero = ({ name = '', bio = '' }) => {
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -13,22 +14,16 @@ const Hero = () => {
     return () => clearTimeout(timeout);
   }, []);
 
-  const one = <h1>Welcome, I&apos;m</h1>;
-  const two = <StyledBigTitle>Junior García.</StyledBigTitle>;
-  const three = <StyledBigTitle slate>I build web and mobile apps.</StyledBigTitle>;
-  const four = (
-    <p>
-      I&apos;m a software developer based in Buenos Aires AR, specializing in building exceptional
-      websites and mobile applications, and everything in between.
-    </p>
-  );
-  const five = (
+  const welcome = <h1>Welcome, I&apos;m</h1>;
+  const nameTitle = <StyledBigTitle>{name}</StyledBigTitle>;
+  const bioDescription = <p>{bio}</p>;
+  const mailButton = (
     <a href={`mailto:${email}`} className="email-link">
       Get In Touch
     </a>
   );
 
-  const items = [one, two, three, four, five];
+  const items = [welcome, nameTitle, bioDescription, mailButton];
 
   return (
     <StyledHeroSection>
@@ -43,5 +38,8 @@ const Hero = () => {
     </StyledHeroSection>
   );
 };
-
+Hero.propTypes = {
+  name: PropTypes.string,
+  bio: PropTypes.string,
+};
 export default Hero;

@@ -25,6 +25,7 @@ export const StyledHeroSection = styled.section`
   p {
     margin: 24px 0 50px;
     max-width: 500px;
+    font-size: ${(props) => props.theme.fontSize.lg};
     color: ${(props) => props.theme.text.accent};
   }
 

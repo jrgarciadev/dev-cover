@@ -1,10 +1,12 @@
 /* eslint-disable react/no-array-index-key */
 import { useState, useEffect } from 'react';
+import { useRouter } from 'next/router';
 import { withTheme } from 'styled-components';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { HERO_TITLE_DELAY } from '@lib/constants';
 import { ArrowRight } from 'react-iconly';
 import PropTypes from 'prop-types';
+import { Corner } from '@components';
 import {
   StyledContainer,
   StyledForm,
@@ -15,8 +17,19 @@ import {
 } from './styles';
 
 function HomeForm({ theme }) {
+  const router = useRouter();
   const [username, setUsername] = useState('');
+
   const handleChange = (e) => setUsername(e.target.value);
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (!username || username.length < 2) {
+      return;
+    }
+    router.push('/portfolio/[username]', `/portfolio/${username}`);
+  };
+
   const [isMounted, setIsMounted] = useState(false);
 
   useEffect(() => {
@@ -27,7 +40,7 @@ function HomeForm({ theme }) {
   const logo = <LargeLogo alt="DevCover Logo" src="/devcover-logo.svg" />;
   const heroTitle = <HeroTitle>Just type your username and watch the magic</HeroTitle>;
   const form = (
-    <StyledForm>
+    <StyledForm onSubmit={handleSubmit}>
       <StyledInput
         placeholder="Github Username"
         name="username"
@@ -44,6 +57,7 @@ function HomeForm({ theme }) {
 
   return (
     <StyledContainer>
+      <Corner />
       <TransitionGroup component={null}>
         {isMounted &&
           items.map((item, i) => (
