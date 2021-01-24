@@ -28,7 +28,7 @@ const Hero = ({ name = '', bio = '' }) => {
             <img
               width={300}
               height={300}
-              src={user.photo || user.avatar_url || user.profile_image}
+              src={user.avatar_url || user.photo || user.profile_image}
               alt={`${user?.name} profile`}
               className="img"
             />
