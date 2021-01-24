@@ -5,6 +5,7 @@ import postInfoFragment from './post';
 const userInfoFragment = gql`
   fragment userInfo on User {
     name
+    username
     socialMedia {
       ...socialMediaInfo
     }
