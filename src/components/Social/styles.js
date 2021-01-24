@@ -9,18 +9,13 @@ export const StyledSocialList = styled.ul`
   li {
     padding: 10px;
     transition: ${(props) => props.theme.transitions.default};
-    &:hover,
-    &:focus {
+    &:hover {
       transform: translateY(-3px);
       svg {
         fill: ${(props) => props.theme.brand.primary};
       }
     }
     a {
-      &:hover,
-      &:focus {
-        transform: translateY(-3px);
-      }
       svg {
         fill: ${(props) => props.theme.bg.reverse};
         width: 18px;
