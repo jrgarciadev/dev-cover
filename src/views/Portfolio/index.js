@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import { getLogestString } from '@utils';
 
 const PortfolioView = ({ user }) => {
+  const userBio = getLogestString([user?.summary, user?.bio, user?.tagline]);
   return (
     <StyledMainContainer className="fillHeight">
-      <Hero name={user.name} bio={getLogestString([user.summary, user.bio, user.tagline])} />
+      <Hero name={user?.name} bio={userBio} />
       {/* <About />
       <Featured />
       <Projects />

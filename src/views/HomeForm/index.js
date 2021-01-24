@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useRouter } from 'next/router';
 import { withTheme } from 'styled-components';
 import { ArrowRight } from 'react-iconly';
 import PropTypes from 'prop-types';
@@ -14,7 +13,6 @@ import {
 } from './styles';
 
 function HomeForm({ theme }) {
-  const router = useRouter();
   const [username, setUsername] = useState('');
 
   const handleChange = (e) => setUsername(e.target.value);
@@ -24,7 +22,7 @@ function HomeForm({ theme }) {
     if (!username || username.length < 2) {
       return;
     }
-    router.push('/portfolio/[username]', `/portfolio/${username}`);
+    if (window !== undefined) window.location = `/portfolio/${username}`;
   };
 
   return (
@@ -39,7 +37,7 @@ function HomeForm({ theme }) {
           type="text"
           onChange={handleChange}
         />
-        <StyledButton type="submit">
+        <StyledButton type="submit" disabled={username.length < 3}>
           <ArrowRight set="light" primaryColor={theme.bg.default} />
         </StyledButton>
       </StyledForm>

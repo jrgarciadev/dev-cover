@@ -1,6 +1,5 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { Social, Email } from '@components';
 import { SkipToContentLink } from './styles';
 import Main from './main';
 import BaseLayout from './base';
@@ -32,8 +31,6 @@ const PorfolioLayout = ({ children }) => {
     <BaseLayout>
       <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
       <Navbar />
-      <Social />
-      <Email />
       <Main id="content" className="fillHeight">
         {children}
       </Main>

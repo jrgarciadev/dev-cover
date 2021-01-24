@@ -1,3 +1,4 @@
+/* eslint-disable no-restricted-syntax */
 export const tint = (hex, amount) => {
   try {
     let R = parseInt(hex.substring(1, 3), 16);
@@ -59,4 +60,14 @@ export const getLogestString = (strings = []) => {
     }
   });
   return longest;
+};
+
+export const cleanAttrs = (obj) => {
+  const objClone = { ...obj };
+  for (const propName in objClone) {
+    if (objClone[propName] === null || objClone[propName] === undefined) {
+      delete objClone[propName];
+    }
+  }
+  return objClone;
 };

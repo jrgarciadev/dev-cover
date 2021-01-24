@@ -53,20 +53,20 @@ export const StyledButton = styled.button`
   &:hover {
     transform: translateX(14px);
   }
+  &:disabled {
+    opacity: 0.4;
+    cursor: default;
+  }
 `;
 
 export const StyledForm = styled.form`
   display: flex;
+  align-items: center;
   flex-wrap: wrap;
   ${StyledInput} {
     margin-right: 2rem;
   }
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    ${StyledInput} {
-      margin-right: 1rem;
-    }
-  }
-  @media (max-width: ${(props) => props.theme.breakpoints.xs}) {
     ${StyledInput} {
       width: 100%;
       margin-bottom: 1rem;

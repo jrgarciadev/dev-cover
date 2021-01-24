@@ -1,10 +1,35 @@
 import styled from 'styled-components';
 
 export const StyledHeroSection = styled.section`
-  ${({ theme }) => theme.mixins.flexCenter};
+  display: grid;
+  min-height: 100vh;
+  grid-template-columns: repeat(2, 1fr);
+  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+    grid-template-columns: 1fr;
+  }
+`;
+
+export const StyledBigTitle = styled.h3`
+  margin: 0;
+  font-size: clamp(40px, 8vw, 80px);
+  font-weight: ${(props) => props.theme.fontw.semibold};
+  ${({ slate, theme }) =>
+    slate &&
+    `
+    margin-top: 10px;
+    color: ${theme.brand.secondary};
+    line-height: 0.9;
+`}
+`;
+
+export const LeftContainer = styled.div`
+  ${(props) => props.theme.mixins.flexCenter}
   flex-direction: column;
   align-items: flex-start;
-  min-height: 100vh;
+
+  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+    order: 2;
+  }
 
   h1 {
     margin: 0 0 8px 4px;
@@ -34,15 +59,58 @@ export const StyledHeroSection = styled.section`
   }
 `;
 
-export const StyledBigTitle = styled.h3`
-  margin: 0;
-  font-size: clamp(40px, 8vw, 80px);
-  font-weight: ${(props) => props.theme.fontw.semibold};
-  ${({ slate, theme }) =>
-    slate &&
-    `
-    margin-top: 10px;
-    color: ${theme.brand.secondary};
-    line-height: 0.9;
-`}
+export const RightContainer = styled.div`
+  ${(props) => props.theme.mixins.flexCenter}
+  flex-direction: column;
+  .social-networks {
+    margin-top: 40px;
+  }
+  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+    order: 1;
+    .social-networks {
+      margin-top: 20px;
+    }
+  }
+`;
+
+export const StyledPic = styled.div`
+  position: relative;
+  max-width: 300px;
+  .wrapper {
+    ${({ theme }) => theme.mixins.boxShadow};
+    display: block;
+    position: relative;
+    width: 100%;
+
+    .img {
+      object-fit: cover;
+      max-width: 100%;
+      position: relative;
+      border-radius: 50%;
+    }
+
+    &:after {
+      content: '';
+      top: -8%;
+      left: -8%;
+      z-index: 1;
+      display: block;
+      position: absolute;
+      width: 116%;
+      height: 116%;
+      border-radius: 50%;
+      border: 3px solid ${(props) => props.theme.brand.primary};
+    }
+  }
+
+  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+    .wrapper {
+      width: 164px;
+      height: 164px;
+      .img {
+        width: 164px;
+        height: 164px;
+      }
+    }
+  }
 `;

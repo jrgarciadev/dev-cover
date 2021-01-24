@@ -1,40 +1,41 @@
-/* eslint-disable react/no-array-index-key */
-import { useState, useEffect } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { email } from '@config';
-import { NAV_DELAY, LOADER_DELAY } from '@lib/constants';
 import PropTypes from 'prop-types';
-import { StyledHeroSection, StyledBigTitle } from './styles';
+import { useUserDataContext } from '@contexts/user-data';
+import Social from '../Social';
+import {
+  StyledHeroSection,
+  StyledBigTitle,
+  StyledPic,
+  LeftContainer,
+  RightContainer,
+} from './styles';
 
 const Hero = ({ name = '', bio = '' }) => {
-  const [isMounted, setIsMounted] = useState(false);
-
-  useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), NAV_DELAY);
-    return () => clearTimeout(timeout);
-  }, []);
-
-  const welcome = <h1>Welcome, I&apos;m</h1>;
-  const nameTitle = <StyledBigTitle>{name}</StyledBigTitle>;
-  const bioDescription = <p>{bio}</p>;
-  const mailButton = (
-    <a href={`mailto:${email}`} className="email-link">
-      Get In Touch
-    </a>
-  );
-
-  const items = [welcome, nameTitle, bioDescription, mailButton];
-
+  const { user } = useUserDataContext();
   return (
     <StyledHeroSection>
-      <TransitionGroup component={null}>
-        {isMounted &&
-          items.map((item, i) => (
-            <CSSTransition key={i} classNames="fadeup" timeout={LOADER_DELAY}>
-              <div style={{ transitionDelay: `${i + 1}00ms` }}>{item}</div>
-            </CSSTransition>
-          ))}
-      </TransitionGroup>
+      <LeftContainer>
+        <h1>Welcome, I&apos;m</h1>
+        <StyledBigTitle>{name}</StyledBigTitle>
+        <p>{bio}</p>
+        <a href={`mailto:${email}`} className="email-link">
+          Get In Touch
+        </a>
+      </LeftContainer>
+      <RightContainer>
+        <StyledPic>
+          <div className="wrapper">
+            <img
+              width={300}
+              height={300}
+              src={user.photo || user.avatar_url || user.profile_image}
+              alt={`${user?.name} profile`}
+              className="img"
+            />
+          </div>
+        </StyledPic>
+        <Social className="social-networks" />
+      </RightContainer>
     </StyledHeroSection>
   );
 };

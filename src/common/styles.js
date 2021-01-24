@@ -1,9 +1,10 @@
 import styled, { css } from 'styled-components';
 import { hexa } from '@utils';
+import { circleLoader } from './animations';
 
 export const StyledMainContainer = styled.section`
   width: 100%;
-  max-width: 900px;
+  max-width: 1200px;
   counter-reset: section;
   section {
     margin: 0 auto;
@@ -89,3 +90,32 @@ export const Gradient = (g1, g2) =>
   css`
     background-image: radial-gradient(ellipse farthest-corner at top left, ${g1} 0%, ${g2} 100%);
   `;
+
+export const Loader = styled.div`
+  ${circleLoader({ time: '0.75s' })};
+  position: ${(props) => props.position || 'relative'};
+  width: ${(props) => props.size || '4rem'};
+  height: ${(props) => props.size || '4rem'};
+  margin-left: ${(props) => props.ml || '0px'};
+  margin-right: ${(props) => props.mr || '0px'};
+  margin-top: ${(props) => props.mt || '0px'};
+  margin-bottom: ${(props) => props.mb || '0px'};
+  border: 2px solid ${(props) => props.theme.brand.primary};
+  border-top-color: ${(props) => hexa(props.theme.bg.reverse, 0.2)};
+  border-right-color: ${(props) => hexa(props.theme.bg.reverse, 0.2)};
+  border-bottom-color: ${(props) => hexa(props.theme.bg.reverse, 0.2)};
+  border-radius: 100%;
+  ${({ left }) => left && `left: ${left}`};
+  ${({ right }) => right && `right: ${right}`};
+  ${({ top }) => top && `top: ${top}`};
+  ${({ bottom }) => bottom && `bottom: ${bottom}`};
+`;
+
+export const LoaderContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  height: ${(props) => props.height || '80vh'};
+  justify-content: center;
+  align-items: center;
+`;
