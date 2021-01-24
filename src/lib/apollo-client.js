@@ -1,12 +1,13 @@
 import { useMemo } from 'react';
 import { ApolloClient, InMemoryCache, createHttpLink } from '@apollo/client';
 import fetch from 'isomorphic-unfetch';
+import { HASHNODE_URL } from './constants';
 
 let apolloClient;
 
 const hashnodeLink = createHttpLink({
   fetch, // Switches between unfetch & node-fetch for client & server.
-  uri: 'https://api.hashnode.com/', // Server URL (must be absolute)
+  uri: HASHNODE_URL, // Server URL (must be absolute)
   credentials: 'same-origin', // Additional fetch() options like `credentials` or `headers`
 });
 

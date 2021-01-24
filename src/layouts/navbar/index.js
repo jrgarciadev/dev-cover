@@ -2,16 +2,18 @@ import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
-import { navLinks } from '@config';
 import { LOADER_DELAY } from '@lib/constants';
 import { useScrollDirection } from '@hooks';
 import { Menu } from '@components';
+import { getNavLinks, getKeysMapped, getObjValue, getUserName } from '@utils/user-mapping';
 import { useUserDataContext } from '@contexts/user-data';
+import { capitalize } from 'lodash';
 import { StyledHeader, StyledNav, StyledLinks } from './styles';
 
 const Nav = ({ isHome }) => {
   const [isMounted, setIsMounted] = useState(!isHome);
   const [userName, setUserName] = useState('');
+  const [navLinks, setNavLinks] = useState([]);
   const scrollDirection = useScrollDirection('down');
   const [scrolledToTop, setScrolledToTop] = useState(true);
   const { user } = useUserDataContext();
@@ -21,7 +23,8 @@ const Nav = ({ isHome }) => {
   };
   useEffect(() => {
     if (user) {
-      setUserName(user?.name);
+      setUserName(getUserName(user));
+      setNavLinks(getKeysMapped(getNavLinks(user)));
     }
   }, [user]);
   useEffect(() => {
@@ -67,11 +70,11 @@ const Nav = ({ isHome }) => {
             <TransitionGroup component={null}>
               {isMounted &&
                 navLinks &&
-                navLinks.map(({ url, name }, i) => (
-                  <CSSTransition key={name} classNames={fadeDownClass} timeout={timeout}>
-                    <li key={url} style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                      <a data-scroll href={url}>
-                        {name}
+                navLinks.map((link, i) => (
+                  <CSSTransition key={link.key} classNames={fadeDownClass} timeout={timeout}>
+                    <li key={link.key} style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
+                      <a data-scroll href={getObjValue(link)}>
+                        {capitalize(link.key)}
                       </a>
                     </li>
                   </CSSTransition>

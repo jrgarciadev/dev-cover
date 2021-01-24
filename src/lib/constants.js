@@ -6,6 +6,11 @@ export const HERO_TITLE_DELAY = 1000;
 export const LOADER_DELAY = 500;
 export const PROJECTS_GRID_LIMIT = 6;
 export const GA_TRACKING_ID = 'G-GBP7Y41Z1Q';
+export const GITHUB_URL = 'https://github.com/';
+export const GITHUB_USER_URL = 'https://api.github.com/users/';
+export const GITHUB_README_URL = 'https://raw.githubusercontent.com/';
+export const DEVTO_USER_URL = 'https://dev.to/api/users/by_username?url=';
+export const HASHNODE_URL = 'https://api.hashnode.com/';
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 export const KEY_CODES = {
   ARROW_LEFT: 'ArrowLeft',

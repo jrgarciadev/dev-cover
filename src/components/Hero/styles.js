@@ -81,7 +81,6 @@ export const StyledPic = styled.div`
     display: block;
     position: relative;
     width: 100%;
-
     .img {
       object-fit: cover;
       max-width: 100%;
@@ -107,6 +106,7 @@ export const StyledPic = styled.div`
     .wrapper {
       width: 164px;
       height: 164px;
+      margin-top: 20px;
       .img {
         width: 164px;
         height: 164px;

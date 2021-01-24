@@ -2,12 +2,17 @@ import { Hero, About, Featured, Projects, Contact } from '@components';
 import { StyledMainContainer } from '@common/styles';
 import PropTypes from 'prop-types';
 import { getLogestString } from '@utils';
+import { getUserName } from '@utils/user-mapping';
 
 const PortfolioView = ({ user }) => {
-  const userBio = getLogestString([user?.summary, user?.bio, user?.tagline]);
+  const userBio = getLogestString([
+    user?.devto?.summary,
+    user?.github?.bio,
+    user?.hashnode?.tagline,
+  ]);
   return (
     <StyledMainContainer className="fillHeight">
-      <Hero name={user?.name} bio={userBio} />
+      <Hero name={getUserName(user)} bio={userBio} />
       {/* <About />
       <Featured />
       <Projects />

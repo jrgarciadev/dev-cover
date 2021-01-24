@@ -26,10 +26,10 @@ const Hero = ({ name = '', bio = '' }) => {
         <StyledPic>
           <div className="wrapper">
             <img
+              alt=""
               width={300}
               height={300}
-              src={user.avatar_url || user.photo || user.profile_image}
-              alt={`${user?.name} profile`}
+              src={user?.github?.avatar_url || user?.hashnode?.photo || user?.devto?.profile_image}
               className="img"
             />
           </div>

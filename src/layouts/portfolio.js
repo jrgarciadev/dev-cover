@@ -1,13 +1,15 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
+import { withRouter } from 'next/router';
 import { SkipToContentLink } from './styles';
 import Main from './main';
 import BaseLayout from './base';
 import Navbar from './navbar';
 import Footer from './footer';
 
-const PorfolioLayout = ({ children }) => {
+const PorfolioLayout = ({ children, router }) => {
   const isBrowser = typeof window !== `undefined`;
+  const isHome = router.pathname === '/';
   useEffect(() => {
     if (!isBrowser) {
       return;
@@ -30,7 +32,7 @@ const PorfolioLayout = ({ children }) => {
   return (
     <BaseLayout>
       <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
-      <Navbar />
+      <Navbar isHome={isHome} />
       <Main id="content" className="fillHeight">
         {children}
       </Main>
@@ -40,7 +42,8 @@ const PorfolioLayout = ({ children }) => {
 };
 
 PorfolioLayout.propTypes = {
+  router: PropTypes.object,
   children: PropTypes.oneOfType([PropTypes.arrayOf(PropTypes.node), PropTypes.node]),
 };
 
-export default PorfolioLayout;
+export default withRouter(PorfolioLayout);
