@@ -1,4 +1,5 @@
 import { get } from 'lodash';
+import { IS_GENERATOR } from '@lib/constants';
 
 export const extractSocialNetworks = (user) => {
   if (!user) return '';
@@ -8,7 +9,7 @@ export const extractSocialNetworks = (user) => {
     socialMedia.twitter = get(user, 'hashnode.socialMedia.twitter');
     socialMedia.hashnode = `https://hashnode.com/@${get(user, 'username')}`;
   }
-  if (user.hasDevto) {
+  if (user?.hasDevto) {
     socialMedia.devto = `https://dev.to/${get(user, 'username')}`;
   }
   if (user?.hasGithub) {
@@ -43,14 +44,18 @@ export const getNavLinks = (user) => {
   };
   if (user?.hashnode?.publicationDomain) {
     navLinks.blog = `https://${user.hashnode.publicationDomain}`;
+  } else if (user?.hasHashnode) {
+    navLinks.blog = `https://hashnode.com/@${get(user, 'username')}`;
+  } else if (user?.hasDevto) {
+    navLinks.blog = `https://dev.to/${get(user, 'username')}`;
   }
-  if (user?.github?.readme) {
-    navLinks.about = `/#about`;
+  if (user?.github?.readme && user?.username) {
+    navLinks.about = IS_GENERATOR ? `/portfolio/${user?.username}/#about` : '/#about';
   }
   return navLinks;
 };
 
-export const getUserName = (user) => {
+export const getNameUser = (user) => {
   if (!user) return '';
   return user?.github?.name || user?.hashnode?.name || user?.devto?.name;
 };

@@ -5,9 +5,9 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { LOADER_DELAY } from '@lib/constants';
 import { useScrollDirection } from '@hooks';
 import { Menu } from '@components';
-import { getNavLinks, getKeysMapped, getObjValue, getUserName } from '@utils/user-mapping';
+import { getNavLinks, getKeysMapped, getObjValue, getNameUser } from '@utils/user-mapping';
 import { useUserDataContext } from '@contexts/user-data';
-import { capitalize } from 'lodash';
+import { capitalize, startsWith } from 'lodash';
 import { StyledHeader, StyledNav, StyledLinks } from './styles';
 
 const Nav = ({ isHome }) => {
@@ -23,7 +23,7 @@ const Nav = ({ isHome }) => {
   };
   useEffect(() => {
     if (user) {
-      setUserName(getUserName(user));
+      setUserName(getNameUser(user));
       setNavLinks(getKeysMapped(getNavLinks(user)));
     }
   }, [user]);
@@ -43,7 +43,6 @@ const Nav = ({ isHome }) => {
   const timeout = isHome ? LOADER_DELAY : 0;
   const fadeClass = isHome ? 'fade' : '';
   const fadeDownClass = isHome ? 'fadedown' : '';
-
   return (
     <StyledHeader scrollDirection={scrollDirection} scrolledToTop={scrolledToTop}>
       <StyledNav>
@@ -73,7 +72,7 @@ const Nav = ({ isHome }) => {
                 navLinks.map((link, i) => (
                   <CSSTransition key={link.key} classNames={fadeDownClass} timeout={timeout}>
                     <li key={link.key} style={{ transitionDelay: `${isHome ? i * 100 : 0}ms` }}>
-                      <a data-scroll href={getObjValue(link)}>
+                      <a data-scroll target={startsWith('h') && '_blank'} href={getObjValue(link)}>
                         {capitalize(link.key)}
                       </a>
                     </li>

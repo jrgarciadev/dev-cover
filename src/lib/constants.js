@@ -12,6 +12,7 @@ export const GITHUB_README_URL = 'https://raw.githubusercontent.com/';
 export const DEVTO_USER_URL = 'https://dev.to/api/users/by_username?url=';
 export const HASHNODE_URL = 'https://api.hashnode.com/';
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+export const IS_GENERATOR = process.env.NEXT_PUBLIC_GENERATOR_MODE;
 export const KEY_CODES = {
   ARROW_LEFT: 'ArrowLeft',
   ARROW_LEFT_IE11: 'Left',

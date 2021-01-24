@@ -1,7 +1,7 @@
 import { initializeApollo } from '@lib/apollo-client';
 import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import { cleanAttrs, getGithubReadmeURL } from '@utils';
-import { has, replace } from 'lodash';
+import { get, has, replace } from 'lodash';
 import { GITHUB_URL, GITHUB_USER_URL, DEVTO_USER_URL } from './constants';
 
 const fullfillUser = async ({ github = {}, hashnode = {}, devto = {} }) => {
@@ -28,7 +28,7 @@ const fullfillUser = async ({ github = {}, hashnode = {}, devto = {} }) => {
     user.github.readme = githubReadmeData;
   }
   user.hasGithub = has(user.github, 'login');
-  user.hasDevto = has(user.devto, 'status') !== 404;
+  user.hasDevto = get(user.devto, 'status') !== 404;
   user.hasHashnode = has(user.hashnode, 'username');
 
   return user;
@@ -51,6 +51,7 @@ const buildUser = async (params) => {
   const hashnodeUser = cleanAttrs(hnUserData.user);
   const devtoUser = cleanAttrs(devtoUserRes);
   const user = await fullfillUser({ github: githubUser, hashnode: hashnodeUser, devto: devtoUser });
+  user.username = username;
   return user;
 };
 
