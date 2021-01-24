@@ -56,7 +56,7 @@ const PortfolioPage = ({ router, user }) => {
     return (
       <LoaderContainer height="100vh">
         <Loader mb="1rem" />
-        <h1>Generating porfolio...</h1>
+        <h1>Doing the magic 🪄💫...</h1>
       </LoaderContainer>
     );
   }
