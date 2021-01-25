@@ -15,7 +15,6 @@ const About = () => {
     const sr = ScrollReveal.default();
     sr.reveal(revealContainer.current, srConfig());
   }, []);
-
   return (
     <StyledAboutSection id="about" ref={revealContainer}>
       <NumberedHeading>About Me</NumberedHeading>

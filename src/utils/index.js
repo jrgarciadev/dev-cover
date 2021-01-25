@@ -1,4 +1,3 @@
-import { GITHUB_README_URL } from '@lib/constants';
 /* eslint-disable no-restricted-syntax */
 export const tint = (hex, amount) => {
   try {
@@ -71,8 +70,4 @@ export const cleanAttrs = (obj) => {
     }
   }
   return objClone;
-};
-
-export const getGithubReadmeURL = (username) => {
-  return `${GITHUB_README_URL}${username}/${username}/main/README.md`;
 };

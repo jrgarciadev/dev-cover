@@ -1,8 +1,19 @@
 import { initializeApollo } from '@lib/apollo-client';
 import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
-import { cleanAttrs, getGithubReadmeURL } from '@utils';
+import { cleanAttrs } from '@utils';
+import { getGithubReadmeURL } from '@utils/user-mapping';
 import { get, has, replace } from 'lodash';
 import { GITHUB_URL, GITHUB_USER_URL, DEVTO_USER_URL } from './constants';
+
+const fetchUserReadme = async (username) => {
+  let githubReadmeRes = await fetch(getGithubReadmeURL(username, 'main'));
+  let githubReadmeData = await githubReadmeRes.text();
+  if (githubReadmeData.includes('404')) {
+    githubReadmeRes = await fetch(getGithubReadmeURL(username, 'master'));
+    githubReadmeData = await githubReadmeRes.text();
+  }
+  return githubReadmeData;
+};
 
 const fullfillUser = async ({ github = {}, hashnode = {}, devto = {} }) => {
   const user = {
@@ -21,9 +32,8 @@ const fullfillUser = async ({ github = {}, hashnode = {}, devto = {} }) => {
   }
   if (user.github.login) {
     const githubUserRes = await fetch(`${GITHUB_USER_URL}${user.github.login}`);
-    const githubReadmeRes = await fetch(getGithubReadmeURL(user.github.login));
     const githubUserData = await githubUserRes.json();
-    const githubReadmeData = await githubReadmeRes.text();
+    const githubReadmeData = await fetchUserReadme(user.github.login);
     user.github = cleanAttrs(githubUserData);
     user.github.readme = githubReadmeData;
   }

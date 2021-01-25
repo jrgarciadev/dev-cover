@@ -1,5 +1,5 @@
 import { get } from 'lodash';
-import { IS_GENERATOR } from '@lib/constants';
+import { IS_GENERATOR, GITHUB_README_URL } from '@lib/constants';
 
 export const extractSocialNetworks = (user) => {
   if (!user) return '';
@@ -79,4 +79,8 @@ export const purgeUserReadme = (readme) => {
     }),
   );
   return container.innerHTML;
+};
+
+export const getGithubReadmeURL = (username, branch = 'main') => {
+  return `${GITHUB_README_URL}${username}/${username}/${branch}/README.md`;
 };
