@@ -32,8 +32,8 @@ export const StyledMarkdown = styled.div`
       font-size: ${(props) => props.theme.fontSize.lg};
     }
   }
-
   a {
+    color: ${(props) => props.theme.text.default};
     font-size: ${(props) => props.theme.fontSize.md};
     transition: ${(props) => props.theme.transitions.default};
     &:hover {
