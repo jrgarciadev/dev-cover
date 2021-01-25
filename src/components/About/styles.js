@@ -25,10 +25,11 @@ export const StyledMarkdown = styled.div`
     margin: 2rem 0;
   }
   p {
-    color: ${(props) => props.theme.brand.primary};
+    color: ${(props) => props.theme.text.accent};
     font-size: ${(props) => props.theme.fontSize.lg};
     margin: 0.5rem 0;
     a {
+      color: ${(props) => props.theme.brand.primary};
       font-size: ${(props) => props.theme.fontSize.lg};
     }
   }
