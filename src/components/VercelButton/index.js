@@ -7,12 +7,15 @@ const VercelButton = () => {
   const projectName = '&project-name=my-awesome-portfolio';
   const repositoryName = '&repository-name=my-awesome-portfolio';
   const envDescription = '&envDescription=Enter%20your%20Github%20username%20.';
+  const demoTitle = '&demo-title=APM%20Story';
+  const demoDescription = '&A%20statically%20generated%portfolio%created%20using%20Devcover';
+
   return (
     <ButtonContainer>
       <a
         rel="noreferrer"
         target="_blank"
-        href={`${deployUrl}${repository}${variables}${projectName}${repositoryName}${envDescription}`}
+        href={`${deployUrl}${repository}${variables}${projectName}${repositoryName}${envDescription}${demoTitle}${demoDescription}`}
       >
         <img src="https://vercel.com/button" alt="Deploy with Vercel" />
       </a>
