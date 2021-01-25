@@ -50,15 +50,9 @@ const Nav = ({ isHome }) => {
           {isMounted && (
             <CSSTransition classNames={fadeClass} timeout={timeout}>
               <div className="logo" tabIndex="-1">
-                {isHome ? (
-                  <a href="/" aria-label="home">
-                    <h1>{userName}</h1>
-                  </a>
-                ) : (
-                  <Link href="/" aria-label="home">
-                    <h1>{userName}</h1>
-                  </Link>
-                )}
+                <Link href="/" aria-label="home">
+                  <h1>{userName}</h1>
+                </Link>
               </div>
             </CSSTransition>
           )}

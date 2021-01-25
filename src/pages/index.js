@@ -1,13 +1,45 @@
-import { HomeForm } from '@views';
+import { HomeForm, PortfolioView } from '@views';
 import { StyledMainContainer } from '@common/styles';
+import PortfolioLayout from '@layouts/portfolio';
 import HomeLayout from '@layouts/home';
+import buildUser from '@lib/user-builder';
+import PropTypes from 'prop-types';
+import { IS_GENERATOR } from '@lib/constants';
 
-const IndexPage = () => (
-  <StyledMainContainer className="fillHeight">
-    <HomeForm />
-  </StyledMainContainer>
-);
+const username = process.env.NEXT_PUBLIC_USERNAME;
+const isLivePortfolio = username && !IS_GENERATOR;
 
-IndexPage.Layout = HomeLayout;
+export async function getStaticProps() {
+  if (isLivePortfolio) {
+    const params = { username };
+    const user = await buildUser(params);
+    return {
+      props: {
+        user,
+      },
+    };
+  }
+  return {
+    props: {
+      user: null,
+    },
+  };
+}
 
+const IndexPage = ({ user }) => {
+  if (user) {
+    return <PortfolioView user={user} />;
+  }
+  return (
+    <StyledMainContainer className="fillHeight">
+      <HomeForm />
+    </StyledMainContainer>
+  );
+};
+
+IndexPage.Layout = isLivePortfolio ? PortfolioLayout : HomeLayout;
+
+IndexPage.propTypes = {
+  user: PropTypes.object,
+};
 export default IndexPage;

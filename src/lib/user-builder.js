@@ -2,7 +2,6 @@ import { initializeApollo } from '@lib/apollo-client';
 import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import { cleanAttrs, getGithubReadmeURL } from '@utils';
 import { get, has, replace } from 'lodash';
-import { useQuery } from '@apollo/client';
 import { GITHUB_URL, GITHUB_USER_URL, DEVTO_USER_URL } from './constants';
 
 const fullfillUser = async ({ github = {}, hashnode = {}, devto = {} }) => {

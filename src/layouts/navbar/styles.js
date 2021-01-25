@@ -60,7 +60,7 @@ export const StyledNav = styled.nav`
     cursor: pointer;
     a {
       color: ${(props) => props.theme.text.default};
-      width: 42px;
+      width: auto;
       height: 42px;
 
       &:hover,

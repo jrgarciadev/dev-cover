@@ -1,9 +1,7 @@
-import { useEffect } from 'react';
 import { PortfolioView } from '@views';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { LoaderContainer, Loader } from '@common/styles';
-import { useUserDataContext } from '@contexts/user-data';
 import buildUser from '@lib/user-builder';
 
 export async function getStaticPaths() {
@@ -34,12 +32,6 @@ const PortfolioPage = ({ router, user }) => {
       </LoaderContainer>
     );
   }
-  const { updateValue } = useUserDataContext();
-  useEffect(() => {
-    if (user) {
-      updateValue(user);
-    }
-  }, [user]);
   return <PortfolioView user={user} />;
 };
 

@@ -1,6 +1,8 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { withRouter } from 'next/router';
+import { VercelButton } from '@components';
+import { IS_GENERATOR } from '@lib/constants';
 import { SkipToContentLink } from './styles';
 import Main from './main';
 import BaseLayout from './base';
@@ -36,6 +38,7 @@ const PorfolioLayout = ({ children, router }) => {
       <Main id="content" className="fillHeight">
         {children}
       </Main>
+      {IS_GENERATOR && <VercelButton />}
       <Footer />
     </BaseLayout>
   );
