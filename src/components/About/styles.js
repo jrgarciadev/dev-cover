@@ -16,6 +16,18 @@ export const StyledAboutSection = styled.section`
 
 export const StyledMarkdown = styled.div`
   font-size: ${(props) => props.theme.fontSize.lg};
+  text-align: left;
+  img {
+    max-width: 100%;
+  }
+
+  h1,
+  h2,
+  h3,
+  p {
+    text-align: left;
+  }
+
   h1,
   h2,
   h3 {
