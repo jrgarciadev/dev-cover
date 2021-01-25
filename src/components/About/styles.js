@@ -2,16 +2,6 @@ import styled from 'styled-components';
 
 export const StyledAboutSection = styled.section`
   max-width: 100%;
-
-  .inner {
-    display: grid;
-    grid-template-columns: 3fr 2fr;
-    grid-gap: 50px;
-
-    @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-      display: block;
-    }
-  }
 `;
 
 export const StyledMarkdown = styled.div`
@@ -38,9 +28,13 @@ export const StyledMarkdown = styled.div`
     color: ${(props) => props.theme.text.accent};
     font-size: ${(props) => props.theme.fontSize.lg};
     margin: 0.5rem 0;
+    a {
+      font-size: ${(props) => props.theme.fontSize.lg};
+    }
   }
 
   a {
+    font-size: ${(props) => props.theme.fontSize.md};
     transition: ${(props) => props.theme.transitions.default};
     &:hover {
       color: ${(props) => props.theme.brand.primary};
