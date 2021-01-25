@@ -25,7 +25,7 @@ export const StyledMarkdown = styled.div`
     margin: 2rem 0;
   }
   p {
-    color: ${(props) => props.theme.text.accent};
+    color: ${(props) => props.theme.brand.primary};
     font-size: ${(props) => props.theme.fontSize.lg};
     margin: 0.5rem 0;
     a {
@@ -33,12 +33,8 @@ export const StyledMarkdown = styled.div`
     }
   }
   a {
-    color: ${(props) => props.theme.text.default};
+    color: ${(props) => props.theme.brand.primary};
     font-size: ${(props) => props.theme.fontSize.md};
-    transition: ${(props) => props.theme.transitions.default};
-    &:hover {
-      color: ${(props) => props.theme.brand.primary};
-    }
   }
 
   ul,
