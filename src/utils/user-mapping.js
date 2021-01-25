@@ -64,11 +64,19 @@ export const purgeUserReadme = (readme) => {
   if (typeof window === 'undefined') {
     return '';
   }
-  const disallowElements = ['img', 'a'];
+  const disallowElements = ['img'];
   const container = document.createElement('span');
   container.innerHTML = readme;
   disallowElements.forEach((el) =>
-    Array.from(container.querySelectorAll(el)).forEach((e) => e.remove()),
+    Array.from(container.querySelectorAll(el)).forEach((e) => {
+      if (el !== 'a') {
+        return e.remove();
+      }
+      if (e.hasChildNodes()) {
+        return e.remove();
+      }
+      return e;
+    }),
   );
   return container.innerHTML;
 };

@@ -20,11 +20,7 @@ const About = () => {
     <StyledAboutSection id="about" ref={revealContainer}>
       <NumberedHeading>About Me</NumberedHeading>
       <StyledMarkdown>
-        <ReactMarkdownWithHtml
-          unwrapDisallowed
-          allowDangerousHtml
-          disallowedTypes={['link', 'linkReference', 'imageReference']}
-        >
+        <ReactMarkdownWithHtml unwrapDisallowed allowDangerousHtml>
           {purgeUserReadme(user?.github?.readme)}
         </ReactMarkdownWithHtml>
       </StyledMarkdown>
