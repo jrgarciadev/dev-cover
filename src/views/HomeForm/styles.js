@@ -37,7 +37,7 @@ export const HeroTitle = styled.h1`
 
 export const StyledInput = styled.input`
   ${({ theme }) => theme.mixins.bigInput};
-  font-size: ${({ theme }) => theme.fontSize.xxl};
+  font-size: ${({ theme }) => theme.fontSize.xl};
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     width: 100%;
   }

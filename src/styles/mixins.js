@@ -137,8 +137,8 @@ const mixins = {
     outline: 0;
     border: 2px solid ${({ theme }) => theme.brand.primary};
     background-color: transparent;
-    max-width: 350px;
-    width: 300px;
+    max-width: 380px;
+    width: 340px;
     border-radius: ${({ theme }) => theme.borderRadius};
     padding: 1.5rem 1rem;
     display: block;
@@ -151,7 +151,7 @@ const mixins = {
       border-color: ${({ theme }) => hexa(theme.brand.primary, 0.6)};
     }
     &:focus {
-      width: 350px;
+      width: 380px;
     }
   `,
   boxShadow: css`
