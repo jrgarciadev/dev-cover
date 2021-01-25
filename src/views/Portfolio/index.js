@@ -13,7 +13,8 @@ const PortfolioView = ({ user }) => {
   return (
     <StyledMainContainer className="fillHeight">
       <Hero name={getNameUser(user)} bio={userBio} />
-      {/* <About />
+      {user?.hasReadme && <About />}
+      {/*
       <Featured />
       <Projects />
       <Contact /> */}

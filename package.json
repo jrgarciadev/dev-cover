@@ -42,6 +42,7 @@
     "react": "17.0.1",
     "react-dom": "17.0.1",
     "react-iconly": "^1.1.2",
+    "react-markdown": "^5.0.3",
     "react-transition-group": "^4.4.1",
     "scrollreveal": "^4.0.7",
     "smooth-scroll": "^16.1.3",

@@ -20,7 +20,7 @@ export default {
     md: '1.4rem',
     lg: '1.8rem',
     xl: '2.2rem',
-    xxl: '2.6rem',
+    xxl: '3rem',
   },
   breakpoints: {
     xs: '320px',

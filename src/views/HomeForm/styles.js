@@ -39,10 +39,7 @@ export const StyledInput = styled.input`
   ${({ theme }) => theme.mixins.bigInput};
   font-size: ${({ theme }) => theme.fontSize.xxl};
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    width: 260px;
-    &:focus {
-      width: 300px;
-    }
+    width: 100%;
   }
 `;
 
@@ -50,8 +47,10 @@ export const StyledButton = styled.button`
   ${({ theme }) => theme.mixins.bigButton};
   ${({ theme }) => Gradient(theme.brand.primary, theme.bg.reverse)};
   transition: ${({ theme }) => theme.transitions.default};
-  &:hover {
-    transform: translateX(14px);
+  @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
+    &:hover {
+      transform: translateX(14px);
+    }
   }
   &:disabled {
     opacity: 0.4;

@@ -18,7 +18,7 @@ export const NumberedHeading = styled.h2`
   position: relative;
   margin: 10px 0 40px;
   width: 100%;
-  font-size: clamp(26px, 5vw, ${(props) => props.theme.fontSize.xl});
+  font-size: clamp(26px, 5vw, 4rem);
   font-weight: ${(props) => props.theme.fontw.semibold};
   white-space: nowrap;
 
@@ -31,9 +31,9 @@ export const NumberedHeading = styled.h2`
     color: ${(props) => props.theme.brand.primary};
     font-family: ${(props) => props.theme.fontFamily.fontMono};
     font-size: clamp(
-      ${(props) => props.theme.fontSize.md},
+      ${(props) => props.theme.fontSize.lg},
       3vw,
-      ${(props) => props.theme.fontSize.lg}
+      ${(props) => props.theme.fontSize.xl}
     );
     font-weight: ${(props) => props.theme.fontw.regular};
 
@@ -46,22 +46,18 @@ export const NumberedHeading = styled.h2`
   &:after {
     content: '';
     display: block;
-    position: relative;
-    top: 0px;
     width: 300px;
-    height: 1px;
-    margin-left: 20px;
-    background-color: ${(props) => hexa(props.theme.brand.primary, 0.4)};
-
+    height: 2px;
+    position: absolute;
+    top: 6rem;
+    left: 0;
+    background-color: ${(props) => props.theme.brand.primary};
+    opacity: 0.5;
     @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
       width: 200px;
     }
     @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-      width: 100%;
-    }
-
-    @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-      margin-left: 10px;
+      width: 100px;
     }
   }
 

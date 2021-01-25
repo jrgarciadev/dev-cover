@@ -49,7 +49,7 @@ export const getNavLinks = (user) => {
   } else if (user?.hasDevto) {
     navLinks.blog = `https://dev.to/${get(user, 'username')}`;
   }
-  if (user?.github?.readme && user?.username) {
+  if (user?.hasReadme && user?.username) {
     navLinks.about = IS_GENERATOR ? `/portfolio/${user?.username}/#about` : '/#about';
   }
   return navLinks;
@@ -58,4 +58,17 @@ export const getNavLinks = (user) => {
 export const getNameUser = (user) => {
   if (!user) return '';
   return user?.github?.name || user?.hashnode?.name || user?.devto?.name;
+};
+
+export const purgeUserReadme = (readme) => {
+  if (typeof window === 'undefined') {
+    return '';
+  }
+  const disallowElements = ['img', 'a'];
+  const container = document.createElement('span');
+  container.innerHTML = readme;
+  disallowElements.forEach((el) =>
+    Array.from(container.querySelectorAll(el)).forEach((e) => e.remove()),
+  );
+  return container.innerHTML;
 };
