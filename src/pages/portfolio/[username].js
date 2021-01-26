@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import { PortfolioView } from '@views';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
@@ -31,11 +32,21 @@ export async function getStaticProps({ params }) {
 }
 
 const PortfolioPage = ({ router, user }) => {
+  const [loaderText, setLoaderText] = useState('Doing the magic 🪄💫 ...');
+  useEffect(() => {
+    if (router.isFallback) {
+      setTimeout(() => {
+        setLoaderText(
+          'I recommend you have the same username on Github, Hashnode and Dev.to 🪄💫 ...',
+        );
+      }, 1500);
+    }
+  }, []);
   if (router.isFallback) {
     return (
       <LoaderContainer height="100vh">
         <Loader mb="1rem" />
-        {!isLivePortfolio && <h1>Doing the magic 🪄💫...</h1>}
+        {!isLivePortfolio && <h1>{loaderText}</h1>}
       </LoaderContainer>
     );
   }

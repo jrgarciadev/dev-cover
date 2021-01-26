@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { tint } from '@utils';
 
 export const StyledAboutSection = styled.section`
   max-width: 100%;
@@ -29,13 +30,16 @@ export const StyledMarkdown = styled.div`
     font-size: ${(props) => props.theme.fontSize.lg};
     margin: 0.5rem 0;
     a {
-      color: ${(props) => props.theme.brand.primary};
       font-size: ${(props) => props.theme.fontSize.lg};
     }
   }
   a {
-    color: ${(props) => props.theme.brand.primary};
+    color: ${(props) => tint(props.theme.text.accent, 20)};
     font-size: ${(props) => props.theme.fontSize.md};
+    transition: ${(props) => props.theme.transitions.default};
+    &:hover {
+      color: ${(props) => props.theme.brand.primary};
+    }
   }
 
   ul,
@@ -43,7 +47,7 @@ export const StyledMarkdown = styled.div`
     display: grid;
     grid-template-columns: repeat(5, minmax(140px, 200px));
     padding: 0;
-    margin: 20px 0 0 0;
+    margin: 2rem 0;
     overflow: hidden;
     list-style: none;
 

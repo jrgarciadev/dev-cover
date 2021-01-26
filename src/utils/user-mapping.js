@@ -72,7 +72,9 @@ export const purgeUserReadme = (readme) => {
   disallowElements.forEach((el) =>
     Array.from(container.querySelectorAll(el)).forEach((e) => {
       if (el !== 'a') {
-        return e.remove();
+        if (el === 'img' && !e?.src?.includes('github-readme-stats')) {
+          return e.remove();
+        }
       }
       if (e.hasChildNodes()) {
         return e.remove();
