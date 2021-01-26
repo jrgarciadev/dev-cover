@@ -32,7 +32,7 @@ function HomeForm({ theme }) {
       <HeroTitle>Just type your username and watch the magic</HeroTitle>
       <StyledForm onSubmit={handleSubmit}>
         <StyledInput
-          placeholder="Hashnode or Github username"
+          placeholder="Github or Hashnode username"
           name="username"
           type="text"
           onChange={handleChange}

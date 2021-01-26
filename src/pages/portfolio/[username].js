@@ -3,12 +3,19 @@ import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { LoaderContainer, Loader } from '@common/styles';
 import buildUser from '@lib/user-builder';
+import { IS_GENERATOR } from '@lib/constants';
+
+const username = process.env.NEXT_PUBLIC_USERNAME;
+const isLivePortfolio = username && !IS_GENERATOR;
 
 export async function getStaticPaths() {
   return { paths: [], fallback: true };
 }
 
 export async function getStaticProps({ params }) {
+  if (isLivePortfolio) {
+    return { notFound: true };
+  }
   try {
     const user = await buildUser(params);
     return {
@@ -28,7 +35,7 @@ const PortfolioPage = ({ router, user }) => {
     return (
       <LoaderContainer height="100vh">
         <Loader mb="1rem" />
-        <h1>Doing the magic 🪄💫...</h1>
+        {!isLivePortfolio && <h1>Doing the magic 🪄💫...</h1>}
       </LoaderContainer>
     );
   }

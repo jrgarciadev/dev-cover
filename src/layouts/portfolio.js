@@ -32,7 +32,7 @@ const PorfolioLayout = ({ children, router }) => {
   }, []);
 
   return (
-    <BaseLayout>
+    <BaseLayout isPortfolio>
       <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
       <Navbar isHome={isHome} />
       <Main id="content" className="fillHeight">

@@ -125,7 +125,7 @@ export const StyledCredit = styled.div`
     padding: 10px;
     transition: ${(props) => props.theme.transitions.default};
     &:hover {
-      opacity: 0.6;
+      color: ${(props) => props.theme.brand.primary};
     }
   }
 `;

@@ -2,12 +2,12 @@ import { useEffect } from 'react';
 import { Hero, About, Featured, Projects, Contact } from '@components';
 import { StyledMainContainer } from '@common/styles';
 import PropTypes from 'prop-types';
-import { getLogestString } from '@utils';
+import { getStringByCriteria } from '@utils';
 import { getNameUser } from '@utils/user-mapping';
 import { useUserDataContext } from '@contexts/user-data';
 
 const PortfolioView = ({ user }) => {
-  const userBio = getLogestString([
+  const userBio = getStringByCriteria([
     user?.devto?.summary,
     user?.github?.bio,
     user?.hashnode?.tagline,

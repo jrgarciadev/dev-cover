@@ -45,21 +45,21 @@ export const hexa = (hex, alpha) => {
   }
 };
 
-export const getLogestString = (strings = []) => {
+export const getStringByCriteria = (strings = [], criteria = 'largest') => {
   if (!strings || !Array.isArray(strings)) {
     return '';
   }
   const filteredStrings = strings.filter(Boolean);
-  let longest = filteredStrings[0];
+  let value = filteredStrings[0];
   if (strings.length === 1) {
-    return longest;
+    return value;
   }
   filteredStrings.forEach((s) => {
-    if (s && s.length > longest.length) {
-      longest = s;
+    if (s && (criteria === 'largest' ? s.length > value.length : s.length < value.length)) {
+      value = s;
     }
   });
-  return longest;
+  return value;
 };
 
 export const cleanAttrs = (obj) => {

@@ -1,5 +1,7 @@
-import { get } from 'lodash';
-import { IS_GENERATOR, GITHUB_README_URL } from '@lib/constants';
+import { get, replace, isEmpty } from 'lodash';
+import { IS_GENERATOR, GITHUB_README_URL, MAIN_SITE_URL, AVATAR_GEN_URL } from '@lib/constants';
+import { getStringByCriteria } from '@utils';
+import theme from '@themes/common';
 
 export const extractSocialNetworks = (user) => {
   if (!user) return '';
@@ -83,4 +85,43 @@ export const purgeUserReadme = (readme) => {
 
 export const getGithubReadmeURL = (username, branch = 'main') => {
   return `${GITHUB_README_URL}${username}/${username}/${branch}/README.md`;
+};
+
+export const getHeadData = ({ isPortfolio, user }) => {
+  const title = 'Devcover | Easiest way to generate a dev portfolio';
+  const head = {
+    title,
+    icon: `${MAIN_SITE_URL}/devcover.svg`,
+    twitter_site: '@jrgarciadev',
+    twitter_image: `${MAIN_SITE_URL}/twitter-image-devcover.jpg`,
+    og_site_name: title,
+    og_title: title,
+    og_url: MAIN_SITE_URL,
+    og_image: `${MAIN_SITE_URL}/twitter-image-devcover.jpg`,
+    description: '🌐 Get and publish your developer portfolio with just your username',
+    keywords: 'Portfolio, Developer, Generator, Vercel, Hashnode',
+  };
+  if (!isEmpty(user) && isPortfolio) {
+    const userPrimaryColor = replace(theme?.brand?.primary, '#', '');
+    const userImage =
+      user?.github?.avatar_url || user?.hashnode?.photo || user?.devto?.profile_image;
+    const userIcon = `${AVATAR_GEN_URL}${getNameUser(user)}.svg?background=%23${userPrimaryColor}`;
+    const userBioArray = [user?.devto?.summary, user?.github?.bio, user?.hashnode?.tagline];
+    const userTitle = `${getNameUser(user)} | ${getStringByCriteria(userBioArray, 'shortest')}`;
+    head.title = userTitle;
+    head.icon = userIcon;
+    head.twitter_site =
+      user?.devto?.twitter_username ||
+      user?.github?.twitter_username ||
+      user?.hashnode?.socialMedia?.twitter ||
+      '';
+    head.twitter_image = userImage;
+    head.og_site_name = userTitle;
+    head.og_title = userTitle;
+    head.og_url = '';
+    head.og_image = userImage;
+    head.description = getStringByCriteria(userBioArray);
+    head.keywords = '';
+  }
+  return head;
 };

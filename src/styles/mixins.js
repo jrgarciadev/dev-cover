@@ -135,7 +135,7 @@ const mixins = {
     display: block;
     appearance: none;
     outline: 0;
-    border: 2px solid ${({ theme }) => theme.brand.primary};
+    border: 2px solid ${({ theme }) => theme.bg.reverse};
     background-color: transparent;
     max-width: 380px;
     width: 340px;
@@ -147,8 +147,9 @@ const mixins = {
     color: ${({ theme }) => theme.text.default};
     font-weight: ${({ theme }) => theme.fontw.semibold};
     transition-duration: 0.25s;
-    &:hover {
-      border-color: ${({ theme }) => hexa(theme.brand.primary, 0.6)};
+    &:hover,
+    &:focus {
+      border-color: ${({ theme }) => theme.brand.primary};
     }
     &:focus {
       width: 380px;
