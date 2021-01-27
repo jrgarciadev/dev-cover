@@ -4,6 +4,7 @@ import { StyledMainContainer } from '@common/styles';
 import PropTypes from 'prop-types';
 import { getStringByCriteria } from '@utils';
 import { useUserDataContext } from '@contexts/user-data';
+import { useUIContext } from '@contexts/ui';
 
 const PortfolioView = ({ user }) => {
   const userBio = getStringByCriteria([
@@ -12,6 +13,11 @@ const PortfolioView = ({ user }) => {
     user?.hashnode?.tagline,
   ]);
   const { updateValue } = useUserDataContext();
+  const { restartValues, updateValue: updateUI } = useUIContext();
+  useEffect(() => {
+    restartValues();
+    updateUI({ showDeployButton: true });
+  }, []);
   useEffect(() => {
     if (user) {
       updateValue(user);

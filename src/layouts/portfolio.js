@@ -3,6 +3,7 @@ import { useEffect } from 'react';
 import { withRouter } from 'next/router';
 import { VercelButton } from '@components';
 import { IS_GENERATOR } from '@lib/constants';
+import { useUIContext } from '@contexts/ui';
 import { SkipToContentLink } from './styles';
 import Main from './main';
 import BaseLayout from './base';
@@ -12,6 +13,7 @@ import Footer from './footer';
 const PorfolioLayout = ({ children, router }) => {
   const isBrowser = typeof window !== `undefined`;
   const isHome = router.pathname === '/';
+  const { showNavbar, showDeployButton, mainFullHeight } = useUIContext();
   useEffect(() => {
     if (!isBrowser) {
       return;
@@ -34,11 +36,11 @@ const PorfolioLayout = ({ children, router }) => {
   return (
     <BaseLayout isPortfolio>
       <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
-      <Navbar isHome={isHome} />
-      <Main id="content" className="fillHeight">
+      {showNavbar && <Navbar isHome={isHome} />}
+      <Main id="content" fullHeight={mainFullHeight} className="fillHeight">
         {children}
       </Main>
-      {IS_GENERATOR && <VercelButton />}
+      {IS_GENERATOR && showDeployButton && <VercelButton />}
       <Footer />
     </BaseLayout>
   );

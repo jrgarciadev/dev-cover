@@ -38,9 +38,9 @@ const fullfillUser = async ({ github = {}, hashnode = {}, devto = {} }) => {
     user.github.readme = githubReadmeData;
   }
   const userBioArray = [user?.devto?.summary, user?.github?.bio, user?.hashnode?.tagline];
-  user.name = getNameUser(user);
-  user.shortDescription = getStringByCriteria(userBioArray, 'shortest');
-  user.largeDescription = getStringByCriteria(userBioArray);
+  user.name = getNameUser(user) ?? '';
+  user.shortDescription = getStringByCriteria(userBioArray, 'shortest') ?? '';
+  user.largeDescription = getStringByCriteria(userBioArray) ?? '';
   user.hasGithub = has(user, 'github.login');
   user.hasGithub = get(user, 'github.login');
   user.hasDevto = get(user, 'devto.status') !== 404;

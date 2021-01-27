@@ -1,11 +1,11 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 import Link from 'next/link';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import styled from 'styled-components';
-import { NAV_DELAY } from '@lib/constants';
+import { useUIContext } from '@contexts/ui';
 
 const StyledMainContainer = styled.main`
   ${({ theme }) => theme.mixins.flexCenter};
+  min-height: calc(100vh - 70px);
   flex-direction: column;
 `;
 const StyledTitle = styled.h1`
@@ -24,27 +24,20 @@ const StyledHomeButton = styled.a`
 `;
 
 const NotFoundPage = () => {
-  const [isMounted, setIsMounted] = useState(false);
+  const { updateValue } = useUIContext();
 
   useEffect(() => {
-    const timeout = setTimeout(() => setIsMounted(true), NAV_DELAY);
-    return () => clearTimeout(timeout);
+    updateValue({ showNavbar: false, mainFullHeight: false });
   }, []);
 
   return (
-    <TransitionGroup component={null}>
-      {isMounted && (
-        <CSSTransition timeout={500} classNames="fadeup">
-          <StyledMainContainer className="fillHeight">
-            <StyledTitle>404</StyledTitle>
-            <StyledSubtitle>Page Not Found</StyledSubtitle>
-            <Link href="/">
-              <StyledHomeButton>Go Home</StyledHomeButton>
-            </Link>
-          </StyledMainContainer>
-        </CSSTransition>
-      )}
-    </TransitionGroup>
+    <StyledMainContainer className="fillHeight">
+      <StyledTitle>404</StyledTitle>
+      <StyledSubtitle>Page Not Found</StyledSubtitle>
+      <Link href="/">
+        <StyledHomeButton>Go Home</StyledHomeButton>
+      </Link>
+    </StyledMainContainer>
   );
 };
 

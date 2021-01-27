@@ -1,10 +1,11 @@
-import { HomeForm, PortfolioView } from '@views';
+import { HomeFormView, UserNotFoundView, PortfolioView } from '@views';
 import { StyledMainContainer } from '@common/styles';
 import PortfolioLayout from '@layouts/portfolio';
 import HomeLayout from '@layouts/home';
 import buildUser from '@lib/user-builder';
-import PropTypes from 'prop-types';
+import { isEnabledUser } from '@utils/user-mapping';
 import { IS_GENERATOR } from '@lib/constants';
+import PropTypes from 'prop-types';
 
 const username = process.env.NEXT_PUBLIC_USERNAME;
 const isLivePortfolio = username && !IS_GENERATOR;
@@ -28,11 +29,14 @@ export async function getStaticProps() {
 
 const IndexPage = ({ user }) => {
   if (user) {
+    if (!isEnabledUser(user)) {
+      return <UserNotFoundView username={user?.username} />;
+    }
     return <PortfolioView user={user} />;
   }
   return (
     <StyledMainContainer className="fillHeight">
-      <HomeForm />
+      <HomeFormView />
     </StyledMainContainer>
   );
 };

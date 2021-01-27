@@ -61,6 +61,14 @@ export const getNameUser = (user) => {
   return user?.github?.name || user?.hashnode?.name || user?.devto?.name;
 };
 
+export const isEnabledUser = (user) => {
+  if (isEmpty(user)) return false;
+  if (!user.hasGithub && !user.hasHashnode) {
+    return false;
+  }
+  return true;
+};
+
 export const purgeUserReadme = (readme) => {
   if (typeof window === 'undefined') {
     return '';

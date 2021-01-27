@@ -1,9 +1,10 @@
 import { useState, useEffect } from 'react';
-import { PortfolioView } from '@views';
+import { UserNotFoundView, PortfolioView } from '@views';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
 import { LoaderContainer, Loader } from '@common/styles';
 import buildUser from '@lib/user-builder';
+import { isEnabledUser } from '@utils/user-mapping';
 import { IS_GENERATOR } from '@lib/constants';
 
 const username = process.env.NEXT_PUBLIC_USERNAME;
@@ -49,6 +50,9 @@ const PortfolioPage = ({ router, user }) => {
         {!isLivePortfolio && <h1>{loaderText}</h1>}
       </LoaderContainer>
     );
+  }
+  if (!router.isFallback && !isEnabledUser(user)) {
+    return <UserNotFoundView username={user?.username} />;
   }
   return <PortfolioView user={user} />;
 };

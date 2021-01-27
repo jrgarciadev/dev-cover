@@ -4,11 +4,10 @@ export const MainContainer = styled.main`
   display: flex;
   align-items: center;
   flex-direction: column;
-  min-height: 100vh;
   margin: 0 auto;
   width: 100%;
   max-width: 1600px;
-  min-height: 100vh;
+  min-height: ${(props) => props.fullHeight && '100vh'};
   padding: 200px 150px;
   overflow: hidden;
   @media (max-width: ${(props) => props.theme.breakpoints.lg}) {

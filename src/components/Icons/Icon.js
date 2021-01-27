@@ -11,6 +11,7 @@ import {
   IconStar,
   IconTwitter,
   IconZap,
+  IconDevcover,
 } from '@components/Icons';
 
 const Icon = ({ name }) => {
@@ -27,6 +28,8 @@ const Icon = ({ name }) => {
       return <IconHashnode />;
     case 'devto':
       return <IconDevto />;
+    case 'devcover':
+      return <IconDevcover />;
     case 'linkedin':
       return <IconLinkedin />;
     case 'Location':

@@ -6,7 +6,7 @@ import GlobalStyles from '@styles/globals';
 import theme from '@themes/dark';
 import * as gtag from '@lib/gtag';
 import UserDataContext from '@contexts/user-data';
-
+import UIContext from '@contexts/ui';
 // Notice how we track pageview when route is changed
 Router.events.on('routeChangeComplete', (url) => gtag.pageview(url));
 
@@ -15,10 +15,12 @@ export default function App({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
       <UserDataContext.Provider>
-        <Layout>
-          <GlobalStyles />
-          <Component {...pageProps} />
-        </Layout>
+        <UIContext.Provider>
+          <Layout>
+            <GlobalStyles />
+            <Component {...pageProps} />
+          </Layout>
+        </UIContext.Provider>
       </UserDataContext.Provider>
     </ThemeProvider>
   );
