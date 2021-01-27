@@ -1,6 +1,5 @@
 import { get, replace, isEmpty } from 'lodash';
 import { IS_GENERATOR, GITHUB_README_URL, MAIN_SITE_URL, AVATAR_GEN_URL } from '@lib/constants';
-import { getStringByCriteria } from '@utils';
 import theme from '@themes/common';
 
 export const extractSocialNetworks = (user) => {
@@ -93,7 +92,7 @@ export const getHeadData = ({ isPortfolio, user }) => {
   const title = 'Devcover | Easiest way to generate a dev portfolio';
   const head = {
     title,
-    icon: `${MAIN_SITE_URL}/devcover.svg`,
+    icon: `${MAIN_SITE_URL}/favicon.ico`,
     twitter_site: '@jrgarciadev',
     twitter_image: `${MAIN_SITE_URL}/twitter-image-devcover.jpg`,
     og_site_name: title,
@@ -107,9 +106,8 @@ export const getHeadData = ({ isPortfolio, user }) => {
     const userPrimaryColor = replace(theme?.brand?.primary, '#', '');
     const userImage =
       user?.github?.avatar_url || user?.hashnode?.photo || user?.devto?.profile_image;
-    const userIcon = `${AVATAR_GEN_URL}${getNameUser(user)}.svg?background=%23${userPrimaryColor}`;
-    const userBioArray = [user?.devto?.summary, user?.github?.bio, user?.hashnode?.tagline];
-    const userTitle = `${getNameUser(user)} | ${getStringByCriteria(userBioArray, 'shortest')}`;
+    const userIcon = `${AVATAR_GEN_URL}${user.name}.svg?background=%23${userPrimaryColor}`;
+    const userTitle = `${user.name} | ${user.shortDescription}`;
     head.title = userTitle;
     head.icon = userIcon;
     head.twitter_site =
@@ -122,7 +120,7 @@ export const getHeadData = ({ isPortfolio, user }) => {
     head.og_title = userTitle;
     head.og_url = '';
     head.og_image = userImage;
-    head.description = getStringByCriteria(userBioArray);
+    head.description = user.largeDescription;
     head.keywords = '';
   }
   return head;

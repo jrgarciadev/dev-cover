@@ -28,7 +28,7 @@ function HomeForm({ theme }) {
   return (
     <StyledContainer>
       <Corner />
-      <LargeLogo alt="DevCover Logo" src="/devcover-logo.svg" />
+      <LargeLogo alt="DevCover Logo" src="/devcover-logo.png" />
       <HeroTitle>Just type your username and watch the magic</HeroTitle>
       <StyledForm onSubmit={handleSubmit}>
         <StyledInput

@@ -3,7 +3,6 @@ import { Hero, About, Featured, Projects, Contact } from '@components';
 import { StyledMainContainer } from '@common/styles';
 import PropTypes from 'prop-types';
 import { getStringByCriteria } from '@utils';
-import { getNameUser } from '@utils/user-mapping';
 import { useUserDataContext } from '@contexts/user-data';
 
 const PortfolioView = ({ user }) => {
@@ -20,7 +19,7 @@ const PortfolioView = ({ user }) => {
   }, [user]);
   return (
     <StyledMainContainer className="fillHeight">
-      <Hero name={getNameUser(user)} bio={userBio} />
+      <Hero name={user.name} bio={userBio} />
       {user?.hasReadme && <About />}
       {/*
       <Featured />

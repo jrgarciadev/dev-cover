@@ -5,7 +5,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { LOADER_DELAY } from '@lib/constants';
 import { useScrollDirection } from '@hooks';
 import { Menu } from '@components';
-import { getNavLinks, getKeysMapped, getObjValue, getNameUser } from '@utils/user-mapping';
+import { getNavLinks, getKeysMapped, getObjValue } from '@utils/user-mapping';
 import { useUserDataContext } from '@contexts/user-data';
 import { capitalize, startsWith } from 'lodash';
 import { StyledHeader, StyledNav, StyledLinks } from './styles';
@@ -23,7 +23,7 @@ const Nav = ({ isHome }) => {
   };
   useEffect(() => {
     if (user) {
-      setUserName(getNameUser(user));
+      setUserName(user.name);
       setNavLinks(getKeysMapped(getNavLinks(user)));
     }
   }, [user]);

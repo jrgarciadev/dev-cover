@@ -1,7 +1,7 @@
 import { initializeApollo } from '@lib/apollo-client';
 import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
-import { cleanAttrs } from '@utils';
-import { getGithubReadmeURL } from '@utils/user-mapping';
+import { cleanAttrs, getStringByCriteria } from '@utils';
+import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
 import { get, has, replace } from 'lodash';
 import { GITHUB_URL, GITHUB_USER_URL, DEVTO_USER_URL } from './constants';
 
@@ -37,6 +37,10 @@ const fullfillUser = async ({ github = {}, hashnode = {}, devto = {} }) => {
     user.github = cleanAttrs(githubUserData);
     user.github.readme = githubReadmeData;
   }
+  const userBioArray = [user?.devto?.summary, user?.github?.bio, user?.hashnode?.tagline];
+  user.name = getNameUser(user);
+  user.shortDescription = getStringByCriteria(userBioArray, 'shortest');
+  user.largeDescription = getStringByCriteria(userBioArray);
   user.hasGithub = has(user, 'github.login');
   user.hasGithub = get(user, 'github.login');
   user.hasDevto = get(user, 'devto.status') !== 404;
