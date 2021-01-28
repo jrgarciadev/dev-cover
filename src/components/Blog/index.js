@@ -2,6 +2,7 @@
 import { Post } from '@components';
 import { NumberedHeading } from '@common/styles';
 import { useUserDataContext } from '@contexts/user-data';
+import { get } from 'lodash';
 import { ShowMoreButton, ButtonContainer } from './styles';
 
 const Blog = () => {
@@ -74,6 +75,9 @@ const Blog = () => {
     if (user.hasHashnode && user?.hashnode?.publicationDomain) {
       return `https://${user.hashnode.publicationDomain}`;
     }
+    if (user.hasHashnode) {
+      return `https://hashnode.com/@${get(user, 'username')}`;
+    }
     if (user.hasDevto) {
       return `https://dev.to/${user.username}`;
     }
@@ -81,7 +85,7 @@ const Blog = () => {
   };
 
   return (
-    <section id="posts">
+    <section id="blog">
       <NumberedHeading>Latest Blogs</NumberedHeading>
       <div>{user.posts && renderPosts()}</div>
       <ButtonContainer>

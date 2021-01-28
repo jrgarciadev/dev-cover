@@ -1,15 +1,18 @@
 /* eslint-disable prefer-destructuring */
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
-import { navLinks } from '@config';
+import { getNavLinks, getKeysMapped, getObjValue } from '@utils/user-mapping';
 import { KEY_CODES } from '@lib/constants';
 import { useOnClickOutside } from '@hooks';
+import { useUserDataContext } from '@contexts/user-data';
+import { capitalize } from 'lodash';
 import { StyledMenu, StyledHamburgerButton, StyledSidebar } from './styles';
 
 const Menu = () => {
   const [menuOpen, setMenuOpen] = useState(false);
-
+  const [navLinks, setNavLinks] = useState([]);
   const toggleMenu = () => setMenuOpen(!menuOpen);
+  const { user } = useUserDataContext();
 
   const buttonRef = useRef(null);
   const navRef = useRef(null);
@@ -87,6 +90,12 @@ const Menu = () => {
     document.body.className = menuOpen && 'blur';
   }, [menuOpen]);
 
+  useEffect(() => {
+    if (user) {
+      setNavLinks(getKeysMapped(getNavLinks(user)));
+    }
+  }, [user]);
+
   const wrapperRef = useRef();
   useOnClickOutside(wrapperRef, () => setMenuOpen(false));
 
@@ -103,17 +112,13 @@ const Menu = () => {
           <nav ref={navRef}>
             {navLinks && (
               <ol>
-                {navLinks.map(({ url, name }) => (
-                  <li key={url}>
-                    <Link href={url}>{name}</Link>
+                {navLinks.map((link) => (
+                  <li key={link.key}>
+                    <Link href={getObjValue(link)}>{capitalize(link.key)}</Link>
                   </li>
                 ))}
               </ol>
             )}
-
-            <a href="/resume.pdf" className="resume-link">
-              Resume
-            </a>
           </nav>
         </StyledSidebar>
       </div>

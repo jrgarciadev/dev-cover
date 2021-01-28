@@ -1,3 +1,5 @@
+import { FAVICON_URL } from '@lib/constants';
+
 /* eslint-disable no-restricted-syntax */
 export const tint = (hex, amount) => {
   try {
@@ -80,4 +82,8 @@ export const formatPostDate = (date) => {
   );
   const sp = formattedDate.split(' ');
   return `${sp[1]} ${sp[0]}, ${sp[2]}`;
+};
+
+export const getPageFavicon = (domain) => {
+  return `${FAVICON_URL}${domain}.ico`;
 };

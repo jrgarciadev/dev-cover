@@ -14,6 +14,7 @@ export const DEVTO_USER_URL = 'https://dev.to/api/users/by_username?url=';
 export const DEVTO_ARTICLES_URL = 'https://dev.to/api/articles?username=';
 export const HASHNODE_URL = 'https://api.hashnode.com/';
 export const AVATAR_GEN_URL = 'https://avatars.dicebear.com/4.5/api/initials/';
+export const FAVICON_URL = 'https://icons.duckduckgo.com/ip3/';
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 export const IS_GENERATOR = process.env.NEXT_PUBLIC_GENERATOR_MODE === 'true';
 export const KEY_CODES = {

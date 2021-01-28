@@ -18,9 +18,11 @@ const Hero = ({ name = '', bio = '' }) => {
         <h1>Welcome, I&apos;m</h1>
         <StyledBigTitle>{name}</StyledBigTitle>
         <p>{bio}</p>
-        <a href={`mailto:${email}`} className="email-link">
-          Get In Touch
-        </a>
+        {user.email && (
+          <a href={`mailto:${email}`} className="email-link">
+            Get In Touch
+          </a>
+        )}
       </LeftContainer>
       <RightContainer>
         <StyledPic>

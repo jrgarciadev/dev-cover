@@ -1,6 +1,7 @@
 import { get, replace, isEmpty } from 'lodash';
 import { IS_GENERATOR, GITHUB_README_URL, MAIN_SITE_URL, AVATAR_GEN_URL } from '@lib/constants';
 import theme from '@themes/common';
+import { getPageFavicon } from '@utils';
 
 export const extractSocialNetworks = (user) => {
   if (!user) return '';
@@ -43,12 +44,11 @@ export const getNavLinks = (user) => {
     // projects: '/#projects',
     // contact: '/#contact',
   };
-  if (user?.hashnode?.publicationDomain) {
-    navLinks.blog = `https://${user.hashnode.publicationDomain}`;
-  } else if (user?.hasHashnode) {
-    navLinks.blog = `https://hashnode.com/@${get(user, 'username')}`;
-  } else if (user?.hasDevto) {
-    navLinks.blog = `https://dev.to/${get(user, 'username')}`;
+  if (
+    (user?.posts && user.posts.hashnode && user.posts.hashnode.length > 0) ||
+    (user?.posts && user.posts.devto && user.posts.devto.length > 0)
+  ) {
+    navLinks.blog = IS_GENERATOR ? `/portfolio/${user?.username}/#blog` : '/#blog';
   }
   if (user?.hasReadme && user?.username) {
     navLinks.about = IS_GENERATOR ? `/portfolio/${user?.username}/#about` : '/#about';
@@ -114,7 +114,10 @@ export const getHeadData = ({ isPortfolio, user }) => {
     const userPrimaryColor = replace(theme?.brand?.primary, '#', '');
     const userImage =
       user?.github?.avatar_url || user?.hashnode?.photo || user?.devto?.profile_image;
-    const userIcon = `${AVATAR_GEN_URL}${user.name}.svg?background=%23${userPrimaryColor}`;
+    const userIcon =
+      user.hasHashnode && user.hashnode.publicationDomain
+        ? getPageFavicon(user.hashnode.publicationDomain)
+        : `${AVATAR_GEN_URL}${user.name}.svg?background=%23${userPrimaryColor}`;
     const userTitle = `${user.name} | ${user.shortDescription}`;
     head.title = userTitle;
     head.icon = userIcon;
