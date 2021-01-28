@@ -12,6 +12,7 @@ export const StyledHamburgerButton = styled.button`
 
   @media (max-width: 768px) {
     ${({ theme }) => theme.mixins.flexCenter};
+    display: ${(props) => (props.visible ? 'flex' : 'none')};
     position: relative;
     z-index: 10;
     margin-right: -15px;

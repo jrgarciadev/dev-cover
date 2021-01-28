@@ -101,29 +101,30 @@ const Menu = () => {
   return (
     <StyledMenu>
       <div ref={wrapperRef}>
-        {navLinks.length > 0 && (
-          <>
-            <StyledHamburgerButton onClick={toggleMenu} menuOpen={menuOpen} ref={buttonRef}>
-              <div className="ham-box">
-                <div className="ham-box-inner" />
-              </div>
-            </StyledHamburgerButton>
+        <StyledHamburgerButton
+          visible={navLinks.length > 0}
+          onClick={toggleMenu}
+          menuOpen={menuOpen}
+          ref={buttonRef}
+        >
+          <div className="ham-box">
+            <div className="ham-box-inner" />
+          </div>
+        </StyledHamburgerButton>
 
-            <StyledSidebar menuOpen={menuOpen} aria-hidden={!menuOpen} tabIndex={menuOpen ? 1 : -1}>
-              <nav ref={navRef}>
-                {navLinks && (
-                  <ol>
-                    {navLinks.map((link) => (
-                      <li key={link.key}>
-                        <Link href={getObjValue(link)}>{capitalize(link.key)}</Link>
-                      </li>
-                    ))}
-                  </ol>
-                )}
-              </nav>
-            </StyledSidebar>
-          </>
-        )}
+        <StyledSidebar menuOpen={menuOpen} aria-hidden={!menuOpen} tabIndex={menuOpen ? 1 : -1}>
+          <nav ref={navRef}>
+            {navLinks && (
+              <ol>
+                {navLinks.map((link) => (
+                  <li key={link.key}>
+                    <Link href={getObjValue(link)}>{capitalize(link.key)}</Link>
+                  </li>
+                ))}
+              </ol>
+            )}
+          </nav>
+        </StyledSidebar>
       </div>
     </StyledMenu>
   );
