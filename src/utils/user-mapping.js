@@ -98,14 +98,14 @@ export const getGithubReadmeURL = (username, branch = 'main') => {
 
 export const getUserFavicon = (user) => {
   const userPrimaryColor = replace(theme?.brand?.primary, '#', '');
-  if (has(user, 'user.hashnode.publicationDomain')) {
-    return getPageFavicon(get(user, 'user.hashnode.publicationDomain'));
+  if (has(user, 'hashnode.publicationDomain')) {
+    return getPageFavicon(get(user, 'hashnode.publicationDomain'));
   }
-  if (has(user, 'user.hashnode.socialMedia.website')) {
-    return getPageFavicon(get(user, 'user.hashnode.socialMedia.website'));
+  if (has(user, 'hashnode.socialMedia.website')) {
+    return getPageFavicon(get(user, 'hashnode.socialMedia.website'));
   }
-  if (user.hasDevto && user.devto && user.devto.website_url) {
-    return getPageFavicon(user.devto.website_url);
+  if (has(user, 'devto.website_url')) {
+    return getPageFavicon(get(user, 'devto.website_url'));
   }
   return `${AVATAR_GEN_URL}${user.name}.svg?background=%23${userPrimaryColor}`;
 };
