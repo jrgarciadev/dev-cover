@@ -1,5 +1,5 @@
 import { FAVICON_URL } from '@lib/constants';
-
+import { replace } from 'lodash';
 /* eslint-disable no-restricted-syntax */
 export const tint = (hex, amount) => {
   try {
@@ -85,5 +85,15 @@ export const formatPostDate = (date) => {
 };
 
 export const getPageFavicon = (domain) => {
+  if (!domain) return '';
+  if (typeof domain !== 'string') {
+    return '';
+  }
+  if (domain.includes('https://')) {
+    replace(domain, 'https://', '');
+  }
+  if (domain.includes('http://')) {
+    replace(domain, 'http://', '');
+  }
   return `${FAVICON_URL}${domain}.ico`;
 };

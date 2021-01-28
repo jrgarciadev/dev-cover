@@ -1,4 +1,4 @@
-import { get, replace, isEmpty } from 'lodash';
+import { get, has, replace, isEmpty } from 'lodash';
 import { IS_GENERATOR, GITHUB_README_URL, MAIN_SITE_URL, AVATAR_GEN_URL } from '@lib/constants';
 import theme from '@themes/common';
 import { getPageFavicon } from '@utils';
@@ -96,6 +96,20 @@ export const getGithubReadmeURL = (username, branch = 'main') => {
   return `${GITHUB_README_URL}${username}/${username}/${branch}/README.md`;
 };
 
+export const getUserFavicon = (user) => {
+  const userPrimaryColor = replace(theme?.brand?.primary, '#', '');
+  if (has(user, 'user.hashnode.publicationDomain')) {
+    return getPageFavicon(get(user, 'user.hashnode.publicationDomain'));
+  }
+  if (has(user, 'user.hashnode.socialMedia.website')) {
+    return getPageFavicon(get(user, 'user.hashnode.socialMedia.website'));
+  }
+  if (user.hasDevto && user.devto && user.devto.website_url) {
+    return getPageFavicon(user.devto.website_url);
+  }
+  return `${AVATAR_GEN_URL}${user.name}.svg?background=%23${userPrimaryColor}`;
+};
+
 export const getHeadData = ({ isPortfolio, user }) => {
   const title = 'Devcover | Easiest way to generate a dev portfolio';
   const head = {
@@ -111,13 +125,9 @@ export const getHeadData = ({ isPortfolio, user }) => {
     keywords: 'Portfolio, Developer, Generator, Vercel, Hashnode',
   };
   if (!isEmpty(user) && isPortfolio) {
-    const userPrimaryColor = replace(theme?.brand?.primary, '#', '');
     const userImage =
       user?.github?.avatar_url || user?.hashnode?.photo || user?.devto?.profile_image;
-    const userIcon =
-      user.hasHashnode && user.hashnode.publicationDomain
-        ? getPageFavicon(user.hashnode.publicationDomain)
-        : `${AVATAR_GEN_URL}${user.name}.svg?background=%23${userPrimaryColor}`;
+    const userIcon = getUserFavicon(user);
     const userTitle = `${user.name} | ${user.shortDescription}`;
     head.title = userTitle;
     head.icon = userIcon;
