@@ -2,20 +2,97 @@ import { initializeApollo } from '@lib/apollo-client';
 import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import { cleanAttrs, getStringByCriteria } from '@utils';
 import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
-import { get, has, replace } from 'lodash';
-import { GITHUB_URL, GITHUB_USER_URL, DEVTO_USER_URL } from './constants';
+import { get, has, chunk, first, replace, orderBy } from 'lodash';
+import { GITHUB_URL, GITHUB_USER_URL, DEVTO_USER_URL, DEVTO_ARTICLES_URL } from './constants';
+
+const stringSimilarity = require('string-similarity');
 
 const fetchUserReadme = async (username) => {
-  let githubReadmeRes = await fetch(getGithubReadmeURL(username, 'main'));
-  let githubReadmeData = await githubReadmeRes.text();
-  if (githubReadmeData.includes('404')) {
-    githubReadmeRes = await fetch(getGithubReadmeURL(username, 'master'));
-    githubReadmeData = await githubReadmeRes.text();
+  try {
+    let githubReadmeRes = await fetch(getGithubReadmeURL(username, 'main'));
+    let githubReadmeData = await githubReadmeRes.text();
+    if (githubReadmeData.includes('404')) {
+      githubReadmeRes = await fetch(getGithubReadmeURL(username, 'master'));
+      githubReadmeData = await githubReadmeRes.text();
+    }
+    return githubReadmeData;
+  } catch (error) {
+    console.error(error);
+    return null;
   }
-  return githubReadmeData;
 };
 
-const fullfillUser = async ({ github = {}, hashnode = {}, devto = {} }) => {
+const fetchDevtoPosts = async (username) => {
+  try {
+    const devtoArticlesRes = await fetch(`${DEVTO_ARTICLES_URL}${username}`);
+    const devtoArticlesData = await devtoArticlesRes.json();
+    return devtoArticlesData;
+  } catch (error) {
+    console.error(error);
+    return [];
+  }
+};
+
+const buildPosts = async (user) => {
+  if (!user || (!user.hasHashnode && !user.hasDevto)) {
+    return [];
+  }
+  let devtoPosts = [];
+  let hashnodePosts = [];
+  if (user.hasDevto) {
+    devtoPosts = await fetchDevtoPosts(user.username);
+    if (devtoPosts.length > 0) {
+      devtoPosts = first(chunk(orderBy(devtoPosts, ['positive_reactions_count'], ['desc']), 4));
+    }
+  }
+  if (user.hasHashnode) {
+    hashnodePosts = first(
+      chunk(orderBy(user.hashnode.publication.posts, ['totalReactions'], ['desc']), 4),
+    );
+  }
+  if (hashnodePosts.length > 0 && devtoPosts.length > 0) {
+    if (devtoPosts.length > hashnodePosts.length) {
+      devtoPosts.forEach((post) => {
+        hashnodePosts.forEach((hnPost) => {
+          const similar = stringSimilarity.compareTwoStrings(hnPost.title, post.title) > 0.8;
+          if (similar) {
+            hashnodePosts = hashnodePosts.filter((p) => p._id !== hnPost._id);
+          }
+        });
+      });
+      return {
+        hashnode: hashnodePosts,
+        devto: devtoPosts,
+      };
+    }
+    hashnodePosts.forEach((hnPost) => {
+      devtoPosts.forEach((post) => {
+        const similar = stringSimilarity.compareTwoStrings(hnPost.title, post.title) > 0.8;
+        if (similar) {
+          devtoPosts = devtoPosts.filter((p) => p.id !== post.id);
+        }
+      });
+    });
+
+    return {
+      hashnode: hashnodePosts,
+      devto: devtoPosts,
+    };
+  }
+  if (hashnodePosts.length > 0) {
+    return {
+      hashnode: hashnodePosts,
+    };
+  }
+  if (devtoPosts.length > 0) {
+    return {
+      devto: devtoPosts,
+    };
+  }
+  return null;
+};
+
+const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }) => {
   const user = {
     github,
     hashnode,
@@ -39,12 +116,21 @@ const fullfillUser = async ({ github = {}, hashnode = {}, devto = {} }) => {
   }
   const userBioArray = [user?.devto?.summary, user?.github?.bio, user?.hashnode?.tagline];
   user.name = getNameUser(user) ?? '';
+  user.username = username;
   user.shortDescription = getStringByCriteria(userBioArray, 'shortest') ?? '';
   user.largeDescription = getStringByCriteria(userBioArray) ?? '';
   user.hasGithub = has(user, 'github.login');
-  user.hasGithub = get(user, 'github.login');
+  user.hasHashnode = has(user, 'hashnode.name');
   user.hasDevto = get(user, 'devto.status') !== 404;
   user.hasReadme = has(user, 'github.readme') && !get(user, 'github.readme').includes('404');
+  try {
+    user.posts = await buildPosts(user);
+    user.hasPosts = user.posts && (user.posts.hashnode.length > 0 || user.posts.devto.length > 0);
+  } catch (error) {
+    console.error(error);
+    user.hasPosts = false;
+    user.posts = null;
+  }
 
   return user;
 };
@@ -65,8 +151,12 @@ const buildUser = async (params) => {
   const githubUser = cleanAttrs(githubUserRes);
   const hashnodeUser = cleanAttrs(hnUserData.user);
   const devtoUser = cleanAttrs(devtoUserRes);
-  const user = await fullfillUser({ github: githubUser, hashnode: hashnodeUser, devto: devtoUser });
-  user.username = username;
+  const user = await fullfillUser({
+    username,
+    github: githubUser,
+    hashnode: hashnodeUser,
+    devto: devtoUser,
+  });
   return user;
 };
 

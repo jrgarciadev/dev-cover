@@ -47,7 +47,7 @@ export const StyledButton = styled.button`
   ${({ theme }) => theme.mixins.bigButton};
   ${({ theme }) => Gradient(theme.brand.primary, theme.bg.reverse)};
   transition: ${({ theme }) => theme.transitions.default};
-  @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
+  @media (min-width: ${(props) => props.theme.breakpoints.lg}) {
     &:hover {
       transform: translateX(14px);
     }
@@ -68,6 +68,8 @@ export const StyledForm = styled.form`
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     ${StyledInput} {
       width: 100%;
+      max-width: 100%;
+      margin-right: 0rem;
       margin-bottom: 1rem;
     }
     ${StyledButton} {

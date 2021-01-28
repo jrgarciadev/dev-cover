@@ -1,6 +1,7 @@
 import styled from 'styled-components';
 
 export const ButtonContainer = styled.div`
+  z-index: 999;
   display: flex;
   justify-content: flex-end;
   width: 100%;

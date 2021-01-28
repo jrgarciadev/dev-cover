@@ -11,3 +11,4 @@ export { default as IconLocation } from './location';
 export { default as IconStar } from './star';
 export { default as IconTwitter } from './twitter';
 export { default as IconZap } from './zap';
+export { default as IconFeatured } from './featured';

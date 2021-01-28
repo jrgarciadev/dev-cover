@@ -2,6 +2,8 @@ import { gql } from '@apollo/client';
 
 const postInfoFragment = gql`
   fragment postInfo on Post {
+    _id
+    slug
     title
     type
     popularity

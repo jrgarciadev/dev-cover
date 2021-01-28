@@ -1,5 +1,5 @@
 import { useEffect } from 'react';
-import { Hero, About, Featured, Projects, Contact } from '@components';
+import { Hero, About, Blog, Projects, Contact } from '@components';
 import { StyledMainContainer } from '@common/styles';
 import PropTypes from 'prop-types';
 import { getStringByCriteria } from '@utils';
@@ -27,9 +27,8 @@ const PortfolioView = ({ user }) => {
     <StyledMainContainer className="fillHeight">
       <Hero name={user.name} bio={userBio} />
       {user?.hasReadme && <About />}
-      {/*
-      <Featured />
-      <Projects />
+      {user?.hasPosts && <Blog />}
+      {/* <Projects />
       <Contact /> */}
     </StyledMainContainer>
   );
