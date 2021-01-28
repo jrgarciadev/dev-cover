@@ -8,63 +8,65 @@ const Blog = () => {
   const { user } = useUserDataContext();
   const renderPosts = () => (
     <>
-      {user.posts.hashnode.map((post) => {
-        const {
-          _id,
-          title,
-          slug,
-          totalReactions,
-          brief,
-          replyCount,
-          responseCount,
-          coverImage,
-          dateFeatured,
-          dateAdded,
-        } = post;
-        const url = user?.hashnode?.publicationDomain
-          ? `http://${user?.hashnode?.publicationDomain}/${slug}`
-          : '#';
-        return (
-          <Post
-            key={_id}
-            provider="hashnode"
-            title={title}
-            url={url}
-            likes={totalReactions}
-            comments={replyCount + responseCount}
-            description={brief}
-            cover={coverImage}
-            featured={dateFeatured !== null}
-            createdAt={dateAdded}
-          />
-        );
-      })}
-      {user.posts.devto.map((post) => {
-        const {
-          id,
-          title,
-          url,
-          positive_reactions_count,
-          description,
-          published_timestamp,
-          comments_count,
-          cover_image,
-        } = post;
+      {user?.posts?.hashnode &&
+        user?.posts?.hashnode.map((post) => {
+          const {
+            _id,
+            title,
+            slug,
+            totalReactions,
+            brief,
+            replyCount,
+            responseCount,
+            coverImage,
+            dateFeatured,
+            dateAdded,
+          } = post;
+          const url = user?.hashnode?.publicationDomain
+            ? `http://${user?.hashnode?.publicationDomain}/${slug}`
+            : '#';
+          return (
+            <Post
+              key={_id}
+              provider="hashnode"
+              title={title}
+              url={url}
+              likes={totalReactions}
+              comments={replyCount + responseCount}
+              description={brief}
+              cover={coverImage}
+              featured={dateFeatured !== null}
+              createdAt={dateAdded}
+            />
+          );
+        })}
+      {user?.posts?.devto &&
+        user?.posts?.devto.map((post) => {
+          const {
+            id,
+            title,
+            url,
+            positive_reactions_count,
+            description,
+            published_timestamp,
+            comments_count,
+            cover_image,
+          } = post;
 
-        return (
-          <Post
-            key={id}
-            provider="hashnode"
-            title={title}
-            url={url}
-            likes={positive_reactions_count}
-            comments={comments_count}
-            description={description}
-            cover={cover_image}
-            createdAt={published_timestamp}
-          />
-        );
-      })}
+          return (
+            <Post
+              key={id}
+              provider="hashnode"
+              title={title}
+              url={url}
+              likes={positive_reactions_count}
+              comments={comments_count}
+              description={description}
+              cover={cover_image}
+              createdAt={published_timestamp}
+            />
+          );
+        })}
     </>
   );
 

@@ -51,9 +51,11 @@ const Post = ({
       </div>
     </LeftContainer>
     <RightContainer>
-      <ImageContainer href={url} target="_blank" rel="noreferrer">
-        <img src={cover} alt={title} width={300} />
-      </ImageContainer>
+      {cover && (
+        <ImageContainer href={url} target="_blank" rel="noreferrer">
+          <img src={cover} alt={title} width={300} />
+        </ImageContainer>
+      )}
     </RightContainer>
   </StyledContainer>
 );
