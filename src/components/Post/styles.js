@@ -80,6 +80,7 @@ export const ImageContainer = styled.a`
     padding-bottom: 65%;
   }
   > img {
+    object-fit: cover;
     position: absolute;
     left: 0;
     top: 0;
