@@ -2,7 +2,7 @@ import { initializeApollo } from '@lib/apollo-client';
 import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import { cleanAttrs, getStringByCriteria } from '@utils';
 import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
-import { get, has, chunk, first, replace, orderBy, size, isEmpty } from 'lodash';
+import { get, chunk, first, replace, orderBy, size, includes, isEmpty } from 'lodash';
 import { GITHUB_URL, GITHUB_USER_URL, DEVTO_USER_URL, DEVTO_ARTICLES_URL } from './constants';
 
 const stringSimilarity = require('string-similarity');
@@ -123,8 +123,8 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   }
   if (user.github.login) {
     if (
-      has(hashnode, 'socialMedia.github') &&
-      get(hashnode, 'socialMedia.github') !== user.github.login
+      get(hashnode, 'socialMedia.github') !== user.github.login &&
+      !isEmpty(get(hashnode, 'socialMedia.github'))
     ) {
       user.github.login = replace(get(hashnode, 'socialMedia.github'), GITHUB_URL, '');
     }
@@ -147,10 +147,10 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   user.shortDescription = getStringByCriteria(userBioArray, 'shortest') ?? '';
   user.largeDescription = getStringByCriteria(userBioArray) ?? '';
   user.hasGithub = !isEmpty(get(user, 'github.login'));
-  user.hasHashnode = has(user, 'hashnode.name');
+  user.hasHashnode = !isEmpty(user, 'hashnode.name');
   user.hasDevto = get(user, 'devto.status') !== 404;
   user.hasReadme =
-    has(user, 'github.readme') && !get(user, 'github.readme').includes(['404', '400']);
+    !isEmpty(user, 'github.readme') && !includes(get(user, 'github.readme'), 'Invalid');
   try {
     user.posts = await buildPosts(user);
     user.hasPosts = user.posts && (user.posts.hashnode.length > 0 || user.posts.devto.length > 0);
@@ -159,7 +159,6 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     user.hasPosts = false;
     user.posts = null;
   }
-
   return user;
 };
 

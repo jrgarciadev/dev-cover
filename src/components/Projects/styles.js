@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import { hexa } from '@utils';
 
 export const StyledProjectsSection = styled.section`
   display: flex;
@@ -40,7 +41,7 @@ export const StyledProject = styled.div`
 
   .project-inner {
     ${({ theme }) => theme.mixins.flexBetween};
-    border: 2px solid ${(props) => props.theme.brand.primary};
+    border: 2px solid ${(props) => hexa(props.theme.brand.primary, 0.5)};
     flex-direction: column;
     align-items: flex-start;
     position: relative;
@@ -48,6 +49,9 @@ export const StyledProject = styled.div`
     padding: 2rem 1.75rem;
     border-radius: ${(props) => props.theme.borderRadius};
     transition: ${(props) => props.theme.transitions.default};
+    &:hover {
+      border-color: ${(props) => props.theme.brand.primary};
+    }
     header,
     footer {
       width: 100%;
