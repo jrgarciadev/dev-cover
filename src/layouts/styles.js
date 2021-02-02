@@ -76,35 +76,8 @@ export const StyledFooter = styled.footer`
   text-align: center;
 `;
 
-export const StyledSocialLinks = styled.div`
-  display: none;
-
-  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
-    display: block;
-    width: 100%;
-    max-width: 270px;
-    margin: 0 auto 10px;
-    color: ${(props) => props.theme.text.accent};
-  }
-
-  ul {
-    ${({ theme }) => theme.mixins.flexBetween};
-    padding: 0;
-    margin: 0;
-    list-style: none;
-
-    a {
-      padding: 10px;
-      svg {
-        fill: ${(props) => props.theme.text.accent};
-        width: 20px;
-        height: 20px;
-      }
-    }
-  }
-`;
-
 export const StyledMadeWith = styled.div`
+  margin-top: 1rem;
   p {
     color: ${(props) => props.theme.text.accent};
     font-family: ${(props) => props.theme.fontFamily.fontMono};
@@ -119,12 +92,20 @@ export const StyledCredit = styled.div`
   font-size: ${(props) => props.theme.fontSize.xxs};
   font-size: ${(props) => props.theme.fontSize.md};
   line-height: 1;
+  z-index: 9999;
   a {
     display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
     padding: 10px;
+    cursor: pointer;
     transition: ${(props) => props.theme.transitions.default};
     &:hover {
       color: ${(props) => props.theme.brand.primary};
     }
+  }
+  img {
+    max-width: 120px;
   }
 `;

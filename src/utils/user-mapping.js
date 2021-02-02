@@ -41,7 +41,7 @@ export const getNavLinks = (user) => {
   const navLinks = {
     about: '',
     blog: '',
-    // projects: '/#projects',
+    projects: '',
     // contact: '/#contact',
   };
   if (
@@ -52,6 +52,9 @@ export const getNavLinks = (user) => {
   }
   if (user?.hasReadme && user?.username) {
     navLinks.about = IS_GENERATOR ? `/portfolio/${user?.username}/#about` : '/#about';
+  }
+  if (get(user, 'github.repos')) {
+    navLinks.projects = '#projects';
   }
   return navLinks;
 };

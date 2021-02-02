@@ -14,34 +14,34 @@ import {
   IconDevcover,
 } from '@components/Icons';
 
-const Icon = ({ name }) => {
+const Icon = ({ name, ...props }) => {
   switch (name) {
-    case 'External':
-      return <IconExternal />;
-    case 'Folder':
-      return <IconFolder />;
-    case 'Fork':
-      return <IconFork />;
+    case 'external':
+      return <IconExternal {...props} />;
+    case 'folder':
+      return <IconFolder {...props} />;
+    case 'fork':
+      return <IconFork {...props} />;
     case 'github':
-      return <IconGitHub />;
+      return <IconGitHub {...props} />;
     case 'hashnode':
-      return <IconHashnode />;
+      return <IconHashnode {...props} />;
     case 'devto':
-      return <IconDevto />;
+      return <IconDevto {...props} />;
     case 'devcover':
-      return <IconDevcover />;
+      return <IconDevcover {...props} />;
     case 'linkedin':
-      return <IconLinkedin />;
+      return <IconLinkedin {...props} />;
     case 'Location':
-      return <IconLocation />;
-    case 'Star':
-      return <IconStar />;
+      return <IconLocation {...props} />;
+    case 'star':
+      return <IconStar {...props} />;
     case 'twitter':
-      return <IconTwitter />;
-    case 'Zap':
-      return <IconZap />;
+      return <IconTwitter {...props} />;
+    case 'zap':
+      return <IconZap {...props} />;
     default:
-      return <IconExternal />;
+      return <IconExternal {...props} />;
   }
 };
 

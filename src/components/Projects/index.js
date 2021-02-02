@@ -1,118 +1,112 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable global-require */
-/* eslint-disable no-return-assign */
-import { useEffect, useState, useRef } from 'react';
-import { CSSTransition, TransitionGroup } from 'react-transition-group';
+/* eslint-disable camelcase */
 import { Icon } from '@components/Icons';
-import { projects } from '@config';
-import { srConfig } from '@config/sr';
-import { PROJECTS_GRID_LIMIT, IS_PRODUCTION } from '@lib/constants';
+import { Folder, Star } from 'react-iconly';
+import { PROJECTS_GRID_LIMIT, IS_PRODUCTION, GITHUB_URL } from '@lib/constants';
 import * as gtag from '@lib/gtag';
-import { StyledProject, StyledProjectsSection } from './styles';
+import { useUserDataContext } from '@contexts/user-data';
+import { NumberedHeading } from '@common/styles';
+import { get, orderBy, truncate } from 'lodash';
+import { StyledProject, StyledProjectsSection, StyledGrid } from './styles';
 
 const Projects = () => {
-  const [showMore, setShowMore] = useState(false);
-  const firstSix = projects.slice(0, PROJECTS_GRID_LIMIT);
-  const projectsToShow = showMore ? projects : firstSix;
+  const { user } = useUserDataContext();
+  const repos = orderBy(get(user, 'github.repos'), ['stargazers_count'], ['desc']);
+  const reposToShow = repos.slice(0, PROJECTS_GRID_LIMIT);
 
-  const revealTitle = useRef(null);
-  const revealArchiveLink = useRef(null);
-  const revealProjects = useRef([]);
-
-  useEffect(() => {
-    const ScrollReveal = require('scrollreveal');
-    const sr = ScrollReveal.default();
-    sr.reveal(revealTitle.current, srConfig());
-    sr.reveal(revealArchiveLink.current, srConfig());
-    revealProjects.current.forEach((ref, i) => sr.reveal(ref, srConfig(i * 100)));
-  }, []);
-
-  const handleClickProject = (link) => {
+  const handleClickLink = (link) => {
     if (IS_PRODUCTION) {
-      gtag.event('click_project', 'projects', 'user clicked on project link button', link);
+      gtag.event('link_click', 'links', 'user clicked on a link button', link);
     }
     window.open(link, '_blank');
   };
 
   return (
     <StyledProjectsSection>
-      <div className="title-container" ref={revealTitle}>
-        <h2>Other Projects</h2>
-        {/*   <Link href="/archive">
-          <a className="archive-link inline-link">View all projects</a>
-        </Link> */}
-      </div>
-      <TransitionGroup className="projects-grid">
-        {projectsToShow &&
-          projectsToShow.map((project, i) => {
-            const { title, descriptionHtml, github, external, techs } = project;
-
+      <NumberedHeading>My Projects</NumberedHeading>
+      <StyledGrid>
+        {reposToShow &&
+          reposToShow.map((repo) => {
+            const {
+              id,
+              name,
+              description,
+              stargazers_count,
+              homepage,
+              html_url,
+              forks_count,
+              language,
+            } = repo;
             return (
-              <CSSTransition
-                key={title}
-                classNames="fadeup"
-                timeout={i >= PROJECTS_GRID_LIMIT ? (i - PROJECTS_GRID_LIMIT) * 300 : 300}
-                exit={false}
-              >
-                <StyledProject
-                  key={title}
-                  ref={(el) => (revealProjects.current[i] = el)}
-                  tabIndex="0"
-                  style={{
-                    transitionDelay: `${
-                      i >= PROJECTS_GRID_LIMIT ? (i - PROJECTS_GRID_LIMIT) * 100 : 0
-                    }ms`,
-                  }}
-                >
-                  <div className="project-inner">
-                    <header>
-                      <div className="project-top">
-                        <div className="folder">
-                          <Icon name="Folder" />
-                        </div>
-                        <div className="project-links">
-                          {github && (
-                            <a onClick={() => handleClickProject(github)} aria-label="GitHub Link">
-                              <Icon name="GitHub" />
-                            </a>
-                          )}
-                          {external && (
-                            <a
-                              onClick={() => handleClickProject(external)}
-                              aria-label="External Link"
-                            >
-                              <Icon name="External" />
-                            </a>
-                          )}
-                        </div>
+              <StyledProject key={id}>
+                <div className="project-inner">
+                  <header>
+                    <div className="project-top">
+                      <div className="folder">
+                        <Folder set="bulk" />
                       </div>
-
-                      <h3 className="project-title">{title}</h3>
-
-                      <div
-                        className="project-description"
-                        dangerouslySetInnerHTML={{ __html: descriptionHtml }}
-                      />
-                    </header>
-
-                    <footer>
-                      {techs && (
-                        <ul className="project-tech-list">
-                          {techs.map((tech) => (
-                            <li key={tech}>{tech}</li>
-                          ))}
-                        </ul>
+                      <div className="project-links">
+                        {html_url && (
+                          <a onClick={() => handleClickLink(html_url)} aria-label="GitHub Link">
+                            <Icon name="github" />
+                          </a>
+                        )}
+                        {homepage && (
+                          <a onClick={() => handleClickLink(homepage)} aria-label="External Link">
+                            <Icon name="external" />
+                          </a>
+                        )}
+                      </div>
+                    </div>
+                    <a
+                      onClick={() => handleClickLink(html_url)}
+                      className="project-title"
+                      aria-label="Project Link"
+                    >
+                      {name}
+                    </a>
+                    <p className="project-description">{truncate(description, { length: 80 })}</p>
+                  </header>
+                  <footer>
+                    <div className="metrics">
+                      {stargazers_count > 0 && (
+                        <a
+                          className="project-metric-value"
+                          rel="noreferrer"
+                          target="_blank"
+                          href={html_url}
+                        >
+                          <Star size={20} />
+                          &nbsp;
+                          {stargazers_count}
+                        </a>
                       )}
-                    </footer>
-                  </div>
-                </StyledProject>
-              </CSSTransition>
+                      {forks_count > 0 && (
+                        <a
+                          className="project-metric-value"
+                          rel="noreferrer"
+                          target="_blank"
+                          href={html_url}
+                        >
+                          <Icon name="fork" className="filled" />
+                          &nbsp;
+                          {forks_count}
+                        </a>
+                      )}
+                    </div>
+                    {language && <p className="project-tech-name">{language}</p>}
+                  </footer>
+                </div>
+              </StyledProject>
             );
           })}
-      </TransitionGroup>
-      {projects && projects.length > 6 && (
-        <button type="button" className="more-button" onClick={() => setShowMore(!showMore)}>
-          Show {showMore ? 'Less' : 'More'}
+      </StyledGrid>
+      {repos && repos.length > reposToShow.length && (
+        <button
+          type="button"
+          className="more-button"
+          onClick={() => handleClickLink(`${GITHUB_URL}${get(user, 'github.login')}`)}
+        >
+          Show More
         </button>
       )}
     </StyledProjectsSection>

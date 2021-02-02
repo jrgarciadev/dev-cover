@@ -10,7 +10,7 @@ const HomeLayout = ({ children }) => {
       <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
       <Main id="content" className="fillHeight">
         {children}
-        <Footer />
+        <Footer simple />
       </Main>
     </BaseLayout>
   );

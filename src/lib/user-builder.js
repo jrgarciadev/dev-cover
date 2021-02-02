@@ -136,7 +136,11 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     user.github.readme = githubReadmeData;
     user.github.repos = githubReposData;
   }
-  const userBioArray = [user?.devto?.summary, user?.github?.bio, user?.hashnode?.tagline];
+  const userBioArray = [
+    get(user, 'devto.summary'),
+    get(user, 'github.bio'),
+    get(user, 'hashnode.tagline'),
+  ];
   user.name = getNameUser(user) ?? '';
   user.username = username;
   user.shortDescription = getStringByCriteria(userBioArray, 'shortest') ?? '';

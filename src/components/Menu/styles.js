@@ -93,7 +93,7 @@ export const StyledSidebar = styled.aside`
     width: min(75vw, 400px);
     height: 100vh;
     outline: 0;
-    background-color: ${(props) => props.theme.bg.defaultLight};
+    background-color: ${(props) => props.theme.bg.default};
     box-shadow: ${(props) => props.theme.shadows.default};
     z-index: 9;
     transform: translateX(${(props) => (props.menuOpen ? 0 : 100)}vw);

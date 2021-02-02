@@ -1,41 +1,28 @@
-import { Icon } from '@components/Icons';
-import { socialMedia } from '@config';
-import Image from 'next/image';
 import PropTypes from 'prop-types';
-import { StyledFooter, StyledSocialLinks, StyledMadeWith, StyledCredit } from './styles';
+import { Social } from '@components';
+import { StyledFooter, StyledCredit } from './styles';
 
-const Footer = ({ type = 'single' }) => {
+const Footer = ({ simple = false }) => {
   return (
-    <StyledFooter type={type}>
-      {type === 'single' ? (
+    <StyledFooter>
+      {simple ? (
         <StyledCredit tabindex="-1">
           <a rel="noreferrer" target="_blank" href="https://jrgarciadev.com">
-            <span>Creted by</span>
+            <span>Created by</span>
             &nbsp;
             <div>Junior García</div>
           </a>
         </StyledCredit>
       ) : (
         <>
-          <StyledSocialLinks>
-            <ul>
-              {socialMedia &&
-                socialMedia.map(({ name, url }) => (
-                  <li key={name}>
-                    <a href={url} aria-label={name}>
-                      <Icon name={name} />
-                    </a>
-                  </li>
-                ))}
-            </ul>
-          </StyledSocialLinks>
-
-          <StyledMadeWith>
-            <p>Made with</p>
-            <a rel="noreferrer" target="_blank" href="https://nextjs.org/">
-              <Image src="/nextjs-white-logo.svg" width={100} height={100} />
+          <Social className="social-networks" />
+          <StyledCredit small tabindex="-1">
+            <a rel="noreferrer" target="_blank" href="https://vercel.com">
+              <span>Hosted by</span>
+              &nbsp;
+              <img src="/vercel.svg" alt="vercel logo" />
             </a>
-          </StyledMadeWith>
+          </StyledCredit>
         </>
       )}
     </StyledFooter>
@@ -43,7 +30,7 @@ const Footer = ({ type = 'single' }) => {
 };
 
 Footer.propTypes = {
-  type: PropTypes.oneOf(['single', 'complete']),
+  simple: PropTypes.bool,
 };
 
 export default Footer;

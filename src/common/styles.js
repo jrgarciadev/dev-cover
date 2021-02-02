@@ -115,3 +115,28 @@ export const LoaderContainer = styled.div`
   justify-content: center;
   align-items: center;
 `;
+
+export const TruncatedText = styled.div`
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0; /* or some value */
+  p,
+  b {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  ${({ height }) =>
+    css`
+      line-height: ${height};
+    `}
+`;
+
+export const Truncate = () => css`
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  min-width: 0;
+`;
