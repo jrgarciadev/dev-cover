@@ -2,7 +2,7 @@ import { initializeApollo } from '@lib/apollo-client';
 import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import { cleanAttrs, getStringByCriteria } from '@utils';
 import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
-import { get, has, chunk, first, replace, orderBy, isEmpty } from 'lodash';
+import { get, has, chunk, first, replace, orderBy, size, isEmpty } from 'lodash';
 import { GITHUB_URL, GITHUB_USER_URL, DEVTO_USER_URL, DEVTO_ARTICLES_URL } from './constants';
 
 const stringSimilarity = require('string-similarity');
@@ -135,6 +135,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     user.github = cleanAttrs(githubUserData);
     user.github.readme = githubReadmeData;
     user.github.repos = githubReposData;
+    user.hasRepos = size(githubReposData) > 0;
   }
   const userBioArray = [
     get(user, 'devto.summary'),
