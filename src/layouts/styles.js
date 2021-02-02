@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 export const MainContainer = styled.main`
   display: flex;
@@ -108,4 +108,14 @@ export const StyledCredit = styled.div`
   img {
     max-width: 120px;
   }
+  ${({ simple }) =>
+    simple &&
+    css`
+      a {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: row;
+      }
+    `}
 `;

@@ -6,7 +6,7 @@ const Footer = ({ simple = false }) => {
   return (
     <StyledFooter>
       {simple ? (
-        <StyledCredit tabindex="-1">
+        <StyledCredit simple={simple} tabindex="-1">
           <a rel="noreferrer" target="_blank" href="https://jrgarciadev.com">
             <span>Created by</span>
             &nbsp;
@@ -16,7 +16,7 @@ const Footer = ({ simple = false }) => {
       ) : (
         <>
           <Social className="social-networks" />
-          <StyledCredit small tabindex="-1">
+          <StyledCredit simple={simple} small tabindex="-1">
             <a rel="noreferrer" target="_blank" href="https://vercel.com">
               <span>Hosted by</span>
               &nbsp;

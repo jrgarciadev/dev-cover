@@ -51,7 +51,6 @@ const PortfolioPage = ({ router, user }) => {
       </LoaderContainer>
     );
   }
-  console.log(user);
   if (!router.isFallback && !isEnabledUser(user)) {
     return <UserNotFoundView username={user?.username} />;
   }
