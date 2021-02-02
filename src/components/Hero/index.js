@@ -1,4 +1,3 @@
-import { email } from '@config';
 import PropTypes from 'prop-types';
 import { useUserDataContext } from '@contexts/user-data';
 import Social from '../Social';
@@ -19,7 +18,7 @@ const Hero = ({ name = '', bio = '' }) => {
         <StyledBigTitle>{name}</StyledBigTitle>
         <p>{bio}</p>
         {user.email && (
-          <a href={`mailto:${email}`} className="email-link">
+          <a href={`mailto:${user.email}`} className="email-link">
             Get In Touch
           </a>
         )}
@@ -31,7 +30,12 @@ const Hero = ({ name = '', bio = '' }) => {
               alt=""
               width={300}
               height={300}
-              src={user?.github?.avatar_url || user?.hashnode?.photo || user?.devto?.profile_image}
+              src={
+                user?.github?.avatar_url ||
+                user?.hashnode?.photo ||
+                user?.devto?.profile_image ||
+                '/default-avatar.png'
+              }
               className="img"
             />
           </div>

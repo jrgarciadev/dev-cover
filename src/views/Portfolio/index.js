@@ -5,7 +5,6 @@ import PropTypes from 'prop-types';
 import { getStringByCriteria } from '@utils';
 import { useUserDataContext } from '@contexts/user-data';
 import { useUIContext } from '@contexts/ui';
-import { get } from 'lodash';
 
 const PortfolioView = ({ user }) => {
   const userBio = getStringByCriteria([
@@ -29,7 +28,7 @@ const PortfolioView = ({ user }) => {
       <Hero name={user.name} bio={userBio} />
       {user?.hasReadme && <About />}
       {user?.hasPosts && <Blog />}
-      {get(user, 'github.repos') && <Projects />}
+      {user?.hasRepos && <Projects />}
       <Contact />
     </StyledMainContainer>
   );

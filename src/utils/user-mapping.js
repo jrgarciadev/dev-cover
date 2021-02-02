@@ -53,8 +53,8 @@ export const getNavLinks = (user) => {
   if (user?.hasReadme && user?.username) {
     navLinks.about = IS_GENERATOR ? `/portfolio/${user?.username}/#about` : '/#about';
   }
-  if (get(user, 'github.repos')) {
-    navLinks.projects = '#projects';
+  if (user?.hasRepos) {
+    navLinks.projects = '/#projects';
   }
   return navLinks;
 };
@@ -131,7 +131,7 @@ export const getHeadData = ({ isPortfolio, user }) => {
     const userImage =
       user?.github?.avatar_url || user?.hashnode?.photo || user?.devto?.profile_image;
     const userIcon = getUserFavicon(user);
-    const userTitle = `${user.name} | ${user.shortDescription}`;
+    const userTitle = `${user.name} ${user.shortDescription && `| ${user.shortDescription}`}`;
     head.title = userTitle;
     head.icon = userIcon;
     head.twitter_site =
