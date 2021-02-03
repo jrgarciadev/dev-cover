@@ -9,7 +9,6 @@ const Provider = ({ children }) => {
   const [value, setValue] = useState({});
 
   const updateValue = useCallback((next) => {
-    console.log(next);
     setValue((last) => {
       const newValue = { ...last.user, ...next };
       return newValue;

@@ -25,7 +25,10 @@ export default async function handler(req, res) {
           await userExists.updateOne(userBody);
           return res.status(201).json({ success: true, data: userExists });
         }
-        const user = await User.create(userBody); /* create a new model in the database */
+        /* create a new model in the database */
+        const userInstance = new User(userBody);
+        const user = await userInstance.save();
+        // const user = await User.create(userBody); /* create a new model in the database */
         return res.status(201).json({ success: true, data: user });
       } catch (error) {
         return res.status(400).json({ success: false, message: error.message });

@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { Input, Switch } from '@components';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { isEmpty } from 'lodash';
+import fetchAPI from '@lib/fetch-api';
 import { useUserDataContext } from '@contexts/user-data';
 import { useCustomizerContext } from '@contexts/customizer';
 import rules from '@common/rules';
@@ -46,14 +47,41 @@ const Customizer = () => {
   );
 
   const onSubmit = async ({ name, email, shortBio, largeBio, ga, isHireable }) => {
-    user.name = name;
-    user.email = email;
-    user.shortBio = shortBio || user.shortBio;
-    user.largeBio = largeBio || user.largeBio;
-    user.isHireable = isHireable;
-    user.ga = ga;
-    user.primaryColor = localColor;
+    const input = {
+      username: user.username,
+      name,
+      email,
+      shortBio: shortBio || user.shortBio,
+      largeBio: largeBio || user.largeBio,
+      ga,
+      isHireable,
+      primaryColor: localColor,
+    };
+    user.name = input.name;
+    user.email = input.email;
+    user.shortBio = input.shortBio;
+    user.largeBio = input.largeBio;
+    user.isHireable = input.isHireable;
+    user.ga = input.ga;
+    user.primaryColor = input.primaryColor;
     updateUserData(user);
+    fetchAPI('/user', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify(input),
+      throwOnHTTPError: true,
+    })
+      .then((res) => {
+        if (res.success) {
+          console.log('User updated / created');
+        }
+      })
+      .catch((err) => {
+        console.log(err);
+      });
   };
 
   return (

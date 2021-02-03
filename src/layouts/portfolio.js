@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
 import { withRouter } from 'next/router';
+import dynamic from 'next/dynamic';
 import { ThemeProvider } from 'styled-components';
 import theme from '@themes/dark';
-import { VercelButton, Customizer } from '@components';
 import { IS_GENERATOR } from '@lib/constants';
 import { useUIContext } from '@contexts/ui';
 import { useCustomizerContext } from '@contexts/customizer';
@@ -12,6 +12,9 @@ import Main from './main';
 import BaseLayout from './base';
 import Navbar from './navbar';
 import Footer from './footer';
+
+const Customizer = dynamic(() => import('@components/Customizer'));
+const VercelButton = dynamic(() => import('@components/VercelButton'));
 
 const PorfolioLayout = ({ children, router }) => {
   const isBrowser = typeof window !== `undefined`;

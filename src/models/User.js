@@ -9,21 +9,17 @@ const UserSchema = new mongoose.Schema({
   name: {
     type: String,
     required: [true, 'Name is required.'],
-    minlength: [3, 'Name must have at least 10 characters'],
     maxlength: [40, 'Name cannot be more than 40 characters'],
   },
   email: {
     type: String,
-    minlength: [3, 'Email must have at least 10 characters'],
   },
   shortBio: {
     type: String,
-    minlength: [3, 'Short Bio must have at least 10 characters'],
     maxlength: [120, 'Short Bio cannot be more than 120 characters'],
   },
   largeBio: {
     type: String,
-    minlength: [10, 'Large Bio must have at least 10 characters'],
     maxlength: [256, 'Large Bio cannot be more than 120 characters'],
   },
   primaryColor: {
