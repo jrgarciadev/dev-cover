@@ -12,6 +12,15 @@ export const fadeInKeyframes = keyframes`
   }
 `;
 
+export const spinKeyframes = keyframes`
+  from {
+    transform: rotate(0);
+  }
+  to {
+    transform: rotate(359deg);
+  }
+`;
+
 export const fadeOutKeyframes = keyframes`
   from {
     filter: blur(0);

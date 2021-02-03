@@ -144,8 +144,8 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   ];
   user.name = getNameUser(user) ?? '';
   user.username = username;
-  user.shortDescription = getStringByCriteria(userBioArray, 'shortest') ?? '';
-  user.largeDescription = getStringByCriteria(userBioArray) ?? '';
+  user.shortBio = getStringByCriteria(userBioArray, 'shortest') ?? '';
+  user.largeBio = getStringByCriteria(userBioArray) ?? '';
   user.hasGithub = !isEmpty(get(user, 'github.login'));
   user.hasHashnode = !isEmpty(user, 'hashnode.name');
   user.hasDevto = get(user, 'devto.status') !== 404;

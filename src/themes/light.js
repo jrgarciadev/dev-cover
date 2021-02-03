@@ -12,6 +12,16 @@ const lightTheme = {
     reverse: '#FFFFFF',
     accent: '#777777',
   },
+  accents: {
+    a1: '#111111',
+    a2: '#444444',
+    a3: '#666666',
+    a4: '#888888',
+    a5: '#999999',
+    a6: '#bcbabb',
+    a7: '#f0eef1',
+    a8: '#fafafa',
+  },
   shadows: {
     default: '0 10px 30px -10px rgba(2, 12, 27, 0.7)',
     small: '0 5px 10px rgba(0, 0, 0, 0.12)',

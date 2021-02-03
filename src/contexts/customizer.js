@@ -1,15 +1,12 @@
 /* eslint-disable react/prop-types */
 import { createContext, useCallback, useContext, useState, useMemo } from 'react';
 
-export const UIContext = createContext();
+export const CustomizerContext = createContext();
 
-export const useUIContext = () => useContext(UIContext);
+export const useCustomizerContext = () => useContext(CustomizerContext);
 
 const initialData = {
-  mainFullHeight: true,
-  showNavbar: true,
-  showDeployButton: false,
-  showCustomizer: false,
+  primaryColor: '#1ee0e0',
 };
 
 const Provider = ({ children }) => {
@@ -32,6 +29,6 @@ const Provider = ({ children }) => {
     }),
     [value, updateValue],
   );
-  return <UIContext.Provider value={initialValue}>{children}</UIContext.Provider>;
+  return <CustomizerContext.Provider value={initialValue}>{children}</CustomizerContext.Provider>;
 };
-export default { Provider, Consumer: UIContext.Consumer };
+export default { Provider, Consumer: CustomizerContext.Consumer };

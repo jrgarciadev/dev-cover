@@ -1,7 +1,9 @@
 import { NumberedHeading } from '@common/styles';
+import { useUserDataContext } from '@contexts/user-data';
 import { StyledContactSection } from './styles';
 
 const Contact = () => {
+  const { user } = useUserDataContext();
   return (
     <StyledContactSection id="contact">
       <NumberedHeading overline>What’s Next?</NumberedHeading>
@@ -10,9 +12,11 @@ const Contact = () => {
         I&apos;m currently open for new opportunities, feel free to get contact. If you have any
         questions or want to talk, I will do my best to get back.
       </p>
-      {/* <a className="email-link" href={`mailto:${email}`}>
-        Say Hello
-      </a> */}
+      {user.email && (
+        <a className="email-link" href={`mailto:${user.email}`}>
+          Say Hello
+        </a>
+      )}
     </StyledContactSection>
   );
 };

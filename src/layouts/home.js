@@ -1,4 +1,6 @@
 import PropTypes from 'prop-types';
+import { ThemeProvider } from 'styled-components';
+import theme from '@themes/dark';
 import { SkipToContentLink } from './styles';
 import Main from './main';
 import Footer from './footer';
@@ -6,13 +8,15 @@ import BaseLayout from './base';
 
 const HomeLayout = ({ children }) => {
   return (
-    <BaseLayout>
-      <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
-      <Main id="content" className="fillHeight">
-        {children}
-        <Footer simple />
-      </Main>
-    </BaseLayout>
+    <ThemeProvider theme={theme}>
+      <BaseLayout>
+        <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
+        <Main id="content" className="fillHeight">
+          {children}
+          <Footer simple />
+        </Main>
+      </BaseLayout>
+    </ThemeProvider>
   );
 };
 

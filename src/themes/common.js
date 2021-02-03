@@ -8,10 +8,21 @@ export default {
     fontSans: 'Roboto, -apple-system, BlinkMacSystemFont,Segoe UI, Helvetica, Arial',
     fontMono: 'Space Mono, SF Mono, Fira Code, Fira Mono, Roboto Mono, monospace',
   },
+  radius: {
+    sm: '0.375rem',
+    md: '1.375rem',
+    lg: '3rem',
+  },
   brand: {
     primary: '#1ee0e0',
     secondary: '#3E5FA8',
-    accent: '#5FC921',
+    success: '#00ff8a',
+    danger: '#ff4d4f',
+  },
+  genericColors: {
+    white: '#F4F4F4',
+    black: '#333',
+    gray: '#888',
   },
   fontSize: {
     xxs: '0.9rem',

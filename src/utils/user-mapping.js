@@ -131,7 +131,7 @@ export const getHeadData = ({ isPortfolio, user }) => {
     const userImage =
       user?.github?.avatar_url || user?.hashnode?.photo || user?.devto?.profile_image;
     const userIcon = getUserFavicon(user);
-    const userTitle = `${user.name} ${user.shortDescription && `| ${user.shortDescription}`}`;
+    const userTitle = `${user.name} ${user.shortBio && `| ${user.shortBio}`}`;
     head.title = userTitle;
     head.icon = userIcon;
     head.twitter_site =
@@ -144,7 +144,7 @@ export const getHeadData = ({ isPortfolio, user }) => {
     head.og_title = userTitle;
     head.og_url = '';
     head.og_image = userImage;
-    head.description = user.largeDescription;
+    head.description = user.largeBio;
     head.keywords = '';
   }
   return head;
