@@ -3,6 +3,7 @@ import Head from 'next/head';
 import PropTypes from 'prop-types';
 import { useUserDataContext } from '@contexts/user-data';
 import { getHeadData } from '@utils/user-mapping';
+import { IS_PRODUCTION, IS_GENERATOR, GA_TRACKING_ID } from '@lib/constants';
 
 const BaseLayout = ({ children, isPortfolio = false }) => {
   const { user } = useUserDataContext();
@@ -38,6 +39,30 @@ const BaseLayout = ({ children, isPortfolio = false }) => {
         <meta property="og:image" content={head.og_image} />
         <meta name="description" content={head.description} />
         <meta name="keywords" content={head.keywords} />
+        {/* We only want to add the scripts if in production */}
+        {IS_PRODUCTION && (
+          <>
+            {/* Global Site Tag (gtag.js) - Google Analytics */}
+            <script
+              async
+              src={`https://www.googletagmanager.com/gtag/js?id=${
+                IS_GENERATOR ? GA_TRACKING_ID : user.ga
+              }`}
+            />
+            <script
+              dangerouslySetInnerHTML={{
+                __html: `
+                    window.dataLayer = window.dataLayer || [];
+                    function gtag(){dataLayer.push(arguments);}
+                    gtag('js', new Date());
+                    gtag('config', '${IS_GENERATOR ? GA_TRACKING_ID : user.ga}', {
+                      page_path: window.location.pathname,
+                    });
+                  `,
+              }}
+            />
+          </>
+        )}
         {!isPortfolio && (
           <>
             <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />

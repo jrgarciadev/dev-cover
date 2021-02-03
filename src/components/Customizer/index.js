@@ -1,49 +1,31 @@
-import { useState, useRef } from 'react';
-import { Setting } from 'react-iconly';
+import { useState, useRef, useCallback } from 'react';
+import { Setting, CloseSquare } from 'react-iconly';
 import { useOnClickOutside } from '@hooks';
 import { useForm } from 'react-hook-form';
-import { Input } from '@components';
+import { Input, Switch } from '@components';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { isEmpty } from 'lodash';
 import { useUserDataContext } from '@contexts/user-data';
 import { useCustomizerContext } from '@contexts/customizer';
-import { SketchPicker } from 'react-color';
 import rules from '@common/rules';
-import {
-  CustomizerContainer,
-  CustomizerToggle,
-  ColorSelectorList,
-  ColorSelectorItem,
-} from './styles';
-
-const colorsPallete = [
-  '#1ee0e0',
-  '#0070f3',
-  '#FF8622',
-  '#FFB522',
-  '#00D084',
-  '#9900EF',
-  '#EB144C',
-  '#ABB8C3',
-  '#F78DA7',
-  '#8ED1FC',
-  '#0693E3',
-];
+import ColorPicker from './color-picker';
+import { CustomizerContainer, CustomizerToggle } from './styles';
 
 const Customizer = () => {
   const [open, setOpen] = useState(false);
-  const handleToggle = () => setOpen(!open);
   const customizerRef = useRef();
-  const { user } = useUserDataContext();
+  const { user, updateValue: updateUserData } = useUserDataContext();
   const { primaryColor, updateValue } = useCustomizerContext();
+  const [localColor, setLocalColor] = useState(() => primaryColor);
 
-  const { register, handleSubmit, formState, watch, errors, reset } = useForm({
+  const { register, handleSubmit, formState, errors } = useForm({
     mode: 'onChange',
     defaultValues: {
       name: user.name,
       email: user.email,
       shortBio: user.shortBio,
       largeBio: user.largeBio,
+      isHireable: user?.isHireable,
     },
   });
 
@@ -51,16 +33,38 @@ const Customizer = () => {
 
   useOnClickOutside(customizerRef, () => setOpen(false));
 
-  const onUpdateColor = (color) => updateValue({ primaryColor: color });
+  const handleToggle = () => setOpen(!open);
 
-  const onSubmit = async (data) => {
-    console.log(data);
+  const onUpdateColor = useCallback(
+    (color) => {
+      setLocalColor(color);
+      setTimeout(() => {
+        updateValue({ primaryColor: color });
+      }, 100);
+    },
+    [localColor],
+  );
+
+  const onSubmit = async ({ email, shortBio, largeBio, ga, isHireable }) => {
+    user.email = email;
+    user.shortBio = shortBio || user.shortBio;
+    user.largeBio = largeBio || user.largeBio;
+    user.isHireable = isHireable;
+    user.ga = ga;
+    updateUserData(user);
   };
 
   return (
     <CustomizerContainer open={open} ref={customizerRef} onSubmit={handleSubmit(onSubmit)}>
       <h1 className="title">Portfolio Customizer</h1>
       <h3 className="sub-title">Customize & Save to see changes</h3>
+      <CloseSquare
+        set="bold"
+        size={28}
+        primaryColor="#ff4d4f"
+        className="close-button"
+        onClick={() => setOpen(false)}
+      />
       <CustomizerToggle onClick={handleToggle}>
         <Setting set="bold" className="open-icon" size={28} />
       </CustomizerToggle>
@@ -73,6 +77,7 @@ const Customizer = () => {
         <div className="section">
           <h4 className="option-title">Profile Information</h4>
           <Input
+            required
             fullWidth
             className="input"
             size="lg"
@@ -109,20 +114,9 @@ const Customizer = () => {
             ref={register(rules.largeBio)}
             error={!isEmpty(errors.largeBio) ? errors.largeBio.message : ''}
           />
+          <Switch fullWidth ref={register} name="isHireable" label="Open for new opportunities" />
         </div>
-        <ColorSelectorList className="section">
-          <h4 className="option-title">Primary Color</h4>
-          {colorsPallete.map((color) => (
-            <ColorSelectorItem
-              key={color}
-              selected={color === primaryColor}
-              onClick={() => onUpdateColor(color)}
-              color={color}
-            />
-          ))}
-          <SketchPicker color={primaryColor} onChange={(color) => onUpdateColor(color.hex)} />
-          <Input className="input" width="144px" label="#" size="lg" placeholder="FFFFFF" />
-        </ColorSelectorList>
+        <ColorPicker selectedColor={localColor} onChange={onUpdateColor} />
         <div className="section">
           <h4 className="option-title">Settings</h4>
           <Input

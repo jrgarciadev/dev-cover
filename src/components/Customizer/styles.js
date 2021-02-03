@@ -17,11 +17,25 @@ export const CustomizerContainer = styled.form`
   border-left: 1px solid rgba(0, 0, 0, 0.05);
   color: ${(props) => props.theme.genericColors.black};
   box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
+
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    width: 320px;
+    right: -320px;
+  }
   ${({ open }) =>
     open &&
     css`
-      right: 0;
+      right: 0 !important;
     `}
+  .close-button {
+    cursor: pointer;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    &:hover {
+      opacity: 0.8;
+    }
+  }
   .customizer-content {
     position: relative;
     height: 100%;
@@ -87,12 +101,13 @@ export const CustomizerToggle = styled.button`
   cursor: pointer;
 `;
 
-export const ColorSelectorList = styled.ul`
+export const ColorSelector = styled.div`
   display: flex;
+  flex-direction: column;
   flex-wrap: wrap;
 `;
 
-export const ColorSelectorItem = styled.li`
+export const ColorSelectorItem = styled.div`
   position: relative;
   display: flex;
   flex-wrap: wrap;

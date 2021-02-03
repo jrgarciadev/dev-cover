@@ -92,7 +92,6 @@ export const StyledCredit = styled.div`
   font-size: ${(props) => props.theme.fontSize.xxs};
   font-size: ${(props) => props.theme.fontSize.md};
   line-height: 1;
-  z-index: 9999;
   a {
     display: flex;
     align-items: center;

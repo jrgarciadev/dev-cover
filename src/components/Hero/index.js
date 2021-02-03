@@ -1,4 +1,3 @@
-import PropTypes from 'prop-types';
 import { useUserDataContext } from '@contexts/user-data';
 import Social from '../Social';
 import {
@@ -9,14 +8,14 @@ import {
   RightContainer,
 } from './styles';
 
-const Hero = ({ name = '', bio = '' }) => {
+const Hero = () => {
   const { user } = useUserDataContext();
   return (
     <StyledHeroSection>
       <LeftContainer>
         <h1>Welcome, I&apos;m</h1>
-        <StyledBigTitle>{name}</StyledBigTitle>
-        <p>{bio}</p>
+        <StyledBigTitle>{user.name}</StyledBigTitle>
+        <p>{user.largeBio}</p>
         {user.email && (
           <a href={`mailto:${user.email}`} className="email-link">
             Get In Touch
@@ -45,8 +44,5 @@ const Hero = ({ name = '', bio = '' }) => {
     </StyledHeroSection>
   );
 };
-Hero.propTypes = {
-  name: PropTypes.string,
-  bio: PropTypes.string,
-};
+
 export default Hero;
