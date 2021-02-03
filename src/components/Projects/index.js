@@ -25,7 +25,7 @@ const Projects = () => {
       <NumberedHeading>My Projects</NumberedHeading>
       <StyledGrid>
         {reposToShow &&
-          reposToShow.map((repo) => {
+          reposToShow.map((repo, i) => {
             const {
               id,
               name,

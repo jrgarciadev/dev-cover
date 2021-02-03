@@ -18,27 +18,26 @@ export const StyledProjectsSection = styled.section`
 `;
 
 export const StyledGrid = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: space-between;
+  width: 100%;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
+  grid-gap: 1rem;
+  @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
+    grid-template-columns: repeat(auto-fill, minmax(48%, 1fr));
+  }
+  @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
+    grid-template-columns: 1fr;
+  }
 `;
 
 export const StyledProject = styled.div`
-  width: 32%;
   margin-bottom: 2%;
   cursor: default;
   height: 270px;
   transition: ${(props) => props.theme.transitions.default};
-
-  @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
-    width: 48%;
-  }
-
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-    width: 100%;
     margin-bottom: 5%;
   }
-
   .project-inner {
     ${({ theme }) => theme.mixins.flexBetween};
     border: 2px solid ${(props) => hexa(props.theme.brand.primary, 0.5)};
