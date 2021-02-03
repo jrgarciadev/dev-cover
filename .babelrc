@@ -25,7 +25,8 @@
             "@themes": "./src/themes",
             "@utils": "./src/utils",
             "@layouts": "./src/layouts",
-            "@views": "./src/views"
+            "@views": "./src/views",
+            "@models": "./src/models"
           }
         }
       ]

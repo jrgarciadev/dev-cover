@@ -52,6 +52,7 @@ const Customizer = () => {
     user.largeBio = largeBio || user.largeBio;
     user.isHireable = isHireable;
     user.ga = ga;
+    user.primaryColor = localColor;
     updateUserData(user);
   };
 

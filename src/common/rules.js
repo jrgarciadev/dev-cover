@@ -3,7 +3,7 @@ module.exports = {
   name: {
     required,
     maxLength: {
-      value: 24,
+      value: 40,
       message: 'Maximum length allowed',
     },
     minLength: {
