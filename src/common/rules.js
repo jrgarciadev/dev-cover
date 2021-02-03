@@ -13,7 +13,7 @@ module.exports = {
   },
   shortBio: {
     maxLength: {
-      value: 40,
+      value: 120,
       message: 'Maximum length allowed',
     },
     minLength: {

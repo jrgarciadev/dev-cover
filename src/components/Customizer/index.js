@@ -100,7 +100,7 @@ const Customizer = () => {
             className="input"
             fullWidth
             size="lg"
-            placeholder="Short Bio"
+            placeholder="Page Title"
             name="shortBio"
             ref={register(rules.shortBio)}
             error={!isEmpty(errors.shortBio) ? errors.shortBio.message : ''}
