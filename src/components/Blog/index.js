@@ -3,10 +3,19 @@ import { Post } from '@components';
 import { NumberedHeading } from '@common/styles';
 import { useUserDataContext } from '@contexts/user-data';
 import { get } from 'lodash';
+import * as gtag from '@lib/gtag';
+import { IS_PRODUCTION } from '@lib/constants';
 import { ShowMoreButton, ButtonContainer } from './styles';
 
 const Blog = () => {
   const { user } = useUserDataContext();
+  const handleClickLink = (link) => {
+    if (IS_PRODUCTION) {
+      gtag.event('link_click', 'links', 'user clicked on a link button', link);
+    }
+    window.open(link, '_blank');
+  };
+
   const renderPosts = () => (
     <>
       {user?.posts?.hashnode &&
@@ -89,7 +98,11 @@ const Blog = () => {
       <NumberedHeading>Latest Blogs</NumberedHeading>
       <div>{user.posts && renderPosts()}</div>
       <ButtonContainer>
-        <ShowMoreButton href={getBlogDomain()} target="_blank" rel="noreferrer">
+        <ShowMoreButton
+          onClick={() => handleClickLink(getBlogDomain())}
+          target="_blank"
+          rel="noreferrer"
+        >
           Show More
         </ShowMoreButton>
       </ButtonContainer>

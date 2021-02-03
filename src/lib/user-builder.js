@@ -150,7 +150,9 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   user.hasHashnode = !isEmpty(user, 'hashnode.name');
   user.hasDevto = get(user, 'devto.status') !== 404;
   user.hasReadme =
-    !isEmpty(user, 'github.readme') && !includes(get(user, 'github.readme'), 'Invalid');
+    !isEmpty(user, 'github.readme') &&
+    !includes(get(user, 'github.readme'), 'Invalid') &&
+    !includes(get(user, 'github.readme'), '404');
   try {
     user.posts = await buildPosts(user);
     user.hasPosts = user.posts && (user.posts.hashnode.length > 0 || user.posts.devto.length > 0);

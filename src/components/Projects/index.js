@@ -101,13 +101,13 @@ const Projects = () => {
           })}
       </StyledGrid>
       {repos && repos.length > reposToShow.length && (
-        <button
+        <a
           type="button"
           className="more-button"
           onClick={() => handleClickLink(`${GITHUB_URL}${get(user, 'github.login')}`)}
         >
           Show More
-        </button>
+        </a>
       )}
     </StyledProjectsSection>
   );
