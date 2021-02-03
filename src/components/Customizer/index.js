@@ -45,7 +45,8 @@ const Customizer = () => {
     [localColor],
   );
 
-  const onSubmit = async ({ email, shortBio, largeBio, ga, isHireable }) => {
+  const onSubmit = async ({ name, email, shortBio, largeBio, ga, isHireable }) => {
+    user.name = name;
     user.email = email;
     user.shortBio = shortBio || user.shortBio;
     user.largeBio = largeBio || user.largeBio;
