@@ -1,6 +1,11 @@
-## In progress.. 🏃‍♂️
+![Devcover logo](https://devcover.vercel.app/devcover-logo-bg.png)
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+🌐 [Open Website](https://devcover.vercel.app)
+
+Devcover is an open source application which allows developers to create a portfolio in less than 2 minutes with just their **username**.
+
+## Inspiration
+I decided to do this project for 2 reasons, the first is that as a developer I know that in most cases we spend very little time creating our portfolio or we don't even have it, the second reason is because I like to participate in hackathons so I built this project for [Hashnode](https://hashnode.com) and [Vercel](https://vercel.com) hackaton two companies which I admire
 
 ## Getting Started
 
@@ -14,23 +19,10 @@ yarn dev
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+## Deploy your own Portfolio on Vercel
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+If you want to customize your porfolio colors, name, bio an put you Google Analytics code, I suggest you create your portfolio from [Devcover](https://devcover.vercel.app) website.
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+If you prefer to go faster and accept the default parameters you can click on the following button and the only thing you have to do is put your username in the **NEXT_PUBLIC_USERNAME** field [Vercel Platform](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fjrgarciadev%2Fdev-cover&env=NEXT_PUBLIC_USERNAME&project-name=my-awesome-portfolio&repository-name=my-awesome-portfolio&envDescription=Enter%20your%20Github%20username%20.&demo-title=APM%20Story&A%20statically%20generated%portfolio%created%20using%20Devcover) from the creators of Next.js.
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/import?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Check out Vercel deployment process [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
