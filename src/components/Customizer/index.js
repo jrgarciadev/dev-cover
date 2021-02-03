@@ -76,7 +76,7 @@ const Customizer = () => {
     })
       .then((res) => {
         if (res.success) {
-          console.log('User updated / created');
+          console.log('User [updated/created]');
         }
       })
       .catch((err) => {
