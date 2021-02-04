@@ -17,7 +17,6 @@
             "@common": "./src/common",
             "@contexts": "./src/contexts",
             "@styles": "./src/styles",
-            "@config": "./src/config",
             "@components": "./src/components",
             "@graphql": "./src/graphql",
             "@hooks": "./src/hooks",
