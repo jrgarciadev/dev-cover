@@ -42,7 +42,7 @@ export const getNavLinks = (user) => {
     about: '',
     blog: '',
     projects: '',
-    // contact: '/#contact',
+    contact: '',
   };
   if (
     (user?.posts && user.posts.hashnode && user.posts.hashnode.length > 0) ||
@@ -55,6 +55,9 @@ export const getNavLinks = (user) => {
   }
   if (user?.hasRepos) {
     navLinks.projects = '/#projects';
+  }
+  if (!isEmpty(user.email) || user.isHireable) {
+    navLinks.contact = '/#contact';
   }
   return navLinks;
 };
