@@ -17,7 +17,7 @@ export const CustomizerContainer = styled.div`
   border-left: 1px solid rgba(0, 0, 0, 0.05);
   color: ${(props) => props.theme.genericColors.black};
   box-shadow: 0 15px 30px 0 rgba(0, 0, 0, 0.11), 0 5px 15px 0 rgba(0, 0, 0, 0.08);
-
+  padding-bottom: 4rem;
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     width: 320px;
     right: -320px;
@@ -76,6 +76,9 @@ export const CustomizerContainer = styled.div`
   }
   .submit-button {
     ${({ theme }) => theme.mixins.bigButton};
+    display: flex;
+    align-items: center;
+    justify-content: center;
     background: ${(props) => props.theme.brand.primary};
     color: white;
     margin-top: 1rem;

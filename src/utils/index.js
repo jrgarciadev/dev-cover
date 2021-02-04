@@ -74,6 +74,12 @@ export const cleanAttrs = (obj) => {
   return objClone;
 };
 
+export const isIos = () => {
+  /* istanbul ignore next */
+  if (typeof window === 'undefined' || !window.navigator) return false;
+  return /iP(ad|hone|od)/.test(window.navigator.platform);
+};
+
 export const formatPostDate = (date) => {
   if (!date) return '';
   const formattedDate = new Date(date).toLocaleDateString(

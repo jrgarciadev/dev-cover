@@ -1,21 +1,23 @@
 import { useState, useRef, useCallback } from 'react';
 import { Setting, CloseSquare } from 'react-iconly';
-import { useOnClickOutside } from '@hooks';
+import { useOnClickOutside, useBodyScroll } from '@hooks';
 import { useForm } from 'react-hook-form';
 import { Input, Switch } from '@components';
-import PerfectScrollbar from 'react-perfect-scrollbar';
 import { isEmpty } from 'lodash';
 import fetchAPI from '@lib/fetch-api';
 import { useToasts } from '@contexts/toasts';
 import { useUserDataContext } from '@contexts/user-data';
 import { useCustomizerContext } from '@contexts/customizer';
 import rules from '@common/rules';
+import { Loader } from '@common/styles';
 import ColorPicker from './color-picker';
 import { CustomizerContainer, CustomizerToggle } from './styles';
 
 const Customizer = () => {
   const [open, setOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const customizerRef = useRef();
+  const [, setBodyHidden] = useBodyScroll(null, { scrollLayer: true });
   const { ToastsType, addToastWithTimeout } = useToasts();
   const { user, updateValue: updateUserData } = useUserDataContext();
   const { primaryColor, updateValue } = useCustomizerContext();
@@ -35,9 +37,15 @@ const Customizer = () => {
 
   const { isValid } = formState;
 
-  useOnClickOutside(customizerRef, () => setOpen(false));
+  useOnClickOutside(customizerRef, () => {
+    setOpen(false);
+    setBodyHidden(false);
+  });
 
-  const handleToggle = () => setOpen(!open);
+  const handleToggle = () => {
+    setBodyHidden(!open);
+    setOpen(!open);
+  };
 
   const onUpdateColor = useCallback(
     (color) => {
@@ -50,6 +58,7 @@ const Customizer = () => {
   );
 
   const onSubmit = async ({ name, email, shortBio, largeBio, ga, isHireable }) => {
+    setLoading(true);
     const input = {
       username: user.username,
       name,
@@ -78,6 +87,8 @@ const Customizer = () => {
       throwOnHTTPError: true,
     })
       .then((res) => {
+        setLoading(false);
+        setOpen(false);
         if (res.success) {
           addToastWithTimeout(ToastsType.SUCCESS, 'Profile Saved');
         } else {
@@ -86,6 +97,8 @@ const Customizer = () => {
       })
       .catch((err) => {
         console.error(err);
+        setLoading(false);
+        setOpen(false);
         addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again later');
       });
   };
@@ -99,17 +112,15 @@ const Customizer = () => {
         size={28}
         primaryColor="#ff4d4f"
         className="close-button"
-        onClick={() => setOpen(false)}
+        onClick={() => {
+          setOpen(false);
+          setBodyHidden(false);
+        }}
       />
       <CustomizerToggle onClick={handleToggle}>
         <Setting set="bold" className="open-icon" size={28} />
       </CustomizerToggle>
-      <PerfectScrollbar
-        className="customizer-content"
-        options={{
-          wheelPropagation: false,
-        }}
-      >
+      <div className="customizer-content">
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className="section">
             <h4 className="option-title">Profile Information</h4>
@@ -171,11 +182,11 @@ const Customizer = () => {
               error={!isEmpty(errors.ga) ? errors.ga.message : ''}
             />
             <button disabled={!isValid} type="submit" className="submit-button">
-              Save
+              {loading ? <Loader /> : 'Save'}
             </button>
           </div>
         </form>
-      </PerfectScrollbar>
+      </div>
     </CustomizerContainer>
   );
 };
