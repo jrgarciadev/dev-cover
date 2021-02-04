@@ -22,6 +22,7 @@ export default async function handler(req, res) {
           username: userBody.username,
         });
         if (userExists) {
+          userExists.updated = new Date();
           await userExists.updateOne(userBody);
           return res.status(201).json({ success: true, data: userExists });
         }

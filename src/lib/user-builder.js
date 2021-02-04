@@ -3,19 +3,20 @@ import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import { cleanAttrs, getStringByCriteria, cleanGithubUrl } from '@utils';
 import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
 import { get, chunk, first, orderBy, size, includes, isEmpty } from 'lodash';
+import fetchAPI from './fetch-api';
 import {
   GITHUB_API_URL,
   GITHUB_USER_URL,
   API_URL,
   DEVTO_USER_URL,
-  IS_PRODUCTION,
   DEVTO_ARTICLES_URL,
   IS_GENERATOR,
 } from './constants';
 
 const stringSimilarity = require('string-similarity');
 
-const isUserEnv = IS_PRODUCTION && !IS_GENERATOR;
+const usrname = process.env.NEXT_PUBLIC_USERNAME;
+const isLivePortfolio = usrname && !IS_GENERATOR;
 
 const fetchUserReadme = async (username) => {
   try {
@@ -147,9 +148,19 @@ const getDevcoverUserData = async (username) => {
   }
 };
 
-const markAsActivePortfoio = (username) => {
-  const input = { portfolioActive: true };
-  fetch(`/user/${username}`, {
+const markAsActivePortfoio = (user) => {
+  const input = {
+    username: user.username,
+    name: user.name,
+    email: user.email,
+    shortBio: user.shortBio,
+    largeBio: user.largeBio,
+    ga: user.ga,
+    isHireable: user.isHireable,
+    portfolioActive: true,
+    primaryColor: user.primaryColor,
+  };
+  fetchAPI(`/user/${user.username}`, {
     headers: {
       Accept: 'application/json',
       'Content-Type': 'application/json',
@@ -221,8 +232,8 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     !isEmpty(user, 'github.readme') &&
     !includes(get(user, 'github.readme'), 'Invalid') &&
     !includes(get(user, 'github.readme'), '404');
-  if (!get(userData, 'portfolioActive') && isUserEnv) {
-    markAsActivePortfoio(username);
+  if (!get(userData, 'portfolioActive') && isLivePortfolio) {
+    markAsActivePortfoio(user);
   }
   try {
     user.posts = await buildPosts(user);

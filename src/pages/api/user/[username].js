@@ -31,6 +31,7 @@ export default async function handler(req, res) {
         if (!userExists) {
           return res.status(400).json({ success: false, message: 'User does not exists' });
         }
+        userExists.updated = new Date();
         await userExists.updateOne(userBody);
         return res.status(200).json({ success: true, data: userExists });
       } catch (error) {

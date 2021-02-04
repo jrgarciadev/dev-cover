@@ -38,6 +38,11 @@ const UserSchema = new mongoose.Schema({
   ga: {
     type: String,
   },
+  created: {
+    type: Date,
+    default: Date.now,
+  },
+  updated: { type: Date },
 });
 
 export default mongoose.models.User || mongoose.model('User', UserSchema);
