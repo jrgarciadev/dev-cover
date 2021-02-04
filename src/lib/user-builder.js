@@ -1,10 +1,9 @@
 import { initializeApollo } from '@lib/apollo-client';
 import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
-import { cleanAttrs, getStringByCriteria } from '@utils';
+import { cleanAttrs, getStringByCriteria, cleanGithubUrl } from '@utils';
 import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
-import { get, chunk, first, replace, orderBy, size, includes, isEmpty } from 'lodash';
+import { get, chunk, first, orderBy, size, includes, isEmpty } from 'lodash';
 import {
-  GITHUB_URL,
   GITHUB_API_URL,
   GITHUB_USER_URL,
   API_URL,
@@ -178,7 +177,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   if (!github.login) {
     let githubUsername = '';
     if (get(hashnode, 'socialMedia.github')) {
-      githubUsername = replace(get(hashnode, 'socialMedia.github'), GITHUB_URL, '');
+      githubUsername = cleanGithubUrl(get(hashnode, 'socialMedia.github'));
     } else if (get(devto, 'github_username')) {
       githubUsername = get(devto, 'github_username');
     }
@@ -189,7 +188,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
       get(hashnode, 'socialMedia.github') !== user.github.login &&
       !isEmpty(get(hashnode, 'socialMedia.github'))
     ) {
-      user.github.login = replace(get(hashnode, 'socialMedia.github'), GITHUB_URL, '');
+      user.github.login = cleanGithubUrl(get(hashnode, 'socialMedia.github'));
     }
     const githubUserRes = await fetch(`${GITHUB_USER_URL}${user.github.login}`);
     const githubUserData = await githubUserRes.json();

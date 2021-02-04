@@ -104,6 +104,20 @@ export const getPageFavicon = (domain) => {
   return `${FAVICON_URL}${domain}.ico`;
 };
 
+export const cleanGithubUrl = (domain) => {
+  if (!domain) return '';
+  if (typeof domain !== 'string') {
+    return '';
+  }
+  if (domain.includes('https://')) {
+    return replace(domain, 'https://github.com/', '');
+  }
+  if (domain.includes('http://')) {
+    return replace(domain, 'http://github.com/', '');
+  }
+  return domain;
+};
+
 export const getRandomId = () => {
   return `_${Math.random().toString(36).substr(2, 9)}`;
 };
