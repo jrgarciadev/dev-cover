@@ -232,7 +232,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     !isEmpty(user, 'github.readme') &&
     !includes(get(user, 'github.readme'), 'Invalid') &&
     !includes(get(user, 'github.readme'), '404');
-  if (!get(userData, 'portfolioActive') && isLivePortfolio) {
+  if (isLivePortfolio) {
     markAsActivePortfoio(user);
   }
   try {
