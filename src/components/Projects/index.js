@@ -21,7 +21,7 @@ const Projects = () => {
   };
 
   return (
-    <StyledProjectsSection>
+    <StyledProjectsSection id="projects">
       <NumberedHeading>My Projects</NumberedHeading>
       <StyledGrid>
         {reposToShow &&

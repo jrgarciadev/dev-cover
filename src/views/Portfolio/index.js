@@ -25,7 +25,7 @@ const PortfolioView = ({ user }) => {
   }, [user]);
   return (
     <StyledMainContainer className="fillHeight">
-      <Hero />
+      <Hero user={user} />
       {user?.hasReadme && <About />}
       {user?.hasPosts && <Blog />}
       {user?.hasRepos && <Projects />}
