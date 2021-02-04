@@ -23,8 +23,9 @@ const Provider = ({ children }) => {
   const addToastWithTimeout = useCallback((kind, message) => {
     let nextToastId = toasts.length;
     let timeout = 6000;
-    if (kind === ToastsType.SUCCESS) timeout = 3000;
-    if (kind === ToastsType.WARNING) timeout = 5000;
+    if (kind === ToastsType.SUCCESS) timeout = 5000;
+    if (kind === ToastsType.WARNING) timeout = 8000;
+    if (kind === ToastsType.ERROR) timeout = 10000;
     let id = nextToastId++;
 
     addToast({ id, kind, message, timeout });

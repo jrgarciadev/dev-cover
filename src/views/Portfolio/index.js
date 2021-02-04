@@ -4,9 +4,12 @@ import { StyledMainContainer } from '@common/styles';
 import PropTypes from 'prop-types';
 import { useUserDataContext } from '@contexts/user-data';
 import { useUIContext } from '@contexts/ui';
+import { useToasts } from '@contexts/toasts';
+import { get } from 'lodash';
 
 const PortfolioView = ({ user }) => {
   const { updateValue } = useUserDataContext();
+  const { ToastsType, addToastWithTimeout } = useToasts();
   const { restartValues, updateValue: updateUI } = useUIContext();
   useEffect(() => {
     restartValues();
@@ -15,6 +18,9 @@ const PortfolioView = ({ user }) => {
   useEffect(() => {
     if (user) {
       updateValue(user);
+      if (get(user, 'github.limited') === true) {
+        addToastWithTimeout(ToastsType.ERROR, 'Github API rate limit exceeded try again in 1 hour');
+      }
     }
   }, [user]);
   return (

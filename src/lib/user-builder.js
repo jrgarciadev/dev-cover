@@ -5,6 +5,7 @@ import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
 import { get, chunk, first, replace, orderBy, size, includes, isEmpty } from 'lodash';
 import {
   GITHUB_URL,
+  GITHUB_API_URL,
   GITHUB_USER_URL,
   API_URL,
   DEVTO_USER_URL,
@@ -116,6 +117,19 @@ const getReposData = async (username) => {
   }
 };
 
+const getIsGithubRateLimited = async () => {
+  try {
+    const response = await fetch(`${GITHUB_API_URL}/rate_limit`);
+    const limit = await response.json();
+    if (limit.resources.core.remaining < 1) {
+      return true;
+    }
+    return false;
+  } catch (error) {
+    return false;
+  }
+};
+
 const getDevcoverUserData = async (username) => {
   try {
     const response = await fetch(`${API_URL}user/${username}`);
@@ -151,7 +165,7 @@ const markAsActivePortfoio = (username) => {
       }
     })
     .catch((err) => {
-      console.log(err);
+      console.error(err);
     });
 };
 
@@ -181,7 +195,9 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     const githubUserData = await githubUserRes.json();
     const githubReadmeData = await fetchUserReadme(user.github.login);
     const githubReposData = await getReposData(user.github.login);
+    const githubLimited = await getIsGithubRateLimited();
     user.github = cleanAttrs(githubUserData);
+    user.github.limited = githubLimited;
     user.github.readme = githubReadmeData;
     user.github.repos = githubReposData;
     user.hasRepos = size(githubReposData) > 0;
@@ -192,7 +208,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     get(user, 'hashnode.tagline'),
   ];
   const userData = await getDevcoverUserData(username);
-  user.primaryColor = get(userData, 'primaryColor');
+  user.primaryColor = get(userData, 'primaryColor') || null;
   user.name = get(userData, 'name') || getNameUser(user) || '';
   user.email = get(userData, 'email') || null;
   user.username = username;

@@ -8,7 +8,7 @@ export const ToastsContainer = styled.div`
   width: 100%;
   display: flex;
   flex-direction: column;
-  max-width: 280px;
+  max-width: 320px;
   background: transparent;
   pointer-events: none;
   z-index: 9997;
