@@ -50,14 +50,14 @@ export const getNavLinks = (user) => {
   ) {
     navLinks.blog = IS_GENERATOR ? `/portfolio/${user?.username}/#blog` : '/#blog';
   }
-  if (user?.hasReadme && user?.username) {
+  if (user?.hasReadme && user?.hasGithub && user?.username) {
     navLinks.about = IS_GENERATOR ? `/portfolio/${user?.username}/#about` : '/#about';
   }
   if (user?.hasRepos) {
-    navLinks.projects = '/#projects';
+    navLinks.projects = IS_GENERATOR ? `/portfolio/${user?.username}/#projects` : '/#projects';
   }
   if (!isEmpty(user.email) || user.isHireable) {
-    navLinks.contact = '/#contact';
+    navLinks.contact = IS_GENERATOR ? `/portfolio/${user?.username}/#contact` : '/#contact';
   }
   return navLinks;
 };
