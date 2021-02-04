@@ -1,4 +1,4 @@
-import { useUserDataContext } from '@contexts/user-data';
+import PropTypes from 'prop-types';
 import Social from '../Social';
 import {
   StyledHeroSection,
@@ -8,8 +8,7 @@ import {
   RightContainer,
 } from './styles';
 
-const Hero = () => {
-  const { user } = useUserDataContext();
+const Hero = ({ user = {} }) => {
   return (
     <StyledHeroSection>
       <LeftContainer>
@@ -43,6 +42,10 @@ const Hero = () => {
       </RightContainer>
     </StyledHeroSection>
   );
+};
+
+Hero.propTypes = {
+  user: PropTypes.object.isRequired,
 };
 
 export default Hero;

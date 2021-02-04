@@ -1,10 +1,8 @@
 import { NumberedHeading } from '@common/styles';
-import { useUserDataContext } from '@contexts/user-data';
+import PropTypes from 'prop-types';
 import { StyledContactSection } from './styles';
 
-const Contact = () => {
-  const { user } = useUserDataContext();
-  if (!user.email && !user.isHireable) return null;
+const Contact = ({ user = {} }) => {
   return (
     <StyledContactSection id="contact">
       <NumberedHeading overline>What’s Next?</NumberedHeading>
@@ -29,5 +27,7 @@ const Contact = () => {
     </StyledContactSection>
   );
 };
-
+Contact.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 export default Contact;

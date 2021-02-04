@@ -1,11 +1,10 @@
 import { NumberedHeading } from '@common/styles';
 import ReactMarkdownWithHtml from 'react-markdown/with-html';
 import { purgeUserReadme } from '@utils/user-mapping';
-import { useUserDataContext } from '@contexts/user-data';
+import PropTypes from 'prop-types';
 import { StyledAboutSection, StyledMarkdown } from './styles';
 
-const About = () => {
-  const { user } = useUserDataContext();
+const About = ({ user = {} }) => {
   return (
     <StyledAboutSection id="about">
       <NumberedHeading>About Me</NumberedHeading>
@@ -18,4 +17,7 @@ const About = () => {
   );
 };
 
+About.propTypes = {
+  user: PropTypes.object.isRequired,
+};
 export default About;

@@ -3,13 +3,12 @@ import { Icon } from '@components/Icons';
 import { Folder, Star } from 'react-iconly';
 import { PROJECTS_GRID_LIMIT, IS_PRODUCTION, GITHUB_URL } from '@lib/constants';
 import * as gtag from '@lib/gtag';
-import { useUserDataContext } from '@contexts/user-data';
 import { NumberedHeading } from '@common/styles';
 import { get, orderBy, truncate } from 'lodash';
+import PropTypes from 'prop-types';
 import { StyledProject, StyledProjectsSection, StyledGrid } from './styles';
 
-const Projects = () => {
-  const { user } = useUserDataContext();
+const Projects = ({ user = {} }) => {
   const repos = orderBy(get(user, 'github.repos'), ['stargazers_count'], ['desc']);
   const reposToShow = repos.slice(0, PROJECTS_GRID_LIMIT);
 
@@ -111,6 +110,10 @@ const Projects = () => {
       )}
     </StyledProjectsSection>
   );
+};
+
+Projects.propTypes = {
+  user: PropTypes.object.isRequired,
 };
 
 export default Projects;

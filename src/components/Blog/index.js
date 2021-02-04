@@ -1,14 +1,13 @@
 /* eslint-disable camelcase */
 import { Post } from '@components';
 import { NumberedHeading } from '@common/styles';
-import { useUserDataContext } from '@contexts/user-data';
 import { get } from 'lodash';
 import * as gtag from '@lib/gtag';
 import { IS_PRODUCTION } from '@lib/constants';
+import PropTypes from 'prop-types';
 import { ShowMoreButton, ButtonContainer } from './styles';
 
-const Blog = () => {
-  const { user } = useUserDataContext();
+const Blog = ({ user = {} }) => {
   const handleClickLink = (link) => {
     if (IS_PRODUCTION) {
       gtag.event('link_click', 'links', 'user clicked on a link button', link);
@@ -108,6 +107,10 @@ const Blog = () => {
       </ButtonContainer>
     </section>
   );
+};
+
+Blog.propTypes = {
+  user: PropTypes.object.isRequired,
 };
 
 export default Blog;
