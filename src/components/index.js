@@ -13,4 +13,5 @@ export { default as Post } from './Post';
 export { default as Customizer } from './Customizer';
 export { default as Input } from './Input';
 export { default as Switch } from './Switch';
+export { default as Toasts } from './Toasts';
 export * from './Icons';

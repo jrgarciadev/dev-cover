@@ -15,9 +15,9 @@ export default {
   },
   brand: {
     primary: '#1ee0e0',
-    secondary: '#3E5FA8',
-    success: '#00ff8a',
+    success: '#79FFE1',
     danger: '#ff4d4f',
+    warning: '#F5A623',
   },
   genericColors: {
     white: '#F4F4F4',

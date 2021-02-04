@@ -13,13 +13,6 @@ export const StyledBigTitle = styled.h3`
   margin: 0;
   font-size: clamp(40px, 8vw, 80px);
   font-weight: ${(props) => props.theme.fontw.semibold};
-  ${({ slate, theme }) =>
-    slate &&
-    `
-    margin-top: 10px;
-    color: ${theme.brand.secondary};
-    line-height: 0.9;
-`}
 `;
 
 export const LeftContainer = styled.div`

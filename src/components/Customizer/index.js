@@ -6,6 +6,7 @@ import { Input, Switch } from '@components';
 import PerfectScrollbar from 'react-perfect-scrollbar';
 import { isEmpty } from 'lodash';
 import fetchAPI from '@lib/fetch-api';
+import { useToasts } from '@contexts/toasts';
 import { useUserDataContext } from '@contexts/user-data';
 import { useCustomizerContext } from '@contexts/customizer';
 import rules from '@common/rules';
@@ -15,18 +16,20 @@ import { CustomizerContainer, CustomizerToggle } from './styles';
 const Customizer = () => {
   const [open, setOpen] = useState(false);
   const customizerRef = useRef();
+  const { ToastsType, addToastWithTimeout } = useToasts();
   const { user, updateValue: updateUserData } = useUserDataContext();
   const { primaryColor, updateValue } = useCustomizerContext();
   const [localColor, setLocalColor] = useState(() => primaryColor);
 
   const { register, handleSubmit, formState, errors } = useForm({
-    mode: 'onChange',
+    mode: 'onBlur',
     defaultValues: {
       name: user.name,
       email: user.email,
       shortBio: user.shortBio,
       largeBio: user.largeBio,
       isHireable: user?.isHireable,
+      ga: user.ga,
     },
   });
 
@@ -76,16 +79,19 @@ const Customizer = () => {
     })
       .then((res) => {
         if (res.success) {
-          console.log('User [updated/created]');
+          addToastWithTimeout(ToastsType.SUCCESS, 'Profile Saved');
+        } else {
+          addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again later');
         }
       })
       .catch((err) => {
-        console.log(err);
+        console.error(err);
+        addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again later');
       });
   };
 
   return (
-    <CustomizerContainer open={open} ref={customizerRef} onSubmit={handleSubmit(onSubmit)}>
+    <CustomizerContainer open={open} ref={customizerRef}>
       <h1 className="title">Portfolio Customizer</h1>
       <h3 className="sub-title">Customize & Save to see changes</h3>
       <CloseSquare
@@ -104,64 +110,71 @@ const Customizer = () => {
           wheelPropagation: false,
         }}
       >
-        <div className="section">
-          <h4 className="option-title">Profile Information</h4>
-          <Input
-            required
-            fullWidth
-            className="input"
-            size="lg"
-            placeholder="Name"
-            name="name"
-            ref={register(rules.name)}
-            error={!isEmpty(errors.name) ? errors.name.message : ''}
-          />
-          <Input
-            className="input"
-            fullWidth
-            size="lg"
-            placeholder="Email"
-            name="email"
-            ref={register(rules.email)}
-            error={!isEmpty(errors.email) ? errors.email.message : ''}
-          />
-          <Input
-            className="input"
-            fullWidth
-            size="lg"
-            placeholder="Page Title"
-            name="shortBio"
-            ref={register(rules.shortBio)}
-            error={!isEmpty(errors.shortBio) ? errors.shortBio.message : ''}
-          />
-          <Input
-            multiline
-            className="input"
-            fullWidth
-            size="lg"
-            placeholder="Large Bio"
-            name="largeBio"
-            ref={register(rules.largeBio)}
-            error={!isEmpty(errors.largeBio) ? errors.largeBio.message : ''}
-          />
-          <Switch fullWidth ref={register} name="isHireable" label="Open for new opportunities" />
-        </div>
-        <ColorPicker selectedColor={localColor} onChange={onUpdateColor} />
-        <div className="section">
-          <h4 className="option-title">Settings</h4>
-          <Input
-            className="input"
-            fullWidth
-            size="lg"
-            placeholder="Google Analytics Tracking ID"
-            name="ga"
-            ref={register(rules.ga)}
-            error={!isEmpty(errors.ga) ? errors.ga.message : ''}
-          />
-          <button disabled={!isValid} className="submit-button" type="submit">
-            Save
-          </button>
-        </div>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className="section">
+            <h4 className="option-title">Profile Information</h4>
+            <h5 className="field-title">Name</h5>
+            <Input
+              required
+              fullWidth
+              className="input"
+              size="lg"
+              placeholder="Name"
+              name="name"
+              ref={register(rules.name)}
+              error={!isEmpty(errors.name) ? errors.name.message : ''}
+            />
+            <h5 className="field-title">Email</h5>
+            <Input
+              className="input"
+              fullWidth
+              size="lg"
+              placeholder="Email"
+              name="email"
+              ref={register(rules.email)}
+              error={!isEmpty(errors.email) ? errors.email.message : ''}
+            />
+            <h5 className="field-title">Page Title</h5>
+            <Input
+              className="input"
+              fullWidth
+              size="lg"
+              placeholder="Page Title"
+              name="shortBio"
+              ref={register(rules.shortBio)}
+              error={!isEmpty(errors.shortBio) ? errors.shortBio.message : ''}
+            />
+            <h5 className="field-title">Bio</h5>
+            <Input
+              multiline
+              className="input"
+              fullWidth
+              size="lg"
+              placeholder="Large Bio"
+              name="largeBio"
+              ref={register(rules.largeBio)}
+              error={!isEmpty(errors.largeBio) ? errors.largeBio.message : ''}
+            />
+            <Switch fullWidth ref={register} name="isHireable" label="Open for new opportunities" />
+          </div>
+          <ColorPicker selectedColor={localColor} onChange={onUpdateColor} />
+          <div className="section">
+            <h4 className="option-title">Settings</h4>
+            <h5 className="field-title">Google Analytics Tracking ID</h5>
+            <Input
+              className="input"
+              fullWidth
+              size="lg"
+              placeholder="Google Analytics Tracking ID"
+              name="ga"
+              ref={register(rules.ga)}
+              error={!isEmpty(errors.ga) ? errors.ga.message : ''}
+            />
+            <button disabled={!isValid} type="submit" className="submit-button">
+              Save
+            </button>
+          </div>
+        </form>
       </PerfectScrollbar>
     </CustomizerContainer>
   );

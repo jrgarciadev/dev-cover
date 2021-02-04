@@ -7,6 +7,7 @@ export const LOADER_DELAY = 500;
 export const PROJECTS_GRID_LIMIT = 6;
 export const GA_TRACKING_ID = 'G-GBP7Y41Z1Q';
 export const MAIN_SITE_URL = 'https://devcover.vercel.app/';
+export const API_URL = 'http://localhost:3000/api/';
 export const GITHUB_URL = 'https://github.com/';
 export const GITHUB_USER_URL = 'https://api.github.com/users/';
 export const GITHUB_README_URL = 'https://raw.githubusercontent.com/';

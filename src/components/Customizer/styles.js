@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { spinKeyframes } from '@common/animations';
 
-export const CustomizerContainer = styled.form`
+export const CustomizerContainer = styled.div`
   width: 400px;
   right: -400px;
   padding: 0;
@@ -58,6 +58,12 @@ export const CustomizerContainer = styled.form`
     width: 100%;
     margin-bottom: 1rem;
     font-size: ${(props) => props.theme.fontSize.md};
+    color: ${(props) => props.theme.genericColors.gray};
+  }
+  .field-title {
+    width: 100%;
+    margin-bottom: -1rem;
+    font-size: ${(props) => props.theme.fontSize.xs};
     color: ${(props) => props.theme.genericColors.gray};
   }
   .section {

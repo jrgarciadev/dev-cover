@@ -1,5 +1,6 @@
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
+import { Toasts } from '@components';
 import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
 import { ThemeProvider } from 'styled-components';
@@ -7,6 +8,7 @@ import theme from '@themes/dark';
 import { IS_GENERATOR } from '@lib/constants';
 import { useUIContext } from '@contexts/ui';
 import { useCustomizerContext } from '@contexts/customizer';
+import { useUserDataContext } from '@contexts/user-data';
 import { SkipToContentLink } from './styles';
 import Main from './main';
 import BaseLayout from './base';
@@ -20,8 +22,15 @@ const PorfolioLayout = ({ children, router }) => {
   const isBrowser = typeof window !== `undefined`;
   const isHome = router.pathname === '/';
   const { showNavbar, showDeployButton, mainFullHeight, showCustomizer } = useUIContext();
-  const { primaryColor } = useCustomizerContext();
-  const customTheme = { ...theme, brand: { ...theme.brand, primary: primaryColor } };
+  const { primaryColor, updateValue } = useCustomizerContext();
+  const { user } = useUserDataContext();
+
+  const primary = user.primaryColor ? user.primaryColor : primaryColor;
+  const customTheme = { ...theme, brand: { ...theme.brand, primary } };
+
+  if (primary !== primaryColor) {
+    updateValue({ primaryColor: primary });
+  }
 
   useEffect(() => {
     if (!isBrowser) {
@@ -52,6 +61,7 @@ const PorfolioLayout = ({ children, router }) => {
         </Main>
         {IS_GENERATOR && showDeployButton && <VercelButton />}
         {IS_GENERATOR && showCustomizer && <Customizer />}
+        {IS_GENERATOR && <Toasts />}
         <Footer />
       </BaseLayout>
     </ThemeProvider>

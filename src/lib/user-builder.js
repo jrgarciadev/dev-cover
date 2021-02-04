@@ -3,9 +3,19 @@ import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import { cleanAttrs, getStringByCriteria } from '@utils';
 import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
 import { get, chunk, first, replace, orderBy, size, includes, isEmpty } from 'lodash';
-import { GITHUB_URL, GITHUB_USER_URL, DEVTO_USER_URL, DEVTO_ARTICLES_URL } from './constants';
+import {
+  GITHUB_URL,
+  GITHUB_USER_URL,
+  API_URL,
+  DEVTO_USER_URL,
+  IS_PRODUCTION,
+  DEVTO_ARTICLES_URL,
+  IS_GENERATOR,
+} from './constants';
 
 const stringSimilarity = require('string-similarity');
+
+const isUserEnv = IS_PRODUCTION && !IS_GENERATOR;
 
 const fetchUserReadme = async (username) => {
   try {
@@ -106,6 +116,45 @@ const getReposData = async (username) => {
   }
 };
 
+const getDevcoverUserData = async (username) => {
+  try {
+    const response = await fetch(`${API_URL}user/${username}`);
+    if (response.status === 404 || response.status === 403) {
+      return null;
+    }
+    const responseData = await response.json();
+    if (!responseData.success) {
+      return null;
+    }
+    const user = responseData.data;
+    return user;
+  } catch (error) {
+    console.error(error);
+    return null;
+  }
+};
+
+const markAsActivePortfoio = (username) => {
+  const input = { portfolioActive: true };
+  fetch(`/user/${username}`, {
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    method: 'POST',
+    body: JSON.stringify(input),
+    throwOnHTTPError: true,
+  })
+    .then((res) => {
+      if (res.success) {
+        console.log('User updated');
+      }
+    })
+    .catch((err) => {
+      console.log(err);
+    });
+};
+
 const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }) => {
   const user = {
     github,
@@ -142,10 +191,14 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     get(user, 'github.bio'),
     get(user, 'hashnode.tagline'),
   ];
-  user.name = getNameUser(user) ?? '';
+  const userData = await getDevcoverUserData(username);
+  user.primaryColor = get(userData, 'primaryColor');
+  user.name = get(userData, 'name') || getNameUser(user) || '';
+  user.email = get(userData, 'email') || null;
   user.username = username;
-  user.shortBio = getStringByCriteria(userBioArray, 'shortest') ?? '';
-  user.largeBio = getStringByCriteria(userBioArray) ?? '';
+  user.ga = get(userData, 'ga') || null;
+  user.shortBio = get(userData, 'shortBio') || getStringByCriteria(userBioArray, 'shortest') || '';
+  user.largeBio = get(userData, 'largeBio') || getStringByCriteria(userBioArray) || '';
   user.hasGithub = !isEmpty(get(user, 'github.login'));
   user.hasHashnode = !isEmpty(user, 'hashnode.name');
   user.hasDevto = get(user, 'devto.status') !== 404;
@@ -153,6 +206,9 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     !isEmpty(user, 'github.readme') &&
     !includes(get(user, 'github.readme'), 'Invalid') &&
     !includes(get(user, 'github.readme'), '404');
+  if (!get(userData, 'portfolioActive') && isUserEnv) {
+    markAsActivePortfoio(username);
+  }
   try {
     user.posts = await buildPosts(user);
     user.hasPosts = user.posts && (user.posts.hashnode.length > 0 || user.posts.devto.length > 0);
