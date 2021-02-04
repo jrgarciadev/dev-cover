@@ -6,8 +6,10 @@ export const HERO_TITLE_DELAY = 1000;
 export const LOADER_DELAY = 500;
 export const PROJECTS_GRID_LIMIT = 6;
 export const GA_TRACKING_ID = 'G-GBP7Y41Z1Q';
+export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+export const IS_GENERATOR = process.env.NEXT_PUBLIC_GENERATOR_MODE === 'true';
 export const MAIN_SITE_URL = 'https://devcover.vercel.app/';
-export const API_URL = 'http://localhost:3000/api/';
+export const API_URL = IS_PRODUCTION ? `${MAIN_SITE_URL}api/` : 'http://localhost:3000/api/';
 export const GITHUB_URL = 'https://github.com/';
 export const GITHUB_API_URL = 'https://api.github.com';
 export const GITHUB_USER_URL = `${GITHUB_API_URL}/users/`;
@@ -17,8 +19,7 @@ export const DEVTO_ARTICLES_URL = 'https://dev.to/api/articles?username=';
 export const HASHNODE_URL = 'https://api.hashnode.com/';
 export const AVATAR_GEN_URL = 'https://avatars.dicebear.com/4.5/api/initials/';
 export const FAVICON_URL = 'https://icons.duckduckgo.com/ip3/';
-export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
-export const IS_GENERATOR = process.env.NEXT_PUBLIC_GENERATOR_MODE === 'true';
+
 export const KEY_CODES = {
   ARROW_LEFT: 'ArrowLeft',
   ARROW_LEFT_IE11: 'Left',
