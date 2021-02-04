@@ -9,7 +9,6 @@ import { useToasts } from '@contexts/toasts';
 import { useUserDataContext } from '@contexts/user-data';
 import { useCustomizerContext } from '@contexts/customizer';
 import rules from '@common/rules';
-import { Loader } from '@common/styles';
 import ColorPicker from './color-picker';
 import { CustomizerContainer, CustomizerToggle } from './styles';
 
@@ -89,6 +88,7 @@ const Customizer = () => {
       .then((res) => {
         setLoading(false);
         setOpen(false);
+        setBodyHidden(false);
         if (res.success) {
           addToastWithTimeout(ToastsType.SUCCESS, 'Profile Saved');
         } else {
@@ -99,6 +99,7 @@ const Customizer = () => {
         console.error(err);
         setLoading(false);
         setOpen(false);
+        setBodyHidden(false);
         addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again later');
       });
   };
@@ -182,7 +183,7 @@ const Customizer = () => {
               error={!isEmpty(errors.ga) ? errors.ga.message : ''}
             />
             <button disabled={!isValid} type="submit" className="submit-button">
-              {loading ? <Loader /> : 'Save'}
+              {loading ? 'Saving...' : 'Save'}
             </button>
           </div>
         </form>
