@@ -33,7 +33,7 @@ export const StyledGrid = styled.div`
 export const StyledProject = styled.div`
   margin-bottom: 2%;
   cursor: default;
-  height: 270px;
+  min-height: 270px;
   transition: ${(props) => props.theme.transitions.default};
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     margin-bottom: 5%;
