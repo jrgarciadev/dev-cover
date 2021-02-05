@@ -12,7 +12,7 @@ I decided to do this project for 2 reasons, the first is that as a developer I k
 
 If you want to customize your portfolio colours, name, bio a put your Google Analytics code, I suggest you create your portfolio on [Devcover](https://devcover.vercel.app) website.
 
-If you prefer to go faster and accept the default parameters you can click on the following button and the only thing you have to do is put your username in the **NEXT_PUBLIC_USERNAME**.
+If you prefer to go faster and accept the default parameters you can click on the following button and the only thing you have to do is put your [Github](https://github.com) or [Hashnode](https://hashnode.com) username in the **NEXT_PUBLIC_USERNAME**.
 
 [![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/git/external?repository-url=https%3A%2F%2Fgithub.com%2Fjrgarciadev%2Fdev-cover&env=NEXT_PUBLIC_USERNAME&project-name=my-awesome-portfolio&repository-name=my-awesome-portfolio&envDescription=&envDescription=Enter%20your%20Github%20or%20Hashnode%20username%20.&demo-title=APM%20Story&A%20statically%20generated%portfolio%created%20using%20Devcover)
 
