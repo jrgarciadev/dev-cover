@@ -10,7 +10,7 @@ I decided to do this project for 2 reasons, the first is that as a developer I k
 
 ## Deploy your own Portfolio on Vercel
 
-If you want to customize your porfolio colors, name, bio an put you Google Analytics code, I suggest you create your portfolio from [Devcover](https://devcover.vercel.app) website.
+If you want to customize your portfolio colours, name, bio a put your Google Analytics code, I suggest you create your portfolio on [Devcover](https://devcover.vercel.app) website.
 
 If you prefer to go faster and accept the default parameters you can click on the following button and the only thing you have to do is put your username in the **NEXT_PUBLIC_USERNAME**.
 
