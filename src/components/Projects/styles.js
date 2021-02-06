@@ -5,7 +5,7 @@ export const StyledProjectsSection = styled.section`
   display: flex;
   flex-direction: column;
   align-items: center;
-
+  width: 100%;
   .inline-link {
     ${({ theme }) => theme.mixins.inlineLink};
   }
