@@ -6,9 +6,6 @@
 
 Devcover is an open source application which allows developers to create a portfolio in less than 2 minutes with just their **username**.
 
-
-
-
 ## Inspiration
 
 I decided to do this project for 2 reasons, the first is that as a developer I know that in most cases we spend very little time creating our portfolio or we don't even have it, the second reason is that I like to participate in hackathons so I built this project for [Hashnode](https://hashnode.com) and [Vercel](https://vercel.com) hackathon two companies which I admire.
@@ -36,3 +33,5 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 
 
 Check out Vercel deployment process [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+Built by [Junior García](https://jrgarciadev.com)
