@@ -177,7 +177,7 @@ const Customizer = () => {
               className="input"
               fullWidth
               size="lg"
-              placeholder="Google Analytics Tracking ID"
+              placeholder="UA-XXXXX"
               name="ga"
               ref={register(rules.ga)}
               error={!isEmpty(errors.ga) ? errors.ga.message : ''}
