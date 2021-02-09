@@ -30,6 +30,8 @@ const PorfolioLayout = ({ children, router }) => {
 
   if (primary !== primaryColor) {
     updateValue({ primaryColor: primary });
+  } else if (primary === 'transparent') {
+    updateValue({ primaryColor: '#1ee0e0' });
   }
 
   useEffect(() => {
