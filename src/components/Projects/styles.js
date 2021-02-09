@@ -95,6 +95,7 @@ export const StyledProject = styled.div`
 
   .project-title {
     margin: 0 0 10px;
+    word-wrap: anywhere;
     color: ${(props) => props.theme.text.accent};
     font-size: ${(props) => props.theme.fontSize.xl};
     cursor: pointer;
