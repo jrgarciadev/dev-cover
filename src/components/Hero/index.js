@@ -10,7 +10,7 @@ import {
 
 const Hero = ({ user = {} }) => {
   return (
-    <StyledHeroSection>
+    <StyledHeroSection id="hero">
       <LeftContainer>
         <h1>Welcome, I&apos;m</h1>
         <StyledBigTitle>{user.name}</StyledBigTitle>
