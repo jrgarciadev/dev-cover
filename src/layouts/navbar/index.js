@@ -5,7 +5,7 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { LOADER_DELAY } from '@lib/constants';
 import { useScrollDirection } from '@hooks';
 import { Menu } from '@components';
-import { getNavLinks, getKeysMapped, getObjValue } from '@utils/user-mapping';
+import { getNavLinks, getKeysMapped, getHeroLink, getObjValue } from '@utils/user-mapping';
 import { useUserDataContext } from '@contexts/user-data';
 import { capitalize, startsWith } from 'lodash';
 import { StyledHeader, StyledNav, StyledLinks } from './styles';
@@ -50,7 +50,7 @@ const Nav = ({ isHome }) => {
           {isMounted && (
             <CSSTransition classNames={fadeClass} timeout={timeout}>
               <div className="logo" tabIndex="-1">
-                <Link href="/#hero" aria-label="home">
+                <Link href={getHeroLink(user)} aria-label="home">
                   <h1>{userName}</h1>
                 </Link>
               </div>

@@ -62,6 +62,13 @@ export const getNavLinks = (user) => {
   return navLinks;
 };
 
+export const getHeroLink = (user) => {
+  if (!isEmpty(get(user, 'username'))) {
+    return IS_GENERATOR ? `/portfolio/${user?.username}#hero` : '#hero';
+  }
+  return '/';
+};
+
 export const getNameUser = (user) => {
   if (!user) return '';
   return user?.github?.name || user?.hashnode?.name || user?.devto?.name;
