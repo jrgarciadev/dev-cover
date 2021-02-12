@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
 import PropTypes from 'prop-types';
 import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { LOADER_DELAY } from '@lib/constants';
@@ -50,9 +49,9 @@ const Nav = ({ isHome }) => {
           {isMounted && (
             <CSSTransition classNames={fadeClass} timeout={timeout}>
               <div className="logo" tabIndex="-1">
-                <Link href={getHeroLink(user)} aria-label="home">
+                <a data-scroll href={getHeroLink(user)} aria-label="home">
                   <h1>{userName}</h1>
-                </Link>
+                </a>
               </div>
             </CSSTransition>
           )}
