@@ -49,8 +49,8 @@ const Nav = ({ isHome }) => {
           {isMounted && (
             <CSSTransition classNames={fadeClass} timeout={timeout}>
               <div className="logo" tabIndex="-1">
-                <a data-scroll href={getHeroLink(user)} aria-label="home">
-                  <h1>{userName}</h1>
+                <a className="nav-title" data-scroll href={getHeroLink(user)} aria-label="home">
+                  {userName}
                 </a>
               </div>
             </CSSTransition>

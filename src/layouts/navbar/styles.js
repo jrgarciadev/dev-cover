@@ -54,7 +54,6 @@ export const StyledNav = styled.nav`
   font-family: ${(props) => props.theme.fontFamily.fontMono};
   counter-reset: item 0;
   z-index: 12;
-
   .logo {
     ${({ theme }) => theme.mixins.flexCenter};
     cursor: pointer;
