@@ -1,6 +1,6 @@
 import { initializeApollo } from '@lib/apollo-client';
 import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
-import { cleanAttrs, getStringByCriteria, cleanGithubUrl } from '@utils';
+import { cleanAttrs, getStringByCriteria, areSimilarStrings, cleanGithubUrl } from '@utils';
 import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
 import { get, chunk, first, orderBy, size, includes, isEmpty } from 'lodash';
 import fetchAPI from './fetch-api';
@@ -12,8 +12,6 @@ import {
   DEVTO_ARTICLES_URL,
   IS_PORTFOLIO,
 } from './constants';
-
-const stringSimilarity = require('string-similarity');
 
 const fetchUserReadme = async (username) => {
   try {
@@ -62,7 +60,7 @@ const buildPosts = async (user) => {
     if (devtoPosts.length > hashnodePosts.length) {
       devtoPosts.forEach((post) => {
         hashnodePosts.forEach((hnPost) => {
-          const similar = stringSimilarity.compareTwoStrings(hnPost.title, post.title) > 0.8;
+          const similar = areSimilarStrings(hnPost.title, post.title);
           if (similar) {
             hashnodePosts = hashnodePosts.filter((p) => p._id !== hnPost._id);
           }
@@ -75,7 +73,7 @@ const buildPosts = async (user) => {
     }
     hashnodePosts.forEach((hnPost) => {
       devtoPosts.forEach((post) => {
-        const similar = stringSimilarity.compareTwoStrings(hnPost.title, post.title) > 0.8;
+        const similar = areSimilarStrings(hnPost.title, post.title);
         if (similar) {
           devtoPosts = devtoPosts.filter((p) => p.id !== post.id);
         }
@@ -176,8 +174,27 @@ const markAsActivePortfoio = (user) => {
     });
 };
 
+const applyValidations = (user) => {
+  const githubName = get(user, 'github.name');
+  const devtoName = get(user, 'devto.name');
+  const hashnodeName = get(user, 'hashnode.name');
+  if (!isEmpty(githubName) && !isEmpty(devtoName) && !areSimilarStrings(githubName, devtoName)) {
+    // eslint-disable-next-line no-param-reassign
+    delete user.devto;
+  }
+  if (
+    !isEmpty(githubName) &&
+    !isEmpty(hashnodeName) &&
+    !areSimilarStrings(githubName, hashnodeName)
+  ) {
+    // eslint-disable-next-line no-param-reassign
+    delete user.hashnode;
+  }
+  return user;
+};
+
 const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }) => {
-  const user = {
+  let user = {
     github,
     hashnode,
     devto,
@@ -191,9 +208,9 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     }
     user.github.login = githubUsername;
   }
-  if (user.github.login) {
+  if (get(user, 'github.login')) {
     if (
-      get(hashnode, 'socialMedia.github') !== user.github.login &&
+      get(hashnode, 'socialMedia.github') !== get(user, 'github.login') &&
       !isEmpty(get(hashnode, 'socialMedia.github'))
     ) {
       user.github.login = cleanGithubUrl(get(hashnode, 'socialMedia.github'));
@@ -209,6 +226,9 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     user.github.repos = githubReposData;
     user.hasRepos = size(githubReposData) > 0;
   }
+
+  user = applyValidations(user);
+
   const userBioArray = [
     get(user, 'devto.summary'),
     get(user, 'github.bio'),
@@ -224,7 +244,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   user.largeBio = get(userData, 'largeBio') || getStringByCriteria(userBioArray) || '';
   user.hasGithub = !isEmpty(get(user, 'github.login'));
   user.hasHashnode = !isEmpty(user, 'hashnode.name');
-  user.hasDevto = get(user, 'devto.status') !== 404;
+  user.hasDevto = !isEmpty(get(user, 'devto.status')) && get(user, 'devto.status') !== 404;
   user.hasReadme =
     !isEmpty(user, 'github.readme') &&
     !includes(get(user, 'github.readme'), 'Invalid') &&

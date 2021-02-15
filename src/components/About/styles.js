@@ -45,26 +45,27 @@ export const StyledMarkdown = styled.div`
   ul,
   ol {
     display: grid;
-    grid-template-columns: repeat(5, minmax(140px, 200px));
+    grid-template-columns: 1fr;
     padding: 0;
     margin: 2rem 0;
     overflow: hidden;
     list-style: none;
 
-    @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
-      grid-template-columns: repeat(2, minmax(140px, 200px));
-    }
-
     li {
+      display: flex;
+      align-items: center;
       position: relative;
-      margin-bottom: 10px;
+      margin-bottom: 2.5rem;
       padding-left: 20px;
       font-family: ${(props) => props.theme.fontFamily.fontMono};
-      font-size: ${(props) => props.theme.fontSize.sm};
+      font-size: ${(props) => props.theme.fontSize.md};
       color: ${(props) => props.theme.text.accent};
+      * {
+        font-size: ${(props) => props.theme.fontSize.md};
+      }
       img {
         display: flex;
-        margin: 10px 0;
+        margin: 0 0.5rem;
       }
       &:before {
         content: '▹';
