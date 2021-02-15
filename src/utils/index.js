@@ -1,5 +1,8 @@
 import { FAVICON_URL } from '@lib/constants';
 import { replace } from 'lodash';
+
+const stringSimilarity = require('string-similarity');
+
 /* eslint-disable no-restricted-syntax */
 export const tint = (hex, amount) => {
   try {
@@ -73,6 +76,8 @@ export const cleanAttrs = (obj) => {
   }
   return objClone;
 };
+
+export const areSimilarStrings = (s1, s2) => stringSimilarity.compareTwoStrings(s1, s2) > 0.8;
 
 export const isIos = () => {
   /* istanbul ignore next */
