@@ -162,8 +162,8 @@ const markAsActivePortfoio = (user) => {
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    method: 'POST',
-    body: JSON.stringify(input),
+    method: 'PUT',
+    body: JSON.stringify(cleanAttrs(input)),
     throwOnHTTPError: true,
   })
     .then((res) => {

@@ -47,7 +47,7 @@ export const StyledProject = styled.div`
     height: 100%;
     padding: 2rem 1.75rem;
     border-radius: ${(props) => props.theme.borderRadius};
-    transition: ${(props) => props.theme.transitions.default};
+    transition: all 0.25s ease;
     &:hover {
       border-color: ${(props) => props.theme.brand.primary};
     }
