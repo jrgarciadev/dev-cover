@@ -1,16 +1,13 @@
 /* eslint-disable react/prop-types */
 import { createContext, useCallback, useContext, useState, useMemo } from 'react';
-import { IS_GENERATOR } from '@lib/constants';
-
-const username = process.env.NEXT_PUBLIC_USERNAME;
-const isLivePortfolio = username && !IS_GENERATOR;
+import { IS_PORTFOLIO } from '@lib/constants';
 
 export const CustomizerContext = createContext();
 
 export const useCustomizerContext = () => useContext(CustomizerContext);
 
 const initialData = {
-  primaryColor: isLivePortfolio ? 'transparent' : '#1ee0e0',
+  primaryColor: IS_PORTFOLIO ? 'transparent' : '#1ee0e0',
 };
 
 const Provider = ({ children }) => {

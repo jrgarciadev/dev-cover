@@ -4,18 +4,15 @@ import { StyledMainContainer } from '@common/styles';
 import PropTypes from 'prop-types';
 import { useUserDataContext } from '@contexts/user-data';
 import { useUIContext } from '@contexts/ui';
-import { IS_GENERATOR } from '@lib/constants';
+import { IS_PORTFOLIO } from '@lib/constants';
 import { useToasts } from '@contexts/toasts';
 import { get } from 'lodash';
-
-const username = process.env.NEXT_PUBLIC_USERNAME;
-const isLivePortfolio = username && !IS_GENERATOR;
 
 const PortfolioView = ({ user }) => {
   const { user: userContext, updateValue } = useUserDataContext();
   const { ToastsType, addToastWithTimeout } = useToasts();
   const { restartValues, updateValue: updateUI } = useUIContext();
-  const userData = isLivePortfolio ? user : userContext;
+  const userData = IS_PORTFOLIO ? user : userContext;
   useEffect(() => {
     restartValues();
     updateUI({ showDeployButton: true, showCustomizer: true });
