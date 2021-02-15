@@ -92,12 +92,15 @@ export const StyledCredit = styled.div`
   font-size: ${(props) => props.theme.fontSize.xxs};
   font-size: ${(props) => props.theme.fontSize.md};
   line-height: 1;
-  a {
+  a,
+  .copyright {
     display: flex;
     align-items: center;
     justify-content: center;
     flex-direction: column;
     padding: 10px;
+  }
+  a {
     cursor: pointer;
     transition: ${(props) => props.theme.transitions.default};
     &:hover {

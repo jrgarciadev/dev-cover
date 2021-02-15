@@ -9,6 +9,7 @@ import { IS_GENERATOR } from '@lib/constants';
 import { useUIContext } from '@contexts/ui';
 import { useCustomizerContext } from '@contexts/customizer';
 import { useUserDataContext } from '@contexts/user-data';
+import { isEmpty } from 'lodash';
 import { SkipToContentLink } from './styles';
 import Main from './main';
 import BaseLayout from './base';
@@ -64,7 +65,7 @@ const PorfolioLayout = ({ children, router }) => {
         {IS_GENERATOR && showDeployButton && <VercelButton />}
         {IS_GENERATOR && showCustomizer && <Customizer />}
         {IS_GENERATOR && <Toasts />}
-        <Footer />
+        <Footer simple={isEmpty(user.username)} user={user} />
       </BaseLayout>
     </ThemeProvider>
   );

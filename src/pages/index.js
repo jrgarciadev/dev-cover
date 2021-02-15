@@ -4,14 +4,12 @@ import PortfolioLayout from '@layouts/portfolio';
 import HomeLayout from '@layouts/home';
 import buildUser from '@lib/user-builder';
 import { isEnabledUser } from '@utils/user-mapping';
-import { IS_GENERATOR } from '@lib/constants';
+import { IS_PORTFOLIO } from '@lib/constants';
 import PropTypes from 'prop-types';
 
-const username = process.env.NEXT_PUBLIC_USERNAME;
-const isLivePortfolio = username && !IS_GENERATOR;
-
 export async function getStaticProps() {
-  if (isLivePortfolio) {
+  const username = process.env.NEXT_PUBLIC_USERNAME;
+  if (IS_PORTFOLIO) {
     const params = { username };
     const user = await buildUser(params);
     return {
@@ -41,7 +39,7 @@ const IndexPage = ({ user }) => {
   );
 };
 
-IndexPage.Layout = isLivePortfolio ? PortfolioLayout : HomeLayout;
+IndexPage.Layout = IS_PORTFOLIO ? PortfolioLayout : HomeLayout;
 
 IndexPage.propTypes = {
   user: PropTypes.object,

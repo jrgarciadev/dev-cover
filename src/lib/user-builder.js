@@ -10,13 +10,10 @@ import {
   API_URL,
   DEVTO_USER_URL,
   DEVTO_ARTICLES_URL,
-  IS_GENERATOR,
+  IS_PORTFOLIO,
 } from './constants';
 
 const stringSimilarity = require('string-similarity');
-
-const usrname = process.env.NEXT_PUBLIC_USERNAME;
-const isLivePortfolio = usrname && !IS_GENERATOR;
 
 const fetchUserReadme = async (username) => {
   try {
@@ -232,7 +229,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     !isEmpty(user, 'github.readme') &&
     !includes(get(user, 'github.readme'), 'Invalid') &&
     !includes(get(user, 'github.readme'), '404');
-  if (isLivePortfolio) {
+  if (IS_PORTFOLIO) {
     markAsActivePortfoio(user);
   }
   try {
