@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { Gradient } from '@common/styles';
 
 export const StyledContainer = styled.div`
@@ -54,6 +54,11 @@ export const StyledInput = styled.input`
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     width: 100%;
   }
+  ${({ error, theme }) =>
+    error &&
+    css`
+      border-color: ${theme.brand.danger};
+    `}
 `;
 
 export const StyledButton = styled.button`
@@ -89,4 +94,11 @@ export const StyledForm = styled.form`
       width: 100%;
     }
   }
+`;
+
+export const StyledErrorMessage = styled.p`
+  padding: 1rem 0;
+  color: ${(props) => props.theme.brand.danger};
+  font-size: ${(props) => props.theme.fontSize.sm};
+  font-family: ${(props) => props.theme.fontFamily.fontMono};
 `;
