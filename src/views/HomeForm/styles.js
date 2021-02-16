@@ -21,11 +21,24 @@ export const HeroTitle = styled.h1`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   font-weight: ${({ theme }) => theme.fontw.bold};
+  background-size: 300%;
   background-image: ${({ theme }) =>
-    `linear-gradient(-90deg, ${theme.brand.primary}, ${theme.bg.reverse})`};
+    `linear-gradient(45deg, ${theme.brand.primary}, ${theme.bg.reverse})`};
   position: relative;
   z-index: 1;
   margin: 2rem 0;
+  animation: flow 5s ease-in-out infinite;
+  @keyframes flow {
+    0% {
+      background-position: 0 50%;
+    }
+    50% {
+      background-position: 100% 50%;
+    }
+    100% {
+      background-position: 0 50%;
+    }
+  }
   @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
     font-size: 6rem;
   }
