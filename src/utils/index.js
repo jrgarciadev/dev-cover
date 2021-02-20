@@ -77,7 +77,8 @@ export const cleanAttrs = (obj) => {
   return objClone;
 };
 
-export const areSimilarStrings = (s1, s2) => stringSimilarity.compareTwoStrings(s1, s2) > 0.8;
+export const areSimilarStrings = (s1, s2, percentage = 0.8) =>
+  stringSimilarity.compareTwoStrings(s1, s2) > percentage;
 
 export const isIos = () => {
   /* istanbul ignore next */

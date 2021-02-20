@@ -185,7 +185,7 @@ const applyValidations = (user) => {
   if (
     !isEmpty(githubName) &&
     !isEmpty(hashnodeName) &&
-    !areSimilarStrings(githubName, hashnodeName)
+    !areSimilarStrings(githubName, hashnodeName, 0.5)
   ) {
     // eslint-disable-next-line no-param-reassign
     delete user.hashnode;
