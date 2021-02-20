@@ -105,8 +105,8 @@ export const purgeUserReadme = (readme) => {
   return container.innerHTML;
 };
 
-export const getGithubReadmeURL = (username, branch = 'main') => {
-  return `${GITHUB_README_URL}${username}/${username}/${branch}/README.md`;
+export const getGithubReadmeURL = (username, branch = 'main', fileName = 'README.md') => {
+  return `${GITHUB_README_URL}${username}/${username}/${branch}/${fileName}`;
 };
 
 export const getUserFavicon = (user) => {
