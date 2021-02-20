@@ -3,6 +3,7 @@ import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import { cleanAttrs, getStringByCriteria, areSimilarStrings, cleanGithubUrl } from '@utils';
 import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
 import { get, chunk, first, orderBy, size, includes, isEmpty } from 'lodash';
+import { forEach } from 'p-iteration';
 import fetchAPI from './fetch-api';
 import {
   GITHUB_API_URL,
@@ -14,13 +15,21 @@ import {
 } from './constants';
 
 const fetchUserReadme = async (username) => {
+  const branches = ['main', 'master'];
+  const names = ['Readme.md', 'README.md', 'readme.md'];
+  let readmeFound = false;
+  let githubReadmeData = null;
+
   try {
-    let githubReadmeRes = await fetch(getGithubReadmeURL(username, 'main'));
-    let githubReadmeData = await githubReadmeRes.text();
-    if (githubReadmeData.includes('404')) {
-      githubReadmeRes = await fetch(getGithubReadmeURL(username, 'master'));
-      githubReadmeData = await githubReadmeRes.text();
-    }
+    await forEach(branches, async (branch) => {
+      await forEach(names, async (fileName) => {
+        if (!readmeFound) {
+          const githubReadmeRes = await fetch(getGithubReadmeURL(username, branch, fileName));
+          githubReadmeData = await githubReadmeRes.text();
+          readmeFound = !githubReadmeData.includes('404');
+        }
+      });
+    });
     return githubReadmeData;
   } catch (error) {
     console.error(error);
