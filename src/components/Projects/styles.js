@@ -17,7 +17,7 @@ export const StyledProjectsSection = styled.section`
   }
 `;
 
-export const StyledGrid = styled.div`
+export const StyledGrid = styled.ul`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
@@ -30,10 +30,10 @@ export const StyledGrid = styled.div`
   }
 `;
 
-export const StyledProject = styled.div`
+export const StyledProject = styled.li`
   margin-bottom: 2%;
   cursor: default;
-  min-height: 270px;
+  /* min-height: 270px; */
   transition: ${(props) => props.theme.transitions.default};
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     margin-bottom: 5%;
@@ -64,7 +64,7 @@ export const StyledProject = styled.div`
 
   .project-top {
     ${({ theme }) => theme.mixins.flexBetween};
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     .folder {
       svg {
         fill: ${(props) => props.theme.brand.primary};
@@ -94,7 +94,7 @@ export const StyledProject = styled.div`
   }
 
   .project-title {
-    margin: 0 0 10px;
+    margin: 1rem 0;
     word-wrap: anywhere;
     color: ${(props) => props.theme.text.accent};
     font-size: ${(props) => props.theme.fontSize.xl};
@@ -106,6 +106,7 @@ export const StyledProject = styled.div`
 
   .project-description {
     min-width: 100%;
+    margin-bottom: 1rem;
     color: ${(props) => props.theme.text.accent};
     font-size: ${(props) => props.theme.fontSize.md};
   }
