@@ -243,7 +243,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   user.shortBio = get(userData, 'shortBio') || getStringByCriteria(userBioArray, 'shortest') || '';
   user.largeBio = get(userData, 'largeBio') || getStringByCriteria(userBioArray) || '';
   user.hasGithub = !isEmpty(get(user, 'github.login'));
-  user.hasHashnode = !isEmpty(user, 'hashnode.name');
+  user.hasHashnode = !isEmpty(get(user, 'hashnode.name'));
   user.hasDevto = !isEmpty(get(user, 'devto.status')) && get(user, 'devto.status') !== 404;
   user.hasReadme =
     !isEmpty(user, 'github.readme') &&
