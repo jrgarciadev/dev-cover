@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Social } from '@components';
-import { IS_PORTFOLIO } from '@lib/constants';
+import { IS_PORTFOLIO, MAIN_SITE_URL } from '@lib/constants';
 import { isEmpty } from 'lodash';
 import { StyledFooter, StyledCredit } from './styles';
 
@@ -20,6 +20,13 @@ const Footer = ({ simple = false, user = {} }) => {
               {user.name || user.username}
             </span>
           </span>
+          <StyledCredit simple tabindex="-1">
+            <a rel="noreferrer" target="_blank" href={MAIN_SITE_URL}>
+              <span>Powered by</span>
+              &nbsp;
+              <div>Devcover</div>
+            </a>
+          </StyledCredit>
         </StyledCredit>
       );
     }

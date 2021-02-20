@@ -61,7 +61,6 @@ const Blog = ({ user = {} }) => {
             comments_count,
             cover_image,
           } = post;
-
           return (
             <Post
               key={id}

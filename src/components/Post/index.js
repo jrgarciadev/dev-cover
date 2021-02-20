@@ -17,8 +17,9 @@ const Post = ({
   url = '#',
   likes = 0,
   comments = 0,
+  ...props
 }) => (
-  <StyledContainer key={title}>
+  <StyledContainer key={title} {...props}>
     <LeftContainer>
       {featured && (
         <p className="featured">

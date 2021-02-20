@@ -1,12 +1,12 @@
 /* eslint-disable camelcase */
-import { Icon } from '@components/Icons';
-import { Folder, Star } from 'react-iconly';
 import { PROJECTS_GRID_LIMIT, IS_PRODUCTION, GITHUB_URL } from '@lib/constants';
 import * as gtag from '@lib/gtag';
 import { NumberedHeading } from '@common/styles';
-import { get, orderBy, truncate } from 'lodash';
+import { get, orderBy } from 'lodash';
 import PropTypes from 'prop-types';
-import { StyledProject, StyledProjectsSection, StyledGrid } from './styles';
+import { Repo } from '@components';
+
+import { StyledProjectsSection, StyledGrid } from './styles';
 
 const Projects = ({ user = {} }) => {
   const repos = orderBy(get(user, 'github.repos'), ['stargazers_count'], ['desc']);
@@ -36,66 +36,17 @@ const Projects = ({ user = {} }) => {
               language,
             } = repo;
             return (
-              <StyledProject key={id}>
-                <div className="project-inner">
-                  <header>
-                    <div className="project-top">
-                      <div className="folder">
-                        <Folder set="bulk" />
-                      </div>
-                      <div className="project-links">
-                        {html_url && (
-                          <a onClick={() => handleClickLink(html_url)} aria-label="GitHub Link">
-                            <Icon name="github" />
-                          </a>
-                        )}
-                        {homepage && (
-                          <a onClick={() => handleClickLink(homepage)} aria-label="External Link">
-                            <Icon name="external" />
-                          </a>
-                        )}
-                      </div>
-                    </div>
-                    <a
-                      onClick={() => handleClickLink(html_url)}
-                      className="project-title"
-                      aria-label="Project Link"
-                    >
-                      {name}
-                    </a>
-                    <p className="project-description">{truncate(description, { length: 80 })}</p>
-                  </header>
-                  <footer>
-                    <div className="metrics">
-                      {stargazers_count > 0 && (
-                        <a
-                          className="project-metric-value"
-                          rel="noreferrer"
-                          target="_blank"
-                          href={html_url}
-                        >
-                          <Star size={20} />
-                          &nbsp;
-                          {stargazers_count}
-                        </a>
-                      )}
-                      {forks_count > 0 && (
-                        <a
-                          className="project-metric-value"
-                          rel="noreferrer"
-                          target="_blank"
-                          href={html_url}
-                        >
-                          <Icon name="fork" className="filled" />
-                          &nbsp;
-                          {forks_count}
-                        </a>
-                      )}
-                    </div>
-                    {language && <p className="project-tech-name">{language}</p>}
-                  </footer>
-                </div>
-              </StyledProject>
+              <Repo
+                key={id}
+                name={name}
+                description={description}
+                stargazersCount={stargazers_count}
+                onLinkClicked={handleClickLink}
+                homepage={homepage}
+                htmlUrl={html_url}
+                forksCount={forks_count}
+                language={language}
+              />
             );
           })}
       </StyledGrid>
