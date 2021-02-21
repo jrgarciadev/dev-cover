@@ -131,7 +131,7 @@ export const RepoActions = styled.div`
   position: absolute;
   top: -1.5rem;
   left: -0.5rem;
-  z-index: 999;
+  z-index: 10;
   display: flex;
   justify-content: space-between;
   padding: 0.5rem;
