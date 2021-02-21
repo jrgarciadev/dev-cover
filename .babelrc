@@ -21,6 +21,7 @@
             "@graphql": "./src/graphql",
             "@hooks": "./src/hooks",
             "@lib": "./src/lib",
+            "@services": "./src/services",
             "@themes": "./src/themes",
             "@utils": "./src/utils",
             "@layouts": "./src/layouts",

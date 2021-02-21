@@ -1,6 +1,7 @@
-import mongoose from 'mongoose';
+import mongoose, { Schema } from 'mongoose';
+import { RepoSchema } from './Repo';
 
-const UserSchema = new mongoose.Schema({
+const UserSchema = new Schema({
   username: {
     type: String,
     required: [true, 'Username is required.'],
@@ -34,6 +35,7 @@ const UserSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  repos: [RepoSchema],
   /* Google Analytics code */
   ga: {
     type: String,

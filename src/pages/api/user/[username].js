@@ -20,7 +20,6 @@ export default async function handler(req, res) {
       } catch (error) {
         return res.status(400).json({ success: false, message: error.message });
       }
-
     case 'PUT' /* Edit a model by its ID */:
       try {
         const { body: userBody } = req;

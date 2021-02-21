@@ -3,7 +3,6 @@ import User from '../../../models/User';
 
 export default async function handler(req, res) {
   const { method } = req;
-
   await dbConnect();
 
   switch (method) {
@@ -29,7 +28,6 @@ export default async function handler(req, res) {
         /* create a new model in the database */
         const userInstance = new User(userBody);
         const user = await userInstance.save();
-        // const user = await User.create(userBody); /* create a new model in the database */
         return res.status(201).json({ success: true, data: user });
       } catch (error) {
         return res.status(400).json({ success: false, message: error.message });

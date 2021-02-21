@@ -4,7 +4,7 @@ import { cleanAttrs, getStringByCriteria, areSimilarStrings, cleanGithubUrl } fr
 import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
 import { get, chunk, first, orderBy, size, includes, isEmpty } from 'lodash';
 import { forEach } from 'p-iteration';
-import fetchAPI from './fetch-api';
+import { updateUser, upsertUser } from '@services/user';
 import {
   GITHUB_API_URL,
   GITHUB_USER_URL,
@@ -152,35 +152,11 @@ const getDevcoverUserData = async (username) => {
   }
 };
 
-const markAsActivePortfoio = (user) => {
+const markAsActivePortfoio = async (user) => {
   const input = {
-    username: user.username,
-    name: user.name,
-    email: user.email,
-    shortBio: user.shortBio,
-    largeBio: user.largeBio,
-    ga: user.ga,
-    isHireable: user.isHireable,
     portfolioActive: true,
-    primaryColor: user.primaryColor,
   };
-  fetchAPI(`/user/${user.username}`, {
-    headers: {
-      Accept: 'application/json',
-      'Content-Type': 'application/json',
-    },
-    method: 'PUT',
-    body: JSON.stringify(cleanAttrs(input)),
-    throwOnHTTPError: true,
-  })
-    .then((res) => {
-      if (res.success) {
-        console.log('User updated');
-      }
-    })
-    .catch((err) => {
-      console.error(err);
-    });
+  await updateUser(get(user, 'username'), input);
 };
 
 const applyValidations = (user) => {
@@ -249,6 +225,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   user.email = get(userData, 'email') || null;
   user.username = username;
   user.ga = get(userData, 'ga') || null;
+  user.repos = get(userData, 'repos') || [];
   user.shortBio = get(userData, 'shortBio') || getStringByCriteria(userBioArray, 'shortest') || '';
   user.largeBio = get(userData, 'largeBio') || getStringByCriteria(userBioArray) || '';
   user.hasGithub = !isEmpty(get(user, 'github.login'));
@@ -259,7 +236,9 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     !includes(get(user, 'github.readme'), 'Invalid') &&
     !includes(get(user, 'github.readme'), '404');
   if (IS_PORTFOLIO) {
-    markAsActivePortfoio(user);
+    await markAsActivePortfoio(user);
+  } else {
+    await upsertUser(user);
   }
   try {
     user.posts = await buildPosts(user);

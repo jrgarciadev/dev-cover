@@ -1,6 +1,7 @@
 /* eslint-disable prefer-destructuring */
 import { useState, useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { getNavLinks, getKeysMapped, getObjValue } from '@utils/user-mapping';
 import { KEY_CODES } from '@lib/constants';
 import { useOnClickOutside } from '@hooks';
@@ -13,6 +14,7 @@ const Menu = () => {
   const [navLinks, setNavLinks] = useState([]);
   const toggleMenu = () => setMenuOpen(!menuOpen);
   const { user } = useUserDataContext();
+  const router = useRouter();
 
   const buttonRef = useRef(null);
   const navRef = useRef(null);
@@ -97,7 +99,15 @@ const Menu = () => {
   }, [user]);
 
   const wrapperRef = useRef();
+
   useOnClickOutside(wrapperRef, () => setMenuOpen(false));
+
+  const onClick = (e, href) => {
+    e.preventDefault();
+    setMenuOpen(false);
+    router.push(href);
+  };
+
   return (
     <StyledMenu>
       <div ref={wrapperRef}>
@@ -118,7 +128,7 @@ const Menu = () => {
               <ol>
                 {navLinks.map((link) => (
                   <li key={link.key}>
-                    <Link href={getObjValue(link)}>{capitalize(link.key)}</Link>
+                    <a onClick={(e) => onClick(e, getObjValue(link))}>{capitalize(link.key)}</a>
                   </li>
                 ))}
               </ol>
