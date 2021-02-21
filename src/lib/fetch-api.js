@@ -1,8 +1,8 @@
 /* eslint-disable global-require */
 import fetch from 'isomorphic-unfetch';
 import { parse as parseContentType } from 'content-type';
+import { API_URL } from './constants';
 
-const API_URL = process.env.NEXT_PUBLIC_API_URL;
 const NETWORK_ERR_CODE = 'network_error';
 const NETWORK_ERR_MESSAGE =
   'A network error has occurred. Please check your connection and try again.';
