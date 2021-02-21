@@ -2,7 +2,7 @@ import styled from 'styled-components';
 import { hexa } from '@utils';
 import { prop } from 'styled-tools';
 
-export const StyledRepo = styled.li`
+export const StyledRepo = styled.div`
   margin-bottom: 2%;
   cursor: default;
   position: relative;
@@ -10,19 +10,7 @@ export const StyledRepo = styled.li`
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     margin-bottom: 5%;
   }
-  .delete-icon {
-    position: absolute;
-    top: -1rem;
-    right: -0.5rem;
-    z-index: 999;
-    &:hover,
-    &:focus {
-      cursor: pointer;
-      path {
-        fill: ${prop('theme.brand.danger')};
-      }
-    }
-  }
+
   .project-inner {
     ${({ theme }) => theme.mixins.flexBetween};
     border: 2px solid ${(props) => hexa(props.theme.brand.primary, 0.5)};
@@ -134,6 +122,37 @@ export const StyledRepo = styled.li`
     .filled {
       path {
         fill: ${(props) => props.theme.text.default};
+      }
+    }
+  }
+`;
+
+export const RepoActions = styled.div`
+  position: absolute;
+  top: -1.5rem;
+  left: -0.5rem;
+  z-index: 999;
+  display: flex;
+  justify-content: space-between;
+  padding: 0.5rem;
+  align-items: center;
+  border-radius: 1.375rem;
+  background: ${prop('theme.bg.defaultLight')};
+  .chevron-icon {
+    &:hover,
+    &:focus {
+      cursor: pointer;
+      path {
+        fill: ${prop('theme.brand.primary')};
+      }
+    }
+  }
+  .delete-icon {
+    &:hover,
+    &:focus {
+      cursor: pointer;
+      path {
+        fill: ${prop('theme.brand.danger')};
       }
     }
   }

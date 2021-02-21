@@ -2,15 +2,23 @@ import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import { Tooltip } from '@components';
 import { Icon } from '@components/Icons';
-import { Folder, Star, Delete } from 'react-iconly';
+import { Folder, Star, ChevronLeft, ChevronRight, Delete } from 'react-iconly';
 import { truncate } from 'lodash';
 import { Draggable } from 'react-beautiful-dnd';
 import { IS_GENERATOR, IS_PORTFOLIO } from '@lib/constants';
-import { StyledRepo } from './styles';
+import { StyledRepo, RepoActions } from './styles';
+
+// eslint-disable-next-line react/prop-types
+const IconTooltip = ({ content, children }) => (
+  <Tooltip size="big" position="right" content={content}>
+    {children}
+  </Tooltip>
+);
 
 const Repo = ({
   id,
   index,
+  endIndex,
   name,
   description,
   stargazersCount,
@@ -20,6 +28,8 @@ const Repo = ({
   language,
   onLinkClicked,
   onDelete,
+  onMove,
+  ...props
 }) => {
   return (
     <Draggable isDragDisabled={IS_PORTFOLIO} key={id} draggableId={`${id}`} index={index}>
@@ -28,16 +38,32 @@ const Repo = ({
           ref={provided.innerRef}
           {...provided.draggableProps}
           {...provided.dragHandleProps}
+          {...props}
         >
           {IS_GENERATOR && (
-            <Tooltip
-              size="big"
-              position="right"
-              style={{ position: 'absolute', top: '0', right: '-0.5rem' }}
-              content="Delete repo"
-            >
-              <Delete className="delete-icon" set="bold" onClick={() => onDelete(id)} />
-            </Tooltip>
+            <RepoActions>
+              <IconTooltip content="Move left">
+                {index > 0 && (
+                  <ChevronLeft
+                    onClick={() => onMove(index, id, 'left')}
+                    className="chevron-icon"
+                    set="bold"
+                  />
+                )}
+              </IconTooltip>
+              <IconTooltip content="Move right">
+                {index < endIndex && (
+                  <ChevronRight
+                    onClick={() => onMove(index, id, 'right')}
+                    className="chevron-icon"
+                    set="bold"
+                  />
+                )}
+              </IconTooltip>
+              <IconTooltip content="Delete repo">
+                <Delete className="delete-icon" set="bold" onClick={() => onDelete(id)} />
+              </IconTooltip>
+            </RepoActions>
           )}
           <div className="project-inner">
             <header>
@@ -106,6 +132,7 @@ const Repo = ({
 Repo.propTypes = {
   id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
   index: PropTypes.number,
+  endIndex: PropTypes.number,
   name: PropTypes.string,
   description: PropTypes.string,
   homepage: PropTypes.string,
@@ -115,6 +142,7 @@ Repo.propTypes = {
   language: PropTypes.string,
   onLinkClicked: PropTypes.func,
   onDelete: PropTypes.func,
+  onMove: PropTypes.func,
 };
 
 export default withTheme(Repo);

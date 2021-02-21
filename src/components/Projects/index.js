@@ -39,21 +39,27 @@ const Projects = ({ user = {} }) => {
     window.open(link, '_blank');
   };
 
-  const updateRepos = async (items) => {
+  const updateRepos = (items) => {
     const input = {
       repos: items.slice(0, PROJECTS_GRID_LIMIT),
     };
-    try {
-      const res = await updateUser(get(user, 'username'), input);
-      if (res.success) {
-        addToastWithTimeout(ToastsType.SUCCESS, 'Profile Saved');
-      } else {
+    updateUser(get(user, 'username'), input)
+      .then((res) => {
+        if (res.success) {
+          addToastWithTimeout(ToastsType.SUCCESS, 'Profile Saved');
+        } else {
+          addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again later');
+        }
+      })
+      .catch((error) => {
+        console.error(error);
         addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again later');
-      }
-    } catch (error) {
-      console.error(error);
-      addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again later');
-    }
+      });
+  };
+
+  const handleChange = (items) => {
+    setUserRepos(items);
+    updateRepos(items);
   };
 
   const onDragEnd = (result) => {
@@ -63,14 +69,23 @@ const Projects = ({ user = {} }) => {
       return;
     }
     const items = reorder(userRepos, source.index, destination.index);
-    setUserRepos(items);
-    updateRepos(items);
+    handleChange(items);
   };
 
   const handleDeleteRepo = (id) => {
     const items = userRepos.filter((repo) => repo.id !== id);
-    setUserRepos(items);
-    updateRepos(items);
+    handleChange(items);
+  };
+
+  const handleMove = (index, id, position) => {
+    let endIndex = 0;
+    if (position === 'left') {
+      endIndex = index - 1;
+    } else {
+      endIndex = index + 1;
+    }
+    const items = reorder(userRepos, index, endIndex);
+    handleChange(items);
   };
 
   return (
@@ -105,6 +120,7 @@ const Projects = ({ user = {} }) => {
                       key={id}
                       id={id}
                       index={index}
+                      endIndex={PROJECTS_GRID_LIMIT - 1}
                       name={name}
                       description={description}
                       stargazersCount={stargazers_count}
@@ -114,6 +130,7 @@ const Projects = ({ user = {} }) => {
                       forksCount={forks_count}
                       language={language}
                       onDelete={handleDeleteRepo}
+                      onMove={handleMove}
                     />
                   );
                 })}

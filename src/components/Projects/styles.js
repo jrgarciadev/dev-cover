@@ -21,7 +21,7 @@ export const StyledGrid = styled.ul`
   width: 100%;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(30%, 1fr));
-  grid-gap: 1rem;
+  grid-gap: 1.5rem;
   @media (max-width: ${(props) => props.theme.breakpoints.lg}) {
     grid-template-columns: repeat(auto-fill, minmax(48%, 1fr));
   }
