@@ -136,7 +136,7 @@ const getIsGithubRateLimited = async () => {
 
 const getDevcoverUserData = async (username) => {
   try {
-    const response = await fetch(`${API_URL}user/${username}`);
+    const response = await fetch(`${API_URL}/user/${username}`);
     if (response.status === 404 || response.status === 403) {
       return null;
     }
@@ -238,7 +238,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   if (IS_PORTFOLIO) {
     await markAsActivePortfoio(user);
   } else {
-    await upsertUser(user);
+    await upsertUser(cleanAttrs(user));
   }
   try {
     user.posts = await buildPosts(user);
