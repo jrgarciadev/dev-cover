@@ -1,12 +1,14 @@
 import fetchAPI from '@lib/fetch-api';
 
+const headers = {
+  Accept: 'application/json',
+  'Content-Type': 'application/json',
+};
+
 export const updateUser = (username = '', input = {}) => {
   return new Promise((resolve, reject) => {
     fetchAPI(`/user/${username}`, {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers,
       method: 'PUT',
       body: JSON.stringify(input),
       throwOnHTTPError: true,
@@ -27,10 +29,7 @@ export const updateUser = (username = '', input = {}) => {
 export const upsertUser = (body) => {
   return new Promise((resolve, reject) => {
     fetchAPI('/user', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json',
-      },
+      headers,
       method: 'POST',
       body: JSON.stringify(body),
       throwOnHTTPError: true,
