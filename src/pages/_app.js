@@ -7,7 +7,7 @@ import UserDataContext from '@contexts/user-data';
 import UIContext from '@contexts/ui';
 import CustomizerContext from '@contexts/customizer';
 import ToastsContext from '@contexts/toasts';
-
+import 'react-tippy/dist/tippy.css';
 // Notice how we track pageview when route is changed
 Router.events.on('routeChangeComplete', (url) => gtag.pageview(url));
 

@@ -1,12 +1,27 @@
 import styled from 'styled-components';
 import { hexa } from '@utils';
+import { prop } from 'styled-tools';
 
 export const StyledRepo = styled.li`
   margin-bottom: 2%;
   cursor: default;
+  position: relative;
   transition: ${(props) => props.theme.transitions.default};
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     margin-bottom: 5%;
+  }
+  .delete-icon {
+    position: absolute;
+    top: -1rem;
+    right: -0.5rem;
+    z-index: 999;
+    &:hover,
+    &:focus {
+      cursor: pointer;
+      path {
+        fill: ${prop('theme.brand.danger')};
+      }
+    }
   }
   .project-inner {
     ${({ theme }) => theme.mixins.flexBetween};

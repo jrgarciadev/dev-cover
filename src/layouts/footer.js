@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Social } from '@components';
-import { IS_PORTFOLIO, MAIN_SITE_URL } from '@lib/constants';
+import { MAIN_SITE_URL } from '@lib/constants';
 import { isEmpty } from 'lodash';
 import { StyledFooter, StyledCredit } from './styles';
 
@@ -9,7 +9,7 @@ const Footer = ({ simple = false, user = {} }) => {
   const year = currentDate.getFullYear();
 
   const renderFooter = () => {
-    if (IS_PORTFOLIO && !isEmpty(user)) {
+    if (!isEmpty(user)) {
       return (
         <StyledCredit simple={simple} tabindex="-1">
           <span className="copyright">
@@ -22,9 +22,7 @@ const Footer = ({ simple = false, user = {} }) => {
           </span>
           <StyledCredit simple tabindex="-1">
             <a rel="noreferrer" target="_blank" href={MAIN_SITE_URL}>
-              <span>Powered by</span>
-              &nbsp;
-              <div>Devcover</div>
+              <span>Powered by Devcover</span>
             </a>
           </StyledCredit>
         </StyledCredit>

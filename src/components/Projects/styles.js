@@ -1,4 +1,6 @@
-import styled from 'styled-components';
+/* eslint-disable max-len */
+import styled, { css } from 'styled-components';
+import { prop, ifProp } from 'styled-tools';
 
 export const StyledProjectsSection = styled.section`
   display: flex;
@@ -8,7 +10,6 @@ export const StyledProjectsSection = styled.section`
   .inline-link {
     ${({ theme }) => theme.mixins.inlineLink};
   }
-
   .more-button {
     ${({ theme }) => theme.mixins.bigButton};
     font-size: ${(props) => props.theme.fontSize.sm};
@@ -27,4 +28,11 @@ export const StyledGrid = styled.ul`
   @media (max-width: ${(props) => props.theme.breakpoints.sm}) {
     grid-template-columns: 1fr;
   }
+  ${ifProp(
+    'isDraggingOver',
+    css`
+      outline: 2px dashed ${prop('theme.brand.primary')};
+      outline-offset: 20px;
+    `,
+  )}
 `;
