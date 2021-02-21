@@ -3,7 +3,6 @@ import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import { cleanAttrs, getStringByCriteria, areSimilarStrings, cleanGithubUrl } from '@utils';
 import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
 import { get, chunk, first, orderBy, size, includes, isEmpty } from 'lodash';
-import { forEach } from 'p-iteration';
 import { updateUser, upsertUser } from '@services/user';
 import {
   GITHUB_API_URL,
@@ -16,20 +15,23 @@ import {
 
 const fetchUserReadme = async (username) => {
   const branches = ['main', 'master'];
-  const names = ['Readme.md', 'README.md', 'readme.md'];
+  const names = ['README.md', 'Readme.md', 'readme.md'];
   let readmeFound = false;
   let githubReadmeData = null;
-
   try {
-    await forEach(branches, async (branch) => {
-      await forEach(names, async (fileName) => {
+    // eslint-disable-next-line no-restricted-syntax
+    for (const branch of branches) {
+      // eslint-disable-next-line no-restricted-syntax
+      for (const fileName of names) {
         if (!readmeFound) {
+          // eslint-disable-next-line no-await-in-loop
           const githubReadmeRes = await fetch(getGithubReadmeURL(username, branch, fileName));
+          // eslint-disable-next-line no-await-in-loop
           githubReadmeData = await githubReadmeRes.text();
           readmeFound = !githubReadmeData.includes('404');
         }
-      });
-    });
+      }
+    }
     return githubReadmeData;
   } catch (error) {
     console.error(error);
