@@ -11,7 +11,7 @@ export const GA_TRACKING_ID = 'G-GBP7Y41Z1Q';
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
 export const IS_GENERATOR = process.env.NEXT_PUBLIC_GENERATOR_MODE === 'true';
 export const IS_PORTFOLIO = !IS_GENERATOR && !isEmpty(process.env.NEXT_PUBLIC_USERNAME);
-export const MAIN_SITE_URL = 'https://devcover.vercel.app/';
+export const MAIN_SITE_URL = 'https://devcover.me/';
 export const API_URL = IS_PRODUCTION ? `${MAIN_SITE_URL}api` : 'http://localhost:3000/api';
 export const GITHUB_URL = 'https://github.com/';
 export const GITHUB_API_URL = 'https://api.github.com';
