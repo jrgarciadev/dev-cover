@@ -1,6 +1,6 @@
-![Devcover logo](https://devcover.vercel.app/devcover-logo-bg.png)
+![Devcover logo](https://devcover.me/devcover-logo-bg.png)
 
-🌐 [Open Website](https://devcover.vercel.app)
+🌐 [Open Website](https://devcover.me)
 
 📚 [Read blog](https://blog.jrgarciadev.com/devcover-easiest-way-to-generate-a-developer-portfolio)
 
@@ -12,7 +12,7 @@ I decided to do this project for 2 reasons, the first is that as a developer I k
 
 ## Deploy your own Portfolio on Vercel
 
-If you want to customize your portfolio colours, name, bio a put your Google Analytics code, I suggest you create your portfolio on [Devcover](https://devcover.vercel.app) website.
+If you want to customize your portfolio colours, name, bio a put your Google Analytics code, I suggest you create your portfolio on [Devcover](https://devcover.me) website.
 
 If you prefer to go faster and accept the default parameters you can click on the following button and the only thing you have to do is put your [Github](https://github.com) or [Hashnode](https://hashnode.com) username in the **NEXT_PUBLIC_USERNAME**.
 
