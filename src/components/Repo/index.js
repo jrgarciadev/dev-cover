@@ -120,7 +120,12 @@ const Repo = ({
     return <RepoComponent />;
   }
   return (
-    <Draggable isDragDisabled={IS_PORTFOLIO} key={id} draggableId={`${id}`} index={index}>
+    <Draggable
+      isDragDisabled={IS_PORTFOLIO || isMobile}
+      key={id}
+      draggableId={`${id}`}
+      index={index}
+    >
       {(provided) => (
         <RepoComponent
           ref={provided.innerRef}
