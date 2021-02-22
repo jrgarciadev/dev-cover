@@ -7,6 +7,7 @@ import { get, isEmpty, orderBy } from 'lodash';
 import PropTypes from 'prop-types';
 import { Repo } from '@components';
 import { useToasts } from '@contexts/toasts';
+import { useIsMobile } from '@hooks';
 import { updateUser } from '@services/user';
 import dynamic from 'next/dynamic';
 import { StyledProjectsSection, StyledGrid } from './styles';
@@ -19,6 +20,7 @@ const DragDropContext = dynamic(() =>
 const Projects = ({ user = {} }) => {
   const [userRepos, setUserRepos] = useState([]);
   const { ToastsType, addToastWithTimeout } = useToasts();
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     if (IS_PORTFOLIO && !isEmpty(get(user, 'repos'))) {
@@ -137,7 +139,7 @@ const Projects = ({ user = {} }) => {
       ) : (
         <DragDropContext onDragEnd={onDragEnd}>
           <Droppable
-            isDropDisabled={IS_PORTFOLIO}
+            isDropDisabled={IS_PORTFOLIO || isMobile}
             droppableId="droppable-repos"
             direction="horizontal"
           >
