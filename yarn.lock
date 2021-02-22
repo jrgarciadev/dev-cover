@@ -6430,10 +6430,10 @@ react-hook-form@^6.15.1:
   resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-6.15.1.tgz#57d887ec4dac5a6c0099902171aa39cc893f7bca"
   integrity sha512-bL0LQuQ3OlM3JYfbacKtBPLOHhmgYz8Lj6ivMrvu2M6e1wnt4sbGRtPEPYCc/8z3WDbjrMwfAfLX92OsB65pFA==
 
-react-iconly@^1.1.2:
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/react-iconly/-/react-iconly-1.1.2.tgz#ca2bacb372b37067faa69eca9974ec20ba394efe"
-  integrity sha512-y+f6BRaiVuv+5J8xFESqhFM2jBpBBXSGj1WNtx8CqcXk7Rt552I5tjaR/XY9fVmzq39S3F+QmNo8dC4Kbge0Rw==
+react-iconly@1.1.5:
+  version "1.1.5"
+  resolved "https://registry.yarnpkg.com/react-iconly/-/react-iconly-1.1.5.tgz#b14c08be5db4d008d73f2f071f736d8b619d1343"
+  integrity sha512-BzEJkMtdRAeGdSxKhN4EDqv78TUIhPfJeKjvkc7MvG1zfUNyLBP3DnsuWo2ddLDW4ItHRgxZHuZbI6J4daoP9w==
 
 react-is@16.13.1, react-is@^16.13.1, react-is@^16.7.0, react-is@^16.8.1, react-is@^16.8.6:
   version "16.13.1"

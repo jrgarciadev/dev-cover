@@ -6,6 +6,7 @@ export const RepoSchema = new Schema({
   description: { type: String },
   stargazers_count: { type: Number, default: 0 },
   forks_count: { type: Number, default: 0 },
+  html_url: { type: String },
   homepage: { type: String },
   language: { type: String },
   created: { type: Date, default: Date.now },
