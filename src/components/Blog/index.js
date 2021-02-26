@@ -5,6 +5,7 @@ import { get } from 'lodash';
 import * as gtag from '@lib/gtag';
 import { IS_PRODUCTION } from '@lib/constants';
 import PropTypes from 'prop-types';
+import { getHashnodePubDomain } from '@utils/user-mapping';
 import { ShowMoreButton, ButtonContainer } from './styles';
 
 const Blog = ({ user = {} }) => {
@@ -31,9 +32,7 @@ const Blog = ({ user = {} }) => {
             dateFeatured,
             dateAdded,
           } = post;
-          const url = user?.hashnode?.publicationDomain
-            ? `http://${user?.hashnode?.publicationDomain}/${slug}`
-            : '#';
+          const url = getHashnodePubDomain(user, slug);
           return (
             <Post
               key={_id}
@@ -86,7 +85,7 @@ const Blog = ({ user = {} }) => {
       return `https://hashnode.com/@${get(user, 'username')}`;
     }
     if (user.hasDevto) {
-      return `https://dev.to/${user.username}`;
+      return `https://dev.to/${get(user, 'username')}`;
     }
     return '#';
   };

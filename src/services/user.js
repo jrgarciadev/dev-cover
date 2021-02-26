@@ -1,4 +1,5 @@
 import fetchAPI from '@lib/fetch-api';
+import { IS_GENERATOR } from '@lib/constants';
 
 const headers = {
   Accept: 'application/json',
@@ -11,7 +12,7 @@ export const updateUser = (username = '', input = {}) => {
       headers,
       method: 'PUT',
       body: JSON.stringify(input),
-      throwOnHTTPError: true,
+      throwOnHTTPError: IS_GENERATOR,
     })
       .then((res) => {
         if (res.success) {
@@ -32,7 +33,7 @@ export const upsertUser = (body) => {
       headers,
       method: 'POST',
       body: JSON.stringify(body),
-      throwOnHTTPError: true,
+      throwOnHTTPError: IS_GENERATOR,
     })
       .then((res) => {
         resolve(res);

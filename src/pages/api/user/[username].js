@@ -23,6 +23,7 @@ export default async function handler(req, res) {
     case 'PUT' /* Edit a model by its ID */:
       try {
         const { body: userBody } = req;
+        console.log(userBody);
         // Make sure this account doesn't already exist
         const userExists = await User.findOne({
           username,

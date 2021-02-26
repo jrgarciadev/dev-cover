@@ -159,3 +159,10 @@ export const getHeadData = ({ isPortfolio, user }) => {
   }
   return head;
 };
+
+export const getHashnodePubDomain = (user, slug = '') => {
+  if (!isEmpty(get(user, 'hashnode.publicationDomain'))) {
+    return `http://${user?.hashnode?.publicationDomain}/${slug}`;
+  }
+  return `https://${get(user, 'username')}.hashnode.dev/${slug}`;
+};
