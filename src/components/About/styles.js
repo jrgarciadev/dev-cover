@@ -53,6 +53,7 @@ export const StyledMarkdown = styled.div`
 
     li {
       display: flex;
+      flex-wrap: wrap;
       align-items: center;
       position: relative;
       margin-bottom: 2.5rem;
@@ -65,7 +66,7 @@ export const StyledMarkdown = styled.div`
       }
       img {
         display: flex;
-        margin: 0 0.5rem;
+        margin: 0.5rem;
       }
       &:before {
         content: '▹';
