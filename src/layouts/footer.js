@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import { Social } from '@components';
-import { MAIN_SITE_URL } from '@lib/constants';
+import { MAIN_SITE_URL, IS_PORTFOLIO } from '@lib/constants';
 import { isEmpty } from 'lodash';
 import { StyledFooter, StyledCredit } from './styles';
 
@@ -25,6 +25,15 @@ const Footer = ({ simple = false, user = {} }) => {
               <span>Powered by Devcover</span>
             </a>
           </StyledCredit>
+        </StyledCredit>
+      );
+    }
+    if (IS_PORTFOLIO) {
+      return (
+        <StyledCredit simple tabindex="-1">
+          <a rel="noreferrer" target="_blank" href={MAIN_SITE_URL}>
+            <span>Powered by Devcover</span>
+          </a>
         </StyledCredit>
       );
     }

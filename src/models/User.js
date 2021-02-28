@@ -1,5 +1,6 @@
 import mongoose, { Schema } from 'mongoose';
 import { RepoSchema } from './Repo';
+import { PostSchema } from './Post';
 
 const UserSchema = new Schema({
   username: {
@@ -36,6 +37,7 @@ const UserSchema = new Schema({
     default: false,
   },
   repos: [RepoSchema],
+  posts: [PostSchema],
   /* Google Analytics code */
   ga: {
     type: String,

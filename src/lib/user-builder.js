@@ -1,8 +1,14 @@
 import { initializeApollo } from '@lib/apollo-client';
 import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
-import { cleanAttrs, getStringByCriteria, areSimilarStrings, cleanGithubUrl } from '@utils';
-import { getGithubReadmeURL, getNameUser } from '@utils/user-mapping';
-import { get, chunk, first, orderBy, size, includes, isEmpty } from 'lodash';
+import {
+  cleanAttrs,
+  getStringByCriteria,
+  areSimilarStrings,
+  cleanGithubUrl,
+  mapArrayOrder,
+} from '@utils';
+import { getGithubReadmeURL, getNameUser, getHashnodePubDomain } from '@utils/user-mapping';
+import { get, map, chunk, first, orderBy, union, size, includes, isEmpty } from 'lodash';
 import { updateUser, upsertUser } from '@services/user';
 import {
   GITHUB_API_URL,
@@ -59,12 +65,43 @@ const buildPosts = async (user) => {
   if (user.hasDevto) {
     devtoPosts = await fetchDevtoPosts(user.username);
     if (devtoPosts.length > 0) {
-      devtoPosts = first(chunk(orderBy(devtoPosts, ['positive_reactions_count'], ['desc']), 4));
+      devtoPosts = map(
+        first(chunk(orderBy(devtoPosts, ['positive_reactions_count'], ['desc']), 4)),
+        (post) => {
+          return {
+            provider: 'devto',
+            id: post.id,
+            title: post.title || '',
+            url: post.url || '#',
+            cover: post.cover_image || '',
+            likes: post.positive_reactions_count || 0,
+            description: post.description || '',
+            comments: post.comments_count || 0,
+            created: post.published_timestamp || '',
+          };
+        },
+      );
     }
   }
+
   if (user.hasHashnode) {
-    hashnodePosts = first(
-      chunk(orderBy(user.hashnode.publication.posts, ['totalReactions'], ['desc']), 4),
+    hashnodePosts = map(
+      first(chunk(orderBy(user.hashnode.publication.posts, ['totalReactions'], ['desc']), 4)),
+      (post) => {
+        return {
+          provider: 'hashnode',
+          id: post._id,
+          title: post.title || '',
+          slug: post.slug || '',
+          url: post.url || getHashnodePubDomain(user, post.slug) || '#',
+          cover: post.coverImage || '',
+          likes: post.totalReactions || 0,
+          description: post.brief || '',
+          comments: post.replyCount + post.responseCount || 0,
+          featured: !isEmpty(post.dateFeatured),
+          created: post.dateAdded || '',
+        };
+      },
     );
   }
   if (hashnodePosts.length > 0 && devtoPosts.length > 0) {
@@ -73,40 +110,29 @@ const buildPosts = async (user) => {
         hashnodePosts.forEach((hnPost) => {
           const similar = areSimilarStrings(hnPost.title, post.title);
           if (similar) {
-            hashnodePosts = hashnodePosts.filter((p) => p._id !== hnPost._id);
+            hashnodePosts = hashnodePosts.filter((p) => p.id !== hnPost.id);
           }
         });
       });
-      return {
-        hashnode: hashnodePosts,
-        devto: devtoPosts,
-      };
-    }
-    hashnodePosts.forEach((hnPost) => {
-      devtoPosts.forEach((post) => {
-        const similar = areSimilarStrings(hnPost.title, post.title);
-        if (similar) {
-          devtoPosts = devtoPosts.filter((p) => p.id !== post.id);
-        }
+    } else {
+      hashnodePosts.forEach((hnPost) => {
+        devtoPosts.forEach((post) => {
+          const similar = areSimilarStrings(hnPost.title, post.title);
+          if (similar) {
+            devtoPosts = devtoPosts.filter((p) => p.id !== post.id);
+          }
+        });
       });
-    });
-
-    return {
-      hashnode: hashnodePosts,
-      devto: devtoPosts,
-    };
+    }
+    return mapArrayOrder(union(devtoPosts, hashnodePosts));
   }
   if (hashnodePosts.length > 0) {
-    return {
-      hashnode: hashnodePosts,
-    };
+    return mapArrayOrder(hashnodePosts);
   }
   if (devtoPosts.length > 0) {
-    return {
-      devto: devtoPosts,
-    };
+    return mapArrayOrder(devtoPosts);
   }
-  return null;
+  return [];
 };
 
 const getReposData = async (username) => {
@@ -222,6 +248,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     get(user, 'hashnode.tagline'),
   ];
   const userData = await getDevcoverUserData(username);
+
   user.primaryColor = get(userData, 'primaryColor') || null;
   user.name = get(userData, 'name') || getNameUser(user) || '';
   user.email = get(userData, 'email') || null;
@@ -232,23 +259,27 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   user.largeBio = get(userData, 'largeBio') || getStringByCriteria(userBioArray) || '';
   user.hasGithub = !isEmpty(get(user, 'github.login'));
   user.hasHashnode = !isEmpty(get(user, 'hashnode.name'));
-  user.hasDevto = !isEmpty(get(user, 'devto.status')) && get(user, 'devto.status') !== 404;
+  user.hasDevto = !isEmpty(get(user, 'devto.username'));
   user.hasReadme =
     !isEmpty(user, 'github.readme') &&
     !includes(get(user, 'github.readme'), 'Invalid') &&
     !includes(get(user, 'github.readme'), '404');
-  if (IS_PORTFOLIO) {
-    await markAsActivePortfoio(user);
-  } else {
-    await upsertUser(cleanAttrs(user));
-  }
   try {
-    user.posts = await buildPosts(user);
-    user.hasPosts = user.posts && (user.posts.hashnode.length > 0 || user.posts.devto.length > 0);
+    if (IS_PORTFOLIO) {
+      user.posts = get(userData, 'posts');
+    } else {
+      user.posts = await buildPosts(user);
+    }
+    user.hasPosts = user.posts && user.posts.length > 0;
   } catch (error) {
     console.error(error);
     user.hasPosts = false;
     user.posts = null;
+  }
+  if (IS_PORTFOLIO) {
+    await markAsActivePortfoio(user);
+  } else {
+    await upsertUser(cleanAttrs(user));
   }
   return user;
 };

@@ -1,22 +1,35 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { ifProp, prop } from 'styled-tools';
 
 export const StyledContainer = styled.div`
   display: grid;
-  margin: 8% 0;
+  margin: 2rem 0;
   grid-template-columns: repeat(2, 1fr);
-  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+  @media (max-width: ${prop('theme.breakpoints.md')}) {
     grid-template-columns: 1fr;
   }
+  @media (max-width: ${prop('theme.breakpoints.sm')}) {
+    margin: 2.5rem 0;
+  }
+  order: ${prop('order', 0)};
 `;
 
 export const LeftContainer = styled.div`
-  ${(props) => props.theme.mixins.flexCenter}
+  ${prop('theme.mixins.flexCenter')};
+  position: relative;
   flex-direction: column;
   align-items: flex-start;
   padding-right: 2rem;
-  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+  @media (max-width: ${prop('theme.breakpoints.md')}) {
     order: 2;
   }
+  ${ifProp(
+    'isGenerator',
+    css`
+      padding-top: 2.5rem;
+      margin-top: 2.5rem;
+    `,
+  )}
   .featured {
     display: flex;
     color: ${(props) => props.theme.brand.primary};
@@ -59,10 +72,9 @@ export const LeftContainer = styled.div`
 `;
 
 export const RightContainer = styled.div`
-  ${(props) => props.theme.mixins.flexCenter}
+  ${prop('theme.mixins.flexCenter')};
   flex-direction: column;
-
-  @media (max-width: ${(props) => props.theme.breakpoints.md}) {
+  @media (max-width: ${prop('theme.breakpoints.md')}) {
     order: 1;
     margin-bottom: 2rem;
   }

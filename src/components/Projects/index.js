@@ -4,6 +4,7 @@ import { PROJECTS_GRID_LIMIT, IS_PRODUCTION, IS_PORTFOLIO, GITHUB_URL } from '@l
 import * as gtag from '@lib/gtag';
 import { NumberedHeading } from '@common/styles';
 import { get, isEmpty, orderBy } from 'lodash';
+import { reorder } from '@utils';
 import PropTypes from 'prop-types';
 import { Repo } from '@components';
 import { useToasts } from '@contexts/toasts';
@@ -31,14 +32,6 @@ const Projects = ({ user = {} }) => {
     }
   }, []);
 
-  // a little function to help us with reordering the result
-  const reorder = (list, startIndex, endIndex) => {
-    const result = Array.from(list);
-    const [removed] = result.splice(startIndex, 1);
-    result.splice(endIndex, 0, removed);
-    return result;
-  };
-
   const handleClickLink = (link) => {
     if (IS_PRODUCTION) {
       gtag.event('link_click', 'links', 'user clicked on a link button', link);
@@ -53,7 +46,7 @@ const Projects = ({ user = {} }) => {
     updateUser(get(user, 'username'), input)
       .then((res) => {
         if (res.success) {
-          addToastWithTimeout(ToastsType.SUCCESS, 'Profile Saved');
+          addToastWithTimeout(ToastsType.SUCCESS, 'Repos updated');
         } else {
           addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again later');
         }
@@ -84,9 +77,9 @@ const Projects = ({ user = {} }) => {
     handleChange(items);
   };
 
-  const handleMove = (index, id, position) => {
+  const handleMove = (index, direction) => {
     let endIndex = 0;
-    if (position === 'left') {
+    if (direction === 'left') {
       endIndex = index - 1;
     } else {
       endIndex = index + 1;
@@ -124,7 +117,7 @@ const Projects = ({ user = {} }) => {
               forksCount={forks_count}
               language={language}
               onDelete={handleDeleteRepo}
-              onMove={handleMove}
+              onMove={({ direction }) => handleMove(index, direction)}
             />
           );
         })}

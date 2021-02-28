@@ -14,5 +14,6 @@ export { default as Input } from './Input';
 export { default as Switch } from './Switch';
 export { default as Toasts } from './Toasts';
 export { default as Tooltip } from './Tooltip';
+export { default as ActionButtons } from './ActionButtons';
 export { default as Repo } from './Repo';
 export * from './Icons';

@@ -3,6 +3,7 @@ import { Schema } from 'mongoose';
 export const RepoSchema = new Schema({
   id: { type: String },
   name: { type: String },
+  order: { type: Number },
   description: { type: String },
   stargazers_count: { type: Number, default: 0 },
   forks_count: { type: Number, default: 0 },

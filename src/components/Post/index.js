@@ -4,30 +4,50 @@ import { IconFeatured } from '@components/Icons';
 import { withTheme } from 'styled-components';
 import { Heart, Chat } from 'react-iconly';
 import { formatPostDate } from '@utils';
+import dynamic from 'next/dynamic';
+import { IS_GENERATOR } from '@lib/constants';
 import { StyledContainer, LeftContainer, RightContainer, ImageContainer } from './styles';
 
+const ActionButtons = dynamic(() => import('@components/ActionButtons'));
+
 const Post = ({
+  index = 0,
+  endIndex = 0,
+  id = '',
   theme,
   featured = false,
   provider = '',
   title = '',
   description = '',
   cover = '',
-  createdAt = '',
+  created = '',
   url = '#',
   likes = 0,
   comments = 0,
+  onMove,
+  onDelete,
   ...props
 }) => (
   <StyledContainer key={title} {...props}>
-    <LeftContainer>
+    <LeftContainer isGenerator={IS_GENERATOR}>
+      {IS_GENERATOR && (
+        <ActionButtons
+          onlyDownUp
+          index={index}
+          id={id}
+          onMove={onMove}
+          onDelete={onDelete}
+          showLeft={index > 0}
+          showRight={index < endIndex}
+        />
+      )}
       {featured && (
         <p className="featured">
           <IconFeatured />
           {`Featured on ${capitalize(provider)}`}
         </p>
       )}
-      <p className="date">{formatPostDate(createdAt)}</p>
+      <p className="date">{formatPostDate(created)}</p>
       <a className="title" href={url} target="_blank" rel="noreferrer">
         {title}
       </a>
@@ -62,6 +82,9 @@ const Post = ({
 );
 
 Post.propTypes = {
+  id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+  index: PropTypes.number,
+  endIndex: PropTypes.number,
   theme: PropTypes.object,
   featured: PropTypes.bool,
   url: PropTypes.string,
@@ -69,9 +92,11 @@ Post.propTypes = {
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   cover: PropTypes.string.isRequired,
-  createdAt: PropTypes.string,
+  created: PropTypes.string,
   likes: PropTypes.number,
   comments: PropTypes.number,
+  onDelete: PropTypes.func,
+  onMove: PropTypes.func,
 };
 
 export default withTheme(Post);
