@@ -15,6 +15,7 @@ const IconTooltip = ({ content, children }) => (
 const ActionButtons = ({
   index = 0,
   showRight = true,
+  hideMove = false,
   showLeft = true,
   onlyDownUp = false,
   id = '',
@@ -34,7 +35,7 @@ const ActionButtons = ({
   return (
     <ActionContainer>
       <IconTooltip content={isMobile || onlyDownUp ? 'Move Up' : 'Move left'}>
-        {showLeft && (
+        {showLeft && !hideMove && (
           <Iconly
             name={isMobile || onlyDownUp ? 'ChevronUp' : 'ChevronLeft'}
             onClick={() => handleMove('left')}
@@ -44,7 +45,7 @@ const ActionButtons = ({
         )}
       </IconTooltip>
       <IconTooltip content={isMobile || onlyDownUp ? 'Move Down' : 'Move right'}>
-        {showRight && (
+        {showRight && !hideMove && (
           <Iconly
             name={isMobile || onlyDownUp ? 'ChevronDown' : 'ChevronRight'}
             onClick={() => handleMove('right')}
@@ -65,6 +66,7 @@ ActionButtons.propTypes = {
   onlyDownUp: PropTypes.bool,
   index: PropTypes.number,
   showLeft: PropTypes.bool,
+  hideMove: PropTypes.bool,
   showRight: PropTypes.bool,
   onMove: PropTypes.func,
   onDelete: PropTypes.func,

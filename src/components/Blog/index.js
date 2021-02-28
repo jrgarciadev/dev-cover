@@ -80,12 +80,13 @@ const Blog = ({ user = {} }) => {
     <section id="blog">
       <NumberedHeading>Latest Blogs</NumberedHeading>
       <PostsContainer>
-        {user.posts &&
+        {userPosts &&
           userPosts.map((post, index) => {
             return (
               <Post
                 key={post.id}
                 index={index}
+                hideMoveActions={userPosts.length === 1}
                 endIndex={user.posts.length - 1}
                 onMove={({ direction }) => handleMove(index, direction)}
                 onDelete={handleDelete}

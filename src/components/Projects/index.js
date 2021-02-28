@@ -107,6 +107,7 @@ const Projects = ({ user = {} }) => {
               key={id}
               id={id}
               index={index}
+              hideMoveActions={userRepos.length === 1}
               endIndex={PROJECTS_GRID_LIMIT - 1}
               name={name}
               description={description}
