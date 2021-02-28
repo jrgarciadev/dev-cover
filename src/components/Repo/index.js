@@ -2,22 +2,15 @@ import { forwardRef } from 'react';
 import PropTypes from 'prop-types';
 import { withTheme } from 'styled-components';
 import dynamic from 'next/dynamic';
-import { Tooltip } from '@components';
 import { Icon } from '@components/Icons';
-import { Folder, Star, Delete, Iconly } from 'react-iconly';
+import { Folder, Star } from 'react-iconly';
 import { truncate } from 'lodash';
 import { IS_GENERATOR, IS_PORTFOLIO } from '@lib/constants';
 import { useIsMobile } from '@hooks';
-import { StyledRepo, RepoActions } from './styles';
+import { StyledRepo } from './styles';
 
 const Draggable = dynamic(() => import('react-beautiful-dnd').then((mod) => mod.Draggable));
-
-// eslint-disable-next-line react/prop-types
-const IconTooltip = ({ content, children }) => (
-  <Tooltip size="big" position="right" content={content}>
-    {children}
-  </Tooltip>
-);
+const ActionButtons = dynamic(() => import('@components/ActionButtons'));
 
 const Repo = ({
   id,
@@ -39,31 +32,14 @@ const Repo = ({
   const RepoComponent = forwardRef(({ ...restProps }, ref) => (
     <StyledRepo ref={ref} {...restProps} {...props}>
       {IS_GENERATOR && (
-        <RepoActions>
-          <IconTooltip content={isMobile ? 'Move Up' : 'Move left'}>
-            {index > 0 && (
-              <Iconly
-                name={isMobile ? 'ChevronUp' : 'ChevronLeft'}
-                onClick={() => onMove(index, id, 'left')}
-                className="chevron-icon"
-                set="bold"
-              />
-            )}
-          </IconTooltip>
-          <IconTooltip content={isMobile ? 'Move Down' : 'Move right'}>
-            {index < endIndex && (
-              <Iconly
-                name={isMobile ? 'ChevronDown' : 'ChevronRight'}
-                onClick={() => onMove(index, id, 'right')}
-                className="chevron-icon"
-                set="bold"
-              />
-            )}
-          </IconTooltip>
-          <IconTooltip content="Delete repo">
-            <Delete className="delete-icon" set="bold" onClick={() => onDelete(id)} />
-          </IconTooltip>
-        </RepoActions>
+        <ActionButtons
+          id={id}
+          index={index}
+          onMove={onMove}
+          onDelete={onDelete}
+          showLeft={index > 0}
+          showRight={index < endIndex}
+        />
       )}
       <div className="project-inner">
         <header>

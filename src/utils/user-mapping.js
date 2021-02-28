@@ -44,10 +44,7 @@ export const getNavLinks = (user) => {
     projects: '',
     contact: '',
   };
-  if (
-    (user?.posts && user.posts.hashnode && user.posts.hashnode.length > 0) ||
-    (user?.posts && user.posts.devto && user.posts.devto.length > 0)
-  ) {
+  if (user?.posts && user.posts.length > 0) {
     navLinks.blog = IS_GENERATOR ? `/portfolio/${user?.username}#blog` : '#blog';
   }
   if (user?.hasReadme && user?.hasGithub && user?.username) {
@@ -162,7 +159,7 @@ export const getHeadData = ({ isPortfolio, user }) => {
 
 export const getHashnodePubDomain = (user, slug = '') => {
   if (!isEmpty(get(user, 'hashnode.publicationDomain'))) {
-    return `http://${user?.hashnode?.publicationDomain}/${slug}`;
+    return `https://${user?.hashnode?.publicationDomain}/${slug}`;
   }
   return `https://${get(user, 'username')}.hashnode.dev/${slug}`;
 };

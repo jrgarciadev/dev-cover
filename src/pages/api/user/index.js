@@ -1,3 +1,4 @@
+import { isEmpty } from 'lodash';
 import dbConnect from '../../../lib/mongodb';
 import User from '../../../models/User';
 
@@ -20,7 +21,7 @@ export default async function handler(req, res) {
         const userExists = await User.findOne({
           username: userBody.username,
         });
-        if (userExists) {
+        if (!isEmpty(userExists)) {
           userExists.updated = new Date();
           await userExists.updateOne(userBody);
           return res.status(201).json({ success: true, data: userExists });

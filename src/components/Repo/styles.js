@@ -1,6 +1,5 @@
 import styled from 'styled-components';
 import { hexa } from '@utils';
-import { prop } from 'styled-tools';
 
 export const StyledRepo = styled.div`
   margin-bottom: 2%;
@@ -122,37 +121,6 @@ export const StyledRepo = styled.div`
     .filled {
       path {
         fill: ${(props) => props.theme.text.default};
-      }
-    }
-  }
-`;
-
-export const RepoActions = styled.div`
-  position: absolute;
-  top: -1.5rem;
-  left: -0.5rem;
-  z-index: 10;
-  display: flex;
-  justify-content: space-between;
-  padding: 0.5rem;
-  align-items: center;
-  border-radius: 1.375rem;
-  background: ${prop('theme.bg.defaultLight')};
-  .chevron-icon {
-    &:hover,
-    &:focus {
-      cursor: pointer;
-      path {
-        fill: ${prop('theme.brand.primary')};
-      }
-    }
-  }
-  .delete-icon {
-    &:hover,
-    &:focus {
-      cursor: pointer;
-      path {
-        fill: ${prop('theme.brand.danger')};
       }
     }
   }
