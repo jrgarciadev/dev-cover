@@ -19,6 +19,7 @@ const Repo = ({
   name,
   description,
   stargazersCount,
+  hideMoveActions = false,
   homepage,
   htmlUrl,
   forksCount,
@@ -35,6 +36,7 @@ const Repo = ({
         <ActionButtons
           id={id}
           index={index}
+          hideMove={hideMoveActions}
           onMove={onMove}
           onDelete={onDelete}
           showLeft={index > 0}
@@ -122,6 +124,7 @@ Repo.propTypes = {
   homepage: PropTypes.string,
   htmlUrl: PropTypes.string,
   stargazersCount: PropTypes.number,
+  hideMoveActions: PropTypes.bool,
   forksCount: PropTypes.number,
   language: PropTypes.string,
   onLinkClicked: PropTypes.func,

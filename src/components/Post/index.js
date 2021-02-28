@@ -19,6 +19,7 @@ const Post = ({
   provider = '',
   title = '',
   description = '',
+  hideMoveActions = false,
   cover = '',
   created = '',
   url = '#',
@@ -33,9 +34,10 @@ const Post = ({
       {IS_GENERATOR && (
         <ActionButtons
           onlyDownUp
-          index={index}
           id={id}
+          index={index}
           onMove={onMove}
+          hideMove={hideMoveActions}
           onDelete={onDelete}
           showLeft={index > 0}
           showRight={index < endIndex}
@@ -89,6 +91,7 @@ Post.propTypes = {
   featured: PropTypes.bool,
   url: PropTypes.string,
   provider: PropTypes.oneOf(['hashnode', 'devto']),
+  hideMoveActions: PropTypes.bool,
   title: PropTypes.string.isRequired,
   description: PropTypes.string.isRequired,
   cover: PropTypes.string.isRequired,
