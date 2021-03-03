@@ -1,24 +1,22 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Post } from '@components';
-import { NumberedHeading } from '@common/styles';
-import { get, isEmpty } from 'lodash';
+import { NumberedHeading, SectionButton } from '@common/styles';
+import { get, size } from 'lodash';
 import * as gtag from '@lib/gtag';
-import { IS_PRODUCTION } from '@lib/constants';
+import { IS_PRODUCTION, IS_GENERATOR } from '@lib/constants';
 import PropTypes from 'prop-types';
 import { updateUser } from '@services/user';
 import { reorder } from '@utils';
 import { useToasts } from '@contexts/toasts';
+import { Plus } from 'react-iconly';
+import { useUserDataContext } from '@contexts/user-data';
 import { ShowMoreButton, ButtonContainer, PostsContainer } from './styles';
 
 const Blog = ({ user = {} }) => {
-  const [userPosts, setUserPosts] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [userPosts, setUserPosts] = useState(get(user, 'posts'));
   const { ToastsType, addToastWithTimeout } = useToasts();
-
-  useEffect(() => {
-    if (!isEmpty(get(user, 'posts'))) {
-      setUserPosts(get(user, 'posts'));
-    }
-  }, []);
+  const { updateValue: updateUserData } = useUserDataContext();
 
   const handleClickLink = (link) => {
     if (IS_PRODUCTION) {
@@ -31,8 +29,10 @@ const Blog = ({ user = {} }) => {
     const input = {
       posts: items,
     };
+    setLoading(true);
     updateUser(get(user, 'username'), input)
       .then((res) => {
+        setLoading(false);
         if (res.success) {
           addToastWithTimeout(ToastsType.SUCCESS, 'Posts updated');
         } else {
@@ -41,6 +41,7 @@ const Blog = ({ user = {} }) => {
       })
       .catch((error) => {
         console.error(error);
+        setLoading(false);
         addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again later');
       });
   };
@@ -59,6 +60,10 @@ const Blog = ({ user = {} }) => {
 
   const handleDelete = (id) => {
     const items = userPosts.filter((repo) => repo.id !== id);
+    if (items.length <= 0) {
+      const input = { showBlog: false };
+      updateUserData({ ...user, ...input });
+    }
     setUserPosts(items);
     updatePosts(items);
   };
@@ -75,6 +80,23 @@ const Blog = ({ user = {} }) => {
     }
     return '#';
   };
+
+  const handleAddBlogSection = () => {
+    const input = { showBlog: true };
+    updateUserData({ ...user, ...input });
+    setUserPosts(get(user, 'posts'));
+  };
+
+  if (!user?.showBlog && size(get(user, 'posts')) > 0 && IS_GENERATOR) {
+    return (
+      <SectionButton>
+        <button onClick={handleAddBlogSection} type="button">
+          <Plus />
+          {loading ? 'Adding...' : 'Add blog section'}
+        </button>
+      </SectionButton>
+    );
+  }
 
   return (
     <section id="blog">

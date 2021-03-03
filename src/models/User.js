@@ -24,6 +24,21 @@ const UserSchema = new Schema({
     type: String,
     maxlength: [256, 'Large Bio cannot be more than 120 characters'],
   },
+  readme: {
+    type: String,
+  },
+  showAbout: {
+    type: Boolean,
+    default: true,
+  },
+  showBlog: {
+    type: Boolean,
+    default: true,
+  },
+  showRepos: {
+    type: Boolean,
+    default: true,
+  },
   primaryColor: {
     type: String,
     default: '#1ee0e0',

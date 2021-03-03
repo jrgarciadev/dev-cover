@@ -12,6 +12,19 @@ export const StyledMainContainer = styled.section`
   }
 `;
 
+export const SectionButton = styled.div`
+  ${({ theme }) => theme.mixins.flexCenter};
+  width: 100%;
+  button {
+    ${({ theme }) => theme.mixins.bigButton};
+    display: flex;
+    align-items: center;
+    svg {
+      margin-right: 1rem;
+    }
+  }
+`;
+
 export const NumberedHeading = styled.h2`
   display: flex;
   align-items: center;

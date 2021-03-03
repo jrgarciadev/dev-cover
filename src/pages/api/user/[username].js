@@ -7,12 +7,14 @@ export default async function handler(req, res) {
     method,
   } = req;
 
+  const formattedUsername = username.trim().toLowerCase();
+
   await dbConnect();
 
   switch (method) {
     case 'GET' /* Get a model by its ID */:
       try {
-        const user = await User.findOne({ username });
+        const user = await User.findOne({ username: formattedUsername });
         if (!user) {
           return res.status(400).json({ success: false });
         }
@@ -25,12 +27,12 @@ export default async function handler(req, res) {
         const { body: userBody } = req;
         // Make sure this account doesn't already exist
         const userExists = await User.findOne({
-          username,
+          username: formattedUsername,
         });
         if (!userExists) {
           return res.status(400).json({ success: false, message: 'User does not exists' });
         }
-        userExists.updated = new Date();
+        userBody.updated = new Date();
         await userExists.updateOne(userBody);
         return res.status(200).json({ success: true, data: userExists });
       } catch (error) {

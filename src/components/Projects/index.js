@@ -1,9 +1,9 @@
 /* eslint-disable camelcase */
-import { useState, useEffect, forwardRef } from 'react';
+import { useState, forwardRef } from 'react';
 import { PROJECTS_GRID_LIMIT, IS_PRODUCTION, IS_PORTFOLIO, GITHUB_URL } from '@lib/constants';
 import * as gtag from '@lib/gtag';
 import { NumberedHeading } from '@common/styles';
-import { get, isEmpty, orderBy } from 'lodash';
+import { get } from 'lodash';
 import { reorder } from '@utils';
 import PropTypes from 'prop-types';
 import { Repo } from '@components';
@@ -11,6 +11,8 @@ import { useToasts } from '@contexts/toasts';
 import { useIsMobile } from '@hooks';
 import { updateUser } from '@services/user';
 import dynamic from 'next/dynamic';
+import { Swap } from 'react-iconly';
+import { getReposData } from '@lib/user-builder';
 import { StyledProjectsSection, StyledGrid } from './styles';
 
 const Droppable = dynamic(() => import('react-beautiful-dnd').then((mod) => mod.Droppable));
@@ -19,18 +21,9 @@ const DragDropContext = dynamic(() =>
 );
 
 const Projects = ({ user = {} }) => {
-  const [userRepos, setUserRepos] = useState([]);
+  const [userRepos, setUserRepos] = useState(get(user, 'repos'));
   const { ToastsType, addToastWithTimeout } = useToasts();
   const isMobile = useIsMobile();
-
-  useEffect(() => {
-    if (IS_PORTFOLIO && !isEmpty(get(user, 'repos'))) {
-      setUserRepos(get(user, 'repos'));
-    } else {
-      const repos = orderBy(get(user, 'github.repos'), ['stargazers_count'], ['desc']);
-      setUserRepos(repos);
-    }
-  }, []);
 
   const handleClickLink = (link) => {
     if (IS_PRODUCTION) {
@@ -88,6 +81,21 @@ const Projects = ({ user = {} }) => {
     handleChange(items);
   };
 
+  const handleFetchGithubRepos = async () => {
+    try {
+      const repos = await getReposData(get(user, 'username'));
+      console.log(repos);
+      handleChange(repos);
+    } catch (error) {
+      console.log(error);
+      if (get(user, 'github.limited') === true) {
+        addToastWithTimeout(ToastsType.ERROR, 'Github API rate limit exceeded try again in 1 hour');
+      } else {
+        addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again in 1 hour');
+      }
+    }
+  };
+
   const RepoGrid = forwardRef(({ ...restProps }, ref) => (
     <StyledGrid ref={ref} {...restProps}>
       {userRepos &&
@@ -128,6 +136,10 @@ const Projects = ({ user = {} }) => {
   return (
     <StyledProjectsSection id="projects">
       <NumberedHeading>My Projects</NumberedHeading>
+      <button type="button" className="show-original" onClick={handleFetchGithubRepos}>
+        <Swap />
+        Fetch Github repos
+      </button>
       {IS_PORTFOLIO ? (
         <RepoGrid />
       ) : (

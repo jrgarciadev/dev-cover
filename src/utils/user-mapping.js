@@ -44,10 +44,10 @@ export const getNavLinks = (user) => {
     projects: '',
     contact: '',
   };
-  if (user?.posts && user.posts.length > 0) {
+  if (user?.posts && user?.showBlog && user.posts.length > 0) {
     navLinks.blog = IS_GENERATOR ? `/portfolio/${user?.username}#blog` : '#blog';
   }
-  if (user?.hasReadme && user?.hasGithub && user?.username) {
+  if (user?.hasReadme && user?.showAbout && user?.username) {
     navLinks.about = IS_GENERATOR ? `/portfolio/${user?.username}#about` : '#about';
   }
   if (user?.hasRepos) {

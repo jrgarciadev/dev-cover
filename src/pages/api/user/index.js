@@ -19,10 +19,10 @@ export default async function handler(req, res) {
         const { body: userBody } = req;
         // Make sure this account doesn't already exist
         const userExists = await User.findOne({
-          username: userBody.username,
+          username: userBody.username.trim().toLowerCase(),
         });
         if (!isEmpty(userExists)) {
-          userExists.updated = new Date();
+          userBody.updated = new Date();
           await userExists.updateOne(userBody);
           return res.status(201).json({ success: true, data: userExists });
         }

@@ -12,11 +12,14 @@ export const ActionContainer = styled.div`
   align-items: center;
   border-radius: 1.375rem;
   background: ${prop('theme.bg.defaultLight')};
-  .chevron-icon {
-    margin-right: 0.5rem;
+  .icon {
+    margin: 0 0.5rem;
+    cursor: pointer;
+  }
+  .chevron-icon,
+  .edit-icon {
     &:hover,
     &:focus {
-      cursor: pointer;
       path {
         fill: ${prop('theme.brand.primary')};
       }
@@ -25,7 +28,6 @@ export const ActionContainer = styled.div`
   .delete-icon {
     &:hover,
     &:focus {
-      cursor: pointer;
       path {
         fill: ${prop('theme.brand.danger')};
       }

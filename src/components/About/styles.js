@@ -1,17 +1,48 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import { tint } from '@utils';
+import { ifProp, prop } from 'styled-tools';
 
 export const StyledAboutSection = styled.section`
   max-width: 100%;
 `;
 
+export const Container = styled.div`
+  position: relative;
+`;
+
+export const EditContainer = styled.div`
+  margin-top: 1rem;
+  display: flex;
+  flex-direction: column;
+`;
+
+export const EditActions = styled.div`
+  display: flex;
+  width: 100%;
+  justify-content: flex-end;
+  margin: 2rem 0;
+  button {
+    margin-left: 2rem;
+    ${prop('theme.mixins.bigButton')};
+  }
+  .cancel-button {
+    border-width: 0px;
+    color: ${prop('theme.text.default')};
+  }
+`;
+
 export const StyledMarkdown = styled.div`
   font-size: ${(props) => props.theme.fontSize.lg};
   text-align: left;
+  ${ifProp(
+    'isGenerator',
+    css`
+      padding-top: 3rem;
+    `,
+  )}
   img {
     max-width: 100%;
   }
-
   h1,
   h2,
   h3,
