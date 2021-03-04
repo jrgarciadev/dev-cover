@@ -50,7 +50,7 @@ export const getNavLinks = (user) => {
   if (user?.hasReadme && user?.showAbout && user?.username) {
     navLinks.about = IS_GENERATOR ? `/portfolio/${user?.username}#about` : '#about';
   }
-  if (user?.hasRepos) {
+  if (user?.hasRepos && user?.showRepos) {
     navLinks.projects = IS_GENERATOR ? `/portfolio/${user?.username}#projects` : '#projects';
   }
   if (!isEmpty(user.email) || user.isHireable) {

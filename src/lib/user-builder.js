@@ -3,6 +3,7 @@ import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import {
   cleanAttrs,
   getStringByCriteria,
+  selectFirstWithValue,
   areSimilarStrings,
   cleanGithubUrl,
   mapArrayOrder,
@@ -256,7 +257,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   user.email = get(userData, 'email', null);
   user.username = username.trim().toLowerCase();
   user.ga = get(userData, 'ga', null);
-  user.repos = get(userData, 'repos', get(user, 'github.repos', []));
+  user.repos = selectFirstWithValue(get(userData, 'repos'), get(user, 'github.repos', []));
   user.shortBio = get(userData, 'shortBio', getStringByCriteria(userBioArray, 'shortest')) || '';
   user.largeBio = get(userData, 'largeBio', getStringByCriteria(userBioArray)) || '';
   user.hasGithub = !isEmpty(get(user, 'github.login'));
@@ -268,6 +269,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     !includes(get(user, 'readme'), 'Invalid') &&
     !includes(get(user, 'readme'), '404');
   user.showAbout = get(userData, 'showAbout', user.hasReadme);
+  user.showRepos = get(userData, 'showRepos', user.hasRepos);
   try {
     if (IS_PORTFOLIO) {
       user.posts = get(userData, 'posts');

@@ -19,7 +19,8 @@ export const StyledProjectsSection = styled.section`
     ${({ theme }) => theme.mixins.bigButton};
     display: flex;
     align-items: center;
-    margin-bottom: 2rem;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
     svg {
       margin-right: 1rem;
     }

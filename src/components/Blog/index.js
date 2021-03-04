@@ -25,16 +25,17 @@ const Blog = ({ user = {} }) => {
     window.open(link, '_blank');
   };
 
-  const updatePosts = (items) => {
+  const updatePosts = (items, inputData = {}) => {
     const input = {
       posts: items,
+      ...inputData,
     };
     setLoading(true);
     updateUser(get(user, 'username'), input)
       .then((res) => {
         setLoading(false);
         if (res.success) {
-          addToastWithTimeout(ToastsType.SUCCESS, 'Posts updated');
+          addToastWithTimeout(ToastsType.SUCCESS, 'Blog section updated');
         } else {
           addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again later');
         }
@@ -46,6 +47,11 @@ const Blog = ({ user = {} }) => {
       });
   };
 
+  const handleChange = (items, inputData = {}) => {
+    setUserPosts(items);
+    updatePosts(items, inputData);
+  };
+
   const handleMove = (index, direction) => {
     let endIndex = 0;
     if (direction === 'left') {
@@ -54,8 +60,7 @@ const Blog = ({ user = {} }) => {
       endIndex = index + 1;
     }
     const items = reorder(userPosts, index, endIndex);
-    setUserPosts(items);
-    updatePosts(items);
+    handleChange(items);
   };
 
   const handleDelete = (id) => {
@@ -63,9 +68,10 @@ const Blog = ({ user = {} }) => {
     if (items.length <= 0) {
       const input = { showBlog: false };
       updateUserData({ ...user, ...input });
+      handleChange(items, input);
+    } else {
+      handleChange(items);
     }
-    setUserPosts(items);
-    updatePosts(items);
   };
 
   const getBlogDomain = () => {
@@ -83,8 +89,8 @@ const Blog = ({ user = {} }) => {
 
   const handleAddBlogSection = () => {
     const input = { showBlog: true };
+    handleChange(get(user, 'posts'), input);
     updateUserData({ ...user, ...input });
-    setUserPosts(get(user, 'posts'));
   };
 
   if (!user?.showBlog && size(get(user, 'posts')) > 0 && IS_GENERATOR) {

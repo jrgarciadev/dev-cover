@@ -1,9 +1,15 @@
 /* eslint-disable camelcase */
 import { useState, forwardRef } from 'react';
-import { PROJECTS_GRID_LIMIT, IS_PRODUCTION, IS_PORTFOLIO, GITHUB_URL } from '@lib/constants';
+import {
+  PROJECTS_GRID_LIMIT,
+  IS_PRODUCTION,
+  IS_PORTFOLIO,
+  IS_GENERATOR,
+  GITHUB_URL,
+} from '@lib/constants';
 import * as gtag from '@lib/gtag';
-import { NumberedHeading } from '@common/styles';
-import { get } from 'lodash';
+import { NumberedHeading, SectionButton } from '@common/styles';
+import { get, size } from 'lodash';
 import { reorder } from '@utils';
 import PropTypes from 'prop-types';
 import { Repo } from '@components';
@@ -11,8 +17,9 @@ import { useToasts } from '@contexts/toasts';
 import { useIsMobile } from '@hooks';
 import { updateUser } from '@services/user';
 import dynamic from 'next/dynamic';
-import { Swap } from 'react-iconly';
+import { Swap, Plus } from 'react-iconly';
 import { getReposData } from '@lib/user-builder';
+import { useUserDataContext } from '@contexts/user-data';
 import { StyledProjectsSection, StyledGrid } from './styles';
 
 const Droppable = dynamic(() => import('react-beautiful-dnd').then((mod) => mod.Droppable));
@@ -22,7 +29,9 @@ const DragDropContext = dynamic(() =>
 
 const Projects = ({ user = {} }) => {
   const [userRepos, setUserRepos] = useState(get(user, 'repos'));
+  const [loading, setLoading] = useState(false);
   const { ToastsType, addToastWithTimeout } = useToasts();
+  const { updateValue: updateUserData } = useUserDataContext();
   const isMobile = useIsMobile();
 
   const handleClickLink = (link) => {
@@ -32,9 +41,10 @@ const Projects = ({ user = {} }) => {
     window.open(link, '_blank');
   };
 
-  const updateRepos = (items) => {
+  const updateRepos = (items, inputData = {}) => {
     const input = {
       repos: items.slice(0, PROJECTS_GRID_LIMIT),
+      ...inputData,
     };
     updateUser(get(user, 'username'), input)
       .then((res) => {
@@ -50,9 +60,9 @@ const Projects = ({ user = {} }) => {
       });
   };
 
-  const handleChange = (items) => {
+  const handleChange = (items, inputData = {}) => {
     setUserRepos(items);
-    updateRepos(items);
+    updateRepos(items, inputData);
   };
 
   const onDragEnd = (result) => {
@@ -67,6 +77,10 @@ const Projects = ({ user = {} }) => {
 
   const handleDeleteRepo = (id) => {
     const items = userRepos.filter((repo) => repo.id !== id);
+    if (items.length <= 0) {
+      const input = { showRepos: false };
+      updateUserData({ ...user, ...input });
+    }
     handleChange(items);
   };
 
@@ -81,19 +95,27 @@ const Projects = ({ user = {} }) => {
     handleChange(items);
   };
 
-  const handleFetchGithubRepos = async () => {
+  const handleFetchGithubRepos = async (input = {}) => {
+    setLoading(true);
     try {
       const repos = await getReposData(get(user, 'username'));
-      console.log(repos);
-      handleChange(repos);
+      handleChange(repos, input);
+      setLoading(false);
     } catch (error) {
       console.log(error);
+      setLoading(false);
       if (get(user, 'github.limited') === true) {
         addToastWithTimeout(ToastsType.ERROR, 'Github API rate limit exceeded try again in 1 hour');
       } else {
         addToastWithTimeout(ToastsType.ERROR, 'Something went wrong, try again in 1 hour');
       }
     }
+  };
+
+  const handleAddReposSection = async () => {
+    const input = { showRepos: true };
+    await handleFetchGithubRepos(input);
+    updateUserData({ ...user, ...input });
   };
 
   const RepoGrid = forwardRef(({ ...restProps }, ref) => (
@@ -133,13 +155,26 @@ const Projects = ({ user = {} }) => {
     </StyledGrid>
   ));
 
+  if (!user?.showRepos && size(get(user, 'repos')) > 0 && IS_GENERATOR) {
+    return (
+      <SectionButton>
+        <button onClick={handleAddReposSection} type="button">
+          <Plus />
+          {loading ? 'Adding...' : 'Add repos section'}
+        </button>
+      </SectionButton>
+    );
+  }
+
   return (
     <StyledProjectsSection id="projects">
       <NumberedHeading>My Projects</NumberedHeading>
-      <button type="button" className="show-original" onClick={handleFetchGithubRepos}>
-        <Swap />
-        Fetch Github repos
-      </button>
+      {IS_GENERATOR && (
+        <button type="button" className="show-original" onClick={handleFetchGithubRepos}>
+          <Swap />
+          {loading ? 'Fetching...' : ' Fetch Github repos'}
+        </button>
+      )}
       {IS_PORTFOLIO ? (
         <RepoGrid />
       ) : (
