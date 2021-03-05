@@ -15,6 +15,16 @@ export const StyledProjectsSection = styled.section`
     font-size: ${(props) => props.theme.fontSize.sm};
     margin: 80px auto 0;
   }
+  .show-original {
+    ${({ theme }) => theme.mixins.bigButton};
+    display: flex;
+    align-items: center;
+    margin-top: 2rem;
+    margin-bottom: 4rem;
+    svg {
+      margin-right: 1rem;
+    }
+  }
 `;
 
 export const StyledGrid = styled.ul`

@@ -18,8 +18,10 @@ const ActionButtons = ({
   hideMove = false,
   showLeft = true,
   onlyDownUp = false,
+  showEdit = false,
   id = '',
   onMove,
+  onEdit,
   onDelete,
 }) => {
   const isMobile = useIsMobile();
@@ -32,6 +34,10 @@ const ActionButtons = ({
     if (!isFunction(onDelete)) return;
     onDelete(id);
   };
+  const handleEdit = () => {
+    if (!isFunction(onEdit)) return;
+    onEdit();
+  };
   return (
     <ActionContainer>
       <IconTooltip content={isMobile || onlyDownUp ? 'Move Up' : 'Move left'}>
@@ -39,7 +45,7 @@ const ActionButtons = ({
           <Iconly
             name={isMobile || onlyDownUp ? 'ChevronUp' : 'ChevronLeft'}
             onClick={() => handleMove('left')}
-            className="chevron-icon"
+            className="icon chevron-icon"
             set="bold"
           />
         )}
@@ -49,13 +55,18 @@ const ActionButtons = ({
           <Iconly
             name={isMobile || onlyDownUp ? 'ChevronDown' : 'ChevronRight'}
             onClick={() => handleMove('right')}
-            className="chevron-icon"
+            className="icon chevron-icon"
             set="bold"
           />
         )}
       </IconTooltip>
+      <IconTooltip content="Edit">
+        {showEdit && (
+          <Iconly name="Edit" onClick={handleEdit} className="icon edit-icon" set="bold" />
+        )}
+      </IconTooltip>
       <IconTooltip content="Delete">
-        <Delete className="delete-icon" set="bold" onClick={handleDelete} />
+        <Delete className="icon delete-icon" set="bold" onClick={handleDelete} />
       </IconTooltip>
     </ActionContainer>
   );
@@ -66,10 +77,12 @@ ActionButtons.propTypes = {
   onlyDownUp: PropTypes.bool,
   index: PropTypes.number,
   showLeft: PropTypes.bool,
+  showEdit: PropTypes.bool,
   hideMove: PropTypes.bool,
   showRight: PropTypes.bool,
   onMove: PropTypes.func,
   onDelete: PropTypes.func,
+  onEdit: PropTypes.func,
 };
 
 export default ActionButtons;

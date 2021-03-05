@@ -23,7 +23,9 @@ function HomeForm({ theme }) {
   const { isValid } = formState;
 
   const onSubmit = ({ username }) => {
-    if (window !== undefined) window.location = `/portfolio/${username}`;
+    if (!username) return;
+    const formattedUsername = username.trim().toLowerCase();
+    if (window !== undefined) window.location = `/portfolio/${formattedUsername}`;
   };
 
   return (

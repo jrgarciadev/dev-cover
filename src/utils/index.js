@@ -143,3 +143,8 @@ export const reorder = (list, startIndex, endIndex) => {
   result = mapArrayOrder(result);
   return result;
 };
+
+export const selectFirstWithValue = (arr1 = [], arr2 = []) => {
+  if (arr1 && arr1.length > 0) return arr1;
+  return arr2;
+};

@@ -18,7 +18,13 @@ module.exports = {
     },
     minLength: {
       value: 3,
-      message: `This field must have at least 10 characters`,
+      message: `This field must have at least 3 characters`,
+    },
+  },
+  readme: {
+    minLength: {
+      value: 3,
+      message: `This field must have at least 3 characters`,
     },
   },
   largeBio: {

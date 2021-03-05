@@ -80,7 +80,6 @@ const Input = forwardRef(
         width={width}
         shadow={shadow}
         size={size}
-        style={style}
         multiline={multiline}
         fullWidth={fullWidth}
         disabled={disabled}
@@ -93,7 +92,6 @@ const Input = forwardRef(
         {label && <Label>{label}</Label>}
         <div className="input-wrapper">
           <InputComponent
-            {...props}
             onKeyUp={handleTextAreaAdjust}
             name={name}
             autoCapitalize="off"
@@ -112,6 +110,8 @@ const Input = forwardRef(
             ref={ref || input}
             type={type || 'text'}
             value={value}
+            style={style}
+            {...props}
           />
           {children}
           {error && <span className="error-label">{error}</span>}

@@ -3,6 +3,7 @@ import { GET_USER_BY_USERNAME } from '@graphql/queries/hashnode/user';
 import {
   cleanAttrs,
   getStringByCriteria,
+  selectFirstWithValue,
   areSimilarStrings,
   cleanGithubUrl,
   mapArrayOrder,
@@ -135,14 +136,15 @@ const buildPosts = async (user) => {
   return [];
 };
 
-const getReposData = async (username) => {
+export const getReposData = async (username) => {
   try {
     const response = await fetch(`${GITHUB_USER_URL}${username}/repos?per_page=100`);
     if (response.status === 404 || response.status === 403) {
       return [];
     }
     const repos = await response.json();
-    return repos;
+    const orderedRepos = orderBy(repos, ['stargazers_count'], ['desc']);
+    return orderedRepos;
   } catch (error) {
     console.error(error);
     return [];
@@ -237,7 +239,6 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     user.github.limited = githubLimited;
     user.github.readme = githubReadmeData;
     user.github.repos = githubReposData;
-    user.hasRepos = size(githubReposData) > 0;
   }
 
   user = applyValidations(user);
@@ -247,23 +248,28 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     get(user, 'github.bio'),
     get(user, 'hashnode.tagline'),
   ];
+
   const userData = await getDevcoverUserData(username);
 
-  user.primaryColor = get(userData, 'primaryColor') || null;
+  user.primaryColor = get(userData, 'primaryColor', null);
   user.name = get(userData, 'name') || getNameUser(user) || '';
-  user.email = get(userData, 'email') || null;
-  user.username = username;
-  user.ga = get(userData, 'ga') || null;
-  user.repos = get(userData, 'repos') || [];
-  user.shortBio = get(userData, 'shortBio') || getStringByCriteria(userBioArray, 'shortest') || '';
-  user.largeBio = get(userData, 'largeBio') || getStringByCriteria(userBioArray) || '';
+  user.readme = get(userData, 'readme', get(user, 'github.readme', ''));
+  user.email = get(userData, 'email', null);
+  user.username = username.trim().toLowerCase();
+  user.ga = get(userData, 'ga', null);
+  user.repos = selectFirstWithValue(get(userData, 'repos'), get(user, 'github.repos', []));
+  user.shortBio = get(userData, 'shortBio', getStringByCriteria(userBioArray, 'shortest')) || '';
+  user.largeBio = get(userData, 'largeBio', getStringByCriteria(userBioArray)) || '';
   user.hasGithub = !isEmpty(get(user, 'github.login'));
+  user.hasRepos = size(user.repos) > 0;
   user.hasHashnode = !isEmpty(get(user, 'hashnode.name'));
   user.hasDevto = !isEmpty(get(user, 'devto.username'));
   user.hasReadme =
-    !isEmpty(user, 'github.readme') &&
-    !includes(get(user, 'github.readme'), 'Invalid') &&
-    !includes(get(user, 'github.readme'), '404');
+    !isEmpty(get(user, 'readme')) &&
+    !includes(get(user, 'readme'), 'Invalid') &&
+    !includes(get(user, 'readme'), '404');
+  user.showAbout = get(userData, 'showAbout', user.hasReadme);
+  user.showRepos = get(userData, 'showRepos', user.hasRepos);
   try {
     if (IS_PORTFOLIO) {
       user.posts = get(userData, 'posts');
@@ -271,6 +277,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
       user.posts = await buildPosts(user);
     }
     user.hasPosts = user.posts && user.posts.length > 0;
+    user.showBlog = get(userData, 'showBlog', user.hasPosts);
   } catch (error) {
     console.error(error);
     user.hasPosts = false;

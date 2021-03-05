@@ -28,7 +28,7 @@ const PortfolioView = ({ user }) => {
   return (
     <StyledMainContainer className="fillHeight">
       {userData && <Hero user={userData} />}
-      {userData?.hasReadme && userData?.hasGithub && <About user={userData} />}
+      {userData?.hasReadme && <About user={userData} />}
       {userData?.hasPosts && <Blog user={userData} />}
       {userData?.hasRepos && <Projects user={userData} />}
       {(userData.email || userData.isHireable) && <Contact user={userData} />}
