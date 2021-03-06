@@ -14,6 +14,7 @@ export default async function handler(req, res) {
   switch (method) {
     case 'GET' /* Get a model by its ID */:
       try {
+        console.log(`[GET] /api/user/${formattedUsername}`);
         const user = await User.findOne({ username: formattedUsername });
         if (!user) {
           return res.status(400).json({ success: false });
@@ -24,6 +25,7 @@ export default async function handler(req, res) {
       }
     case 'PUT' /* Edit a model by its ID */:
       try {
+        console.log(`[PUT] /api/user/${formattedUsername}`);
         const { body: userBody } = req;
         // Make sure this account doesn't already exist
         const userExists = await User.findOne({
