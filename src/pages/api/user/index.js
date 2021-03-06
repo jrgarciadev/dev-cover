@@ -8,6 +8,7 @@ export default async function handler(req, res) {
 
   switch (method) {
     case 'GET':
+      console.log('[GET] /api/user');
       try {
         const users = await User.find({}); /* find all the data in our database */
         return res.status(200).json({ success: true, data: users });
@@ -16,6 +17,7 @@ export default async function handler(req, res) {
       }
     case 'POST':
       try {
+        console.log('[POST] /api/user');
         const { body: userBody } = req;
         // Make sure this account doesn't already exist
         const userExists = await User.findOne({
