@@ -68,13 +68,16 @@ export const getStringByCriteria = (strings = [], criteria = 'largest') => {
   return value;
 };
 
-export const cleanAttrs = (obj) => {
+export const cleanAttrs = (obj, propArr = []) => {
   const objClone = { ...obj };
   for (const propName in objClone) {
     if (objClone[propName] === null || objClone[propName] === undefined) {
       delete objClone[propName];
     }
   }
+  propArr.forEach((propName) => {
+    delete objClone[propName];
+  });
   return objClone;
 };
 

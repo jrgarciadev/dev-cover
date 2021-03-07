@@ -8,15 +8,18 @@ import { IS_PORTFOLIO } from '@lib/constants';
 import { useToasts } from '@contexts/toasts';
 import { get } from 'lodash';
 
-const PortfolioView = ({ user }) => {
+const PortfolioView = ({ user, isPreview = false }) => {
   const { user: userContext, updateValue } = useUserDataContext();
   const { ToastsType, addToastWithTimeout } = useToasts();
   const { restartValues, updateValue: updateUI } = useUIContext();
-  const userData = IS_PORTFOLIO ? user : userContext;
+  const isEditable = !(IS_PORTFOLIO || isPreview);
+  const userData = !isEditable ? user : userContext;
+
   useEffect(() => {
     restartValues();
-    updateUI({ showDeployButton: true, showCustomizer: true });
-  }, []);
+    updateUI({ isEditable, showDeployButton: isEditable, showCustomizer: isEditable });
+  }, [isEditable]);
+
   useEffect(() => {
     if (user) {
       updateValue(user);
@@ -38,6 +41,7 @@ const PortfolioView = ({ user }) => {
 
 PortfolioView.propTypes = {
   user: PropTypes.object,
+  isPreview: PropTypes.bool,
 };
 
 export default PortfolioView;

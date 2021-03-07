@@ -14,6 +14,7 @@ export default async function handler(req, res) {
         const users = await User.find({}); /* find all the data in our database */
         return res.status(200).json({ success: true, data: users });
       } catch (error) {
+        console.error(error.message);
         return res.status(400).json({ success: false });
       }
     case 'POST':
@@ -34,6 +35,7 @@ export default async function handler(req, res) {
         const user = await userInstance.save();
         return res.status(201).json({ success: true, data: user });
       } catch (error) {
+        console.error(error.message);
         return res.status(400).json({ success: false, message: error.message });
       }
     default:

@@ -1,12 +1,7 @@
 /* eslint-disable camelcase */
 import { useState, forwardRef } from 'react';
-import {
-  PROJECTS_GRID_LIMIT,
-  IS_PRODUCTION,
-  IS_PORTFOLIO,
-  IS_GENERATOR,
-  GITHUB_URL,
-} from '@lib/constants';
+import { PROJECTS_GRID_LIMIT, IS_PRODUCTION, GITHUB_URL } from '@lib/constants';
+import { useUIContext } from '@contexts/ui';
 import * as gtag from '@lib/gtag';
 import { NumberedHeading, SectionButton } from '@common/styles';
 import { get, size } from 'lodash';
@@ -33,6 +28,7 @@ const Projects = ({ user = {} }) => {
   const { ToastsType, addToastWithTimeout } = useToasts();
   const { updateValue: updateUserData } = useUserDataContext();
   const isMobile = useIsMobile();
+  const { isEditable } = useUIContext();
 
   const handleClickLink = (link) => {
     if (IS_PRODUCTION) {
@@ -155,7 +151,7 @@ const Projects = ({ user = {} }) => {
     </StyledGrid>
   ));
 
-  if (!user?.showRepos && size(get(user, 'repos')) > 0 && IS_GENERATOR) {
+  if (!user?.showRepos && size(get(user, 'repos')) > 0 && isEditable) {
     return (
       <SectionButton>
         <button onClick={handleAddReposSection} type="button">
@@ -169,32 +165,31 @@ const Projects = ({ user = {} }) => {
   return (
     <StyledProjectsSection id="projects">
       <NumberedHeading>My Projects</NumberedHeading>
-      {IS_GENERATOR && (
-        <button type="button" className="show-original" onClick={() => handleFetchGithubRepos()}>
-          <Swap />
-          {loading ? 'Fetching...' : ' Fetch Github repos'}
-        </button>
-      )}
-      {IS_PORTFOLIO ? (
-        <RepoGrid />
+      {isEditable ? (
+        <>
+          <button type="button" className="show-original" onClick={() => handleFetchGithubRepos()}>
+            <Swap />
+            {loading ? 'Fetching...' : ' Fetch Github repos'}
+          </button>
+          <DragDropContext onDragEnd={onDragEnd}>
+            <Droppable
+              isDropDisabled={!isEditable || isMobile}
+              droppableId="droppable-repos"
+              direction="horizontal"
+            >
+              {(provided, snapshot) => (
+                <RepoGrid
+                  {...provided.droppableProps}
+                  ref={provided.innerRef}
+                  isDraggingOver={snapshot.isDraggingOver}
+                />
+              )}
+            </Droppable>
+          </DragDropContext>
+        </>
       ) : (
-        <DragDropContext onDragEnd={onDragEnd}>
-          <Droppable
-            isDropDisabled={IS_PORTFOLIO || isMobile}
-            droppableId="droppable-repos"
-            direction="horizontal"
-          >
-            {(provided, snapshot) => (
-              <RepoGrid
-                {...provided.droppableProps}
-                ref={provided.innerRef}
-                isDraggingOver={snapshot.isDraggingOver}
-              />
-            )}
-          </Droppable>
-        </DragDropContext>
+        <RepoGrid />
       )}
-
       {userRepos && userRepos.length > PROJECTS_GRID_LIMIT && (
         <a
           type="button"

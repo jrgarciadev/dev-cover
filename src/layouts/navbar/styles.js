@@ -137,7 +137,7 @@ export const StyledLinks = styled.div`
     }
   }
 
-  .resume-button {
+  .preview-button {
     ${({ theme }) => theme.mixins.smallButton};
     margin-left: 15px;
     font-size: ${(props) => props.theme.fontSize.sm};

@@ -3,7 +3,7 @@ import { NumberedHeading, SectionButton } from '@common/styles';
 import ReactMarkdownWithHtml from 'react-markdown/with-html';
 import PropTypes from 'prop-types';
 import dynamic from 'next/dynamic';
-import { IS_GENERATOR } from '@lib/constants';
+import { useUIContext } from '@contexts/ui';
 import { Plus } from 'react-iconly';
 import { withTheme } from 'styled-components';
 import { updateUser } from '@services/user';
@@ -29,6 +29,7 @@ const About = ({ user = {}, theme }) => {
   const { value: userReadme, onChange } = useInputValue(user.readme);
   const { updateValue: updateUserData } = useUserDataContext();
   const { ToastsType, addToastWithTimeout } = useToasts();
+  const { isEditable } = useUIContext();
 
   const onUpdateUser = async (input) => {
     setLoading(true);
@@ -65,7 +66,7 @@ const About = ({ user = {}, theme }) => {
     await onUpdateUser(input);
   };
 
-  if (!user?.showAbout && IS_GENERATOR) {
+  if (!user?.showAbout && isEditable) {
     return (
       <SectionButton>
         <button onClick={handleAddAboutSection} type="button">
@@ -80,7 +81,7 @@ const About = ({ user = {}, theme }) => {
     <StyledAboutSection id="about">
       <NumberedHeading>About Me</NumberedHeading>
       <Container>
-        {IS_GENERATOR && !editMode && (
+        {isEditable && !editMode && (
           <ActionButtons
             hideMove
             showEdit
@@ -112,7 +113,7 @@ const About = ({ user = {}, theme }) => {
             </EditActions>
           </EditContainer>
         ) : (
-          <StyledMarkdown isGenerator={IS_GENERATOR}>
+          <StyledMarkdown isGenerator={isEditable}>
             <ReactMarkdownWithHtml unwrapDisallowed allowDangerousHtml>
               {user?.readme}
             </ReactMarkdownWithHtml>

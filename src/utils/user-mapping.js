@@ -71,6 +71,19 @@ export const getNameUser = (user) => {
   return user?.github?.name || user?.hashnode?.name || user?.devto?.name;
 };
 
+export const getAvatar = (user) => {
+  if (!user) return '';
+  return get(
+    user,
+    'avatar',
+    get(
+      user,
+      'github.avatar_url',
+      get(user, 'hashnode.photo', get(user, 'devto.profile_image', '/default-avatar.png')),
+    ),
+  );
+};
+
 export const isEnabledUser = (user) => {
   if (isEmpty(user)) return false;
   if (!user.hasGithub && !user.hasHashnode) {
@@ -137,7 +150,7 @@ export const getHeadData = ({ isPortfolio, user }) => {
   if (!isEmpty(user) && isPortfolio) {
     const userImage =
       user?.github?.avatar_url || user?.hashnode?.photo || user?.devto?.profile_image;
-    const userIcon = getUserFavicon(user);
+    const userIcon = user.favicon || getUserFavicon(user);
     const userTitle = `${user.name} ${user.shortBio && `| ${user.shortBio}`}`;
     head.title = userTitle;
     head.icon = userIcon;

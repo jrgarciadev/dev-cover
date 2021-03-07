@@ -1,12 +1,17 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { useUIContext } from '@contexts/ui';
+import { prop } from 'styled-tools';
 
 const StyledMainContainer = styled.main`
   ${({ theme }) => theme.mixins.flexCenter};
   min-height: calc(100vh - 70px);
   flex-direction: column;
+  p {
+    color: ${prop('theme.accents.a3')};
+  }
 `;
 const StyledTitle = styled.h1`
   color: ${(props) => props.theme.brand.primary};
@@ -25,7 +30,8 @@ const StyledHomeButton = styled.a`
 
 const NotFoundPage = () => {
   const { updateValue } = useUIContext();
-
+  const router = useRouter();
+  const isPreviewPath = router.pathname.includes('preview');
   useEffect(() => {
     updateValue({ showNavbar: false, mainFullHeight: false });
   }, []);
@@ -34,6 +40,7 @@ const NotFoundPage = () => {
     <StyledMainContainer className="fillHeight">
       <StyledTitle>404</StyledTitle>
       <StyledSubtitle>Page Not Found</StyledSubtitle>
+      {isPreviewPath && <p>Please generate your portfolio before previewing it</p>}
       <Link href="/">
         <StyledHomeButton>Go Home</StyledHomeButton>
       </Link>

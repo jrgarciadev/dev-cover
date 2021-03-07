@@ -9,7 +9,15 @@ import {
   mapArrayOrder,
   toLowerCase,
 } from '@utils';
-import { getGithubReadmeURL, getNameUser, getHashnodePubDomain } from '@utils/user-mapping';
+import {
+  getGithubReadmeURL,
+  getNameUser,
+  getHashnodePubDomain,
+  getAvatar,
+  getKeysMapped,
+  extractSocialNetworks,
+  getUserFavicon,
+} from '@utils/user-mapping';
 import { get, map, chunk, first, orderBy, union, size, includes, isEmpty } from 'lodash';
 import { updateUser, upsertUser } from '@services/user';
 import {
@@ -209,6 +217,58 @@ const applyValidations = (user) => {
   return user;
 };
 
+const getDevcoverUser = async (username, baseUser = {}, userBioArray = [], isPreview = false) => {
+  const user = { ...baseUser };
+  const userData = await getDevcoverUserData(username);
+  user.primaryColor = get(userData, 'primaryColor', null);
+  user.avatar = isPreview ? getAvatar(userData) : getAvatar(user);
+  user.favicon = isPreview ? get(userData, 'favicon') : getUserFavicon(user);
+  user.name = get(userData, 'name') || getNameUser(user) || '';
+  user.readme = get(userData, 'readme', get(user, 'github.readme', ''));
+  user.email = get(userData, 'email', null);
+  user.username = toLowerCase(username);
+  user.ga = get(userData, 'ga', null);
+  user.repos = selectFirstWithValue(get(userData, 'repos'), get(user, 'github.repos', []));
+  user.shortBio = get(userData, 'shortBio', getStringByCriteria(userBioArray, 'shortest')) || '';
+  user.largeBio = get(userData, 'largeBio', getStringByCriteria(userBioArray)) || '';
+  user.hasGithub = isPreview
+    ? get(userData, 'hasGithub', false)
+    : !isEmpty(get(user, 'github.login'));
+  user.hasRepos = size(user.repos) > 0;
+  user.hasHashnode = isPreview
+    ? get(userData, 'hasHashnode', false)
+    : !isEmpty(get(user, 'hashnode.name'));
+  user.hasDevto = isPreview
+    ? get(userData, 'hasDevto', false)
+    : !isEmpty(get(user, 'devto.username'));
+  user.hasReadme =
+    !isEmpty(get(user, 'readme')) &&
+    !includes(get(user, 'readme'), 'Invalid') &&
+    !includes(get(user, 'readme'), '404');
+  user.showAbout = get(userData, 'showAbout', user.hasReadme);
+  user.showRepos = get(userData, 'showRepos', user.hasRepos);
+  user.links = isPreview ? get(userData, 'links') : getKeysMapped(extractSocialNetworks(user));
+  try {
+    if (IS_PORTFOLIO || isPreview) {
+      user.posts = get(userData, 'posts');
+    } else {
+      user.posts = await buildPosts(user);
+    }
+    user.hasPosts = user.posts && user.posts.length > 0;
+    user.showBlog = get(userData, 'showBlog', user.hasPosts);
+  } catch (error) {
+    console.error(error);
+    user.hasPosts = false;
+    user.posts = null;
+  }
+  if (IS_PORTFOLIO || isPreview) {
+    await markAsActivePortfoio(user);
+  } else {
+    await upsertUser(cleanAttrs(user, ['github', 'hashnode', 'devto']));
+  }
+  return user;
+};
+
 const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }) => {
   let user = {
     github,
@@ -250,51 +310,20 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
     get(user, 'hashnode.tagline'),
   ];
 
-  const userData = await getDevcoverUserData(username);
-
-  user.primaryColor = get(userData, 'primaryColor', null);
-  user.name = get(userData, 'name') || getNameUser(user) || '';
-  user.readme = get(userData, 'readme', get(user, 'github.readme', ''));
-  user.email = get(userData, 'email', null);
-  user.username = toLowerCase(username);
-  user.ga = get(userData, 'ga', null);
-  user.repos = selectFirstWithValue(get(userData, 'repos'), get(user, 'github.repos', []));
-  user.shortBio = get(userData, 'shortBio', getStringByCriteria(userBioArray, 'shortest')) || '';
-  user.largeBio = get(userData, 'largeBio', getStringByCriteria(userBioArray)) || '';
-  user.hasGithub = !isEmpty(get(user, 'github.login'));
-  user.hasRepos = size(user.repos) > 0;
-  user.hasHashnode = !isEmpty(get(user, 'hashnode.name'));
-  user.hasDevto = !isEmpty(get(user, 'devto.username'));
-  user.hasReadme =
-    !isEmpty(get(user, 'readme')) &&
-    !includes(get(user, 'readme'), 'Invalid') &&
-    !includes(get(user, 'readme'), '404');
-  user.showAbout = get(userData, 'showAbout', user.hasReadme);
-  user.showRepos = get(userData, 'showRepos', user.hasRepos);
-  try {
-    if (IS_PORTFOLIO) {
-      user.posts = get(userData, 'posts');
-    } else {
-      user.posts = await buildPosts(user);
-    }
-    user.hasPosts = user.posts && user.posts.length > 0;
-    user.showBlog = get(userData, 'showBlog', user.hasPosts);
-  } catch (error) {
-    console.error(error);
-    user.hasPosts = false;
-    user.posts = null;
-  }
-  if (IS_PORTFOLIO) {
-    await markAsActivePortfoio(user);
-  } else {
-    await upsertUser(cleanAttrs(user));
-  }
-  return user;
+  const userData = await getDevcoverUser(username, user, userBioArray);
+  return userData;
 };
 
 const buildUser = async (params) => {
   const apolloClient = initializeApollo();
-  const { username } = params;
+  let user = {};
+  const { username, isPreview = false } = params;
+
+  if (isPreview) {
+    user = await getDevcoverUser(username, {}, [], true);
+    return user;
+  }
+
   const githubUserResponse = await fetch(`${GITHUB_USER_URL}${username}`);
   const githubUserRes = await githubUserResponse.json();
   const devtoUserResponse = await fetch(`${DEVTO_USER_URL}${username}`);
@@ -308,7 +337,7 @@ const buildUser = async (params) => {
   const githubUser = cleanAttrs(githubUserRes);
   const hashnodeUser = cleanAttrs(hnUserData.user);
   const devtoUser = cleanAttrs(devtoUserRes);
-  const user = await fullfillUser({
+  user = await fullfillUser({
     username,
     github: githubUser,
     hashnode: hashnodeUser,

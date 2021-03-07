@@ -1,6 +1,7 @@
 import mongoose, { Schema } from 'mongoose';
 import { RepoSchema } from './Repo';
 import { PostSchema } from './Post';
+import { LinksSchema } from './Links';
 
 const UserSchema = new Schema({
   username: {
@@ -12,6 +13,12 @@ const UserSchema = new Schema({
     type: String,
     required: [true, 'Name is required.'],
     maxlength: [40, 'Name cannot be more than 40 characters'],
+  },
+  avatar: {
+    type: String,
+  },
+  favicon: {
+    type: String,
   },
   email: {
     type: String,
@@ -47,12 +54,25 @@ const UserSchema = new Schema({
     type: Boolean,
     default: false,
   },
+  hasGithub: {
+    type: Boolean,
+    default: false,
+  },
+  hasHashnode: {
+    type: Boolean,
+    default: false,
+  },
+  hasDevto: {
+    type: Boolean,
+    default: false,
+  },
   portfolioActive: {
     type: Boolean,
     default: false,
   },
   repos: [RepoSchema],
   posts: [PostSchema],
+  links: [LinksSchema],
   /* Google Analytics code */
   ga: {
     type: String,

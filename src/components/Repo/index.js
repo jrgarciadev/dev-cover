@@ -5,7 +5,7 @@ import dynamic from 'next/dynamic';
 import { Icon } from '@components/Icons';
 import { Folder, Star } from 'react-iconly';
 import { truncate } from 'lodash';
-import { IS_GENERATOR, IS_PORTFOLIO } from '@lib/constants';
+import { useUIContext } from '@contexts/ui';
 import { useIsMobile } from '@hooks';
 import { StyledRepo } from './styles';
 
@@ -30,9 +30,10 @@ const Repo = ({
   ...props
 }) => {
   const isMobile = useIsMobile();
+  const { isEditable } = useUIContext();
   const RepoComponent = forwardRef(({ ...restProps }, ref) => (
     <StyledRepo ref={ref} {...restProps} {...props}>
-      {IS_GENERATOR && (
+      {isEditable && (
         <ActionButtons
           id={id}
           index={index}
@@ -94,16 +95,11 @@ const Repo = ({
     </StyledRepo>
   ));
 
-  if (IS_PORTFOLIO) {
+  if (!isEditable) {
     return <RepoComponent />;
   }
   return (
-    <Draggable
-      isDragDisabled={IS_PORTFOLIO || isMobile}
-      key={id}
-      draggableId={`${id}`}
-      index={index}
-    >
+    <Draggable isDragDisabled={isEditable || isMobile} key={id} draggableId={`${id}`} index={index}>
       {(provided) => (
         <RepoComponent
           ref={provided.innerRef}

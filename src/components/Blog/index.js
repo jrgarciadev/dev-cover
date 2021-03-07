@@ -3,11 +3,12 @@ import { Post } from '@components';
 import { NumberedHeading, SectionButton } from '@common/styles';
 import { get, size } from 'lodash';
 import * as gtag from '@lib/gtag';
-import { IS_PRODUCTION, IS_GENERATOR } from '@lib/constants';
+import { IS_PRODUCTION } from '@lib/constants';
 import PropTypes from 'prop-types';
 import { updateUser } from '@services/user';
 import { reorder } from '@utils';
 import { useToasts } from '@contexts/toasts';
+import { useUIContext } from '@contexts/ui';
 import { Plus } from 'react-iconly';
 import { useUserDataContext } from '@contexts/user-data';
 import { ShowMoreButton, ButtonContainer, PostsContainer } from './styles';
@@ -17,6 +18,7 @@ const Blog = ({ user = {} }) => {
   const [userPosts, setUserPosts] = useState(get(user, 'posts'));
   const { ToastsType, addToastWithTimeout } = useToasts();
   const { updateValue: updateUserData } = useUserDataContext();
+  const { isEditable } = useUIContext();
 
   const handleClickLink = (link) => {
     if (IS_PRODUCTION) {
@@ -93,7 +95,7 @@ const Blog = ({ user = {} }) => {
     updateUserData({ ...user, ...input });
   };
 
-  if (!user?.showBlog && size(get(user, 'posts')) > 0 && IS_GENERATOR) {
+  if (!user?.showBlog && size(get(user, 'posts')) > 0 && isEditable) {
     return (
       <SectionButton>
         <button onClick={handleAddBlogSection} type="button">
