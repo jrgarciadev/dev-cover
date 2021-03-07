@@ -99,11 +99,11 @@ const Projects = ({ user = {} }) => {
     setLoading(true);
     try {
       const repos = await getReposData(get(user, 'username'));
+      console.log(repos);
       handleChange(repos, input);
       setLoading(false);
     } catch (error) {
-      console.log(error);
-      setLoading(false);
+      console.error(error);
       if (get(user, 'github.limited') === true) {
         addToastWithTimeout(ToastsType.ERROR, 'Github API rate limit exceeded try again in 1 hour');
       } else {
@@ -170,7 +170,7 @@ const Projects = ({ user = {} }) => {
     <StyledProjectsSection id="projects">
       <NumberedHeading>My Projects</NumberedHeading>
       {IS_GENERATOR && (
-        <button type="button" className="show-original" onClick={handleFetchGithubRepos}>
+        <button type="button" className="show-original" onClick={() => handleFetchGithubRepos()}>
           <Swap />
           {loading ? 'Fetching...' : ' Fetch Github repos'}
         </button>
