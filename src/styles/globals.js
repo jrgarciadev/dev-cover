@@ -7,6 +7,9 @@ export default createGlobalStyle`
   1.  Base styles
   -------------------------------------------------------------------------------
   */
+  :root {
+    --colors-primary: #1ee0e0;
+  }
   * {
     border: 0;
     box-sizing: inherit;

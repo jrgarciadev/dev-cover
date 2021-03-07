@@ -5,6 +5,7 @@ import { LoaderContainer, Loader } from '@common/styles';
 import buildUser from '@lib/user-builder';
 import { isEnabledUser } from '@utils/user-mapping';
 import { IS_PORTFOLIO } from '@lib/constants';
+import { useChangeRootColor } from '@hooks';
 
 export async function getStaticPaths() {
   return { paths: [], fallback: true };
@@ -40,6 +41,7 @@ const PreviewPage = ({ router, user }) => {
   if (!router.isFallback && !isEnabledUser(user)) {
     return <UserNotFoundView username={user?.username} />;
   }
+  useChangeRootColor(user.primaryColor);
   return <PortfolioView isPreview user={user} />;
 };
 

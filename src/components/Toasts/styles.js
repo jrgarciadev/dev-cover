@@ -63,8 +63,9 @@ export const ErrorToast = styled(Toast)`
 `;
 
 export const SuccessToast = styled(Toast)`
-  background-color: ${prop('theme.brand.success')};
-  color: ${prop('theme.genericColors.black')};
+  background-color: ${prop('theme.brand.primary')};
+  color: ${prop('theme.genericColors.white')};
+  box-shadow: ${prop('theme.shadows.small')};
 `;
 
 export const NeutralToast = styled(Toast)`

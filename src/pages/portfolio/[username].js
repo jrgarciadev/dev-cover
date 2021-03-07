@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { UserNotFoundView, PortfolioView } from '@views';
 import { withRouter } from 'next/router';
 import PropTypes from 'prop-types';
+import { useChangeRootColor } from '@hooks';
 import { LoaderContainer, Loader } from '@common/styles';
 import buildUser from '@lib/user-builder';
 import { isEnabledUser } from '@utils/user-mapping';
@@ -51,6 +52,7 @@ const PortfolioPage = ({ router, user }) => {
   if (!router.isFallback && !isEnabledUser(user)) {
     return <UserNotFoundView username={user?.username} />;
   }
+  useChangeRootColor(user.primaryColor);
   return <PortfolioView user={user} />;
 };
 

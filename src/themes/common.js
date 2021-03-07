@@ -14,7 +14,7 @@ export default {
     lg: '3rem',
   },
   brand: {
-    primary: '#1ee0e0',
+    primary: 'var(--colors-primary)',
     success: '#79FFE1',
     danger: '#ff4d4f',
     warning: '#F5A623',

@@ -3,6 +3,7 @@ import { StyledMainContainer } from '@common/styles';
 import PortfolioLayout from '@layouts/portfolio';
 import HomeLayout from '@layouts/home';
 import buildUser from '@lib/user-builder';
+import { useChangeRootColor } from '@hooks';
 import { isEnabledUser } from '@utils/user-mapping';
 import { IS_PORTFOLIO } from '@lib/constants';
 import PropTypes from 'prop-types';
@@ -30,6 +31,7 @@ const IndexPage = ({ user }) => {
     if (!isEnabledUser(user)) {
       return <UserNotFoundView username={user?.username} />;
     }
+    useChangeRootColor(user.primaryColor);
     return <PortfolioView user={user} />;
   }
   return (
