@@ -8,6 +8,7 @@ export { default as Projects } from './Projects';
 export { default as Contact } from './Contact';
 export { default as Corner } from './Corner';
 export { default as VercelButton } from './VercelButton';
+export { default as CoffeeButton } from './CoffeeButton';
 export { default as Post } from './Post';
 export { default as Customizer } from './Customizer';
 export { default as Input } from './Input';
