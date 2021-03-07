@@ -4,7 +4,7 @@ import { prop } from 'styled-tools';
 export const ToastsContainer = styled.div`
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 8rem;
   padding: 16px;
   width: 100%;
   display: flex;
@@ -17,6 +17,7 @@ export const ToastsContainer = styled.div`
   @media (max-width: ${prop('theme.breakpoints.sm')}) {
     bottom: 40px;
     left: 0;
+    bottom: 6.5rem;
     max-width: 100%;
   }
 `;

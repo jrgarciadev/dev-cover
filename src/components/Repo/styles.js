@@ -1,5 +1,6 @@
 import styled from 'styled-components';
 import { hexa } from '@utils';
+import { prop } from 'styled-tools';
 
 export const StyledRepo = styled.div`
   margin-bottom: 2%;
@@ -12,7 +13,7 @@ export const StyledRepo = styled.div`
 
   .project-inner {
     ${({ theme }) => theme.mixins.flexBetween};
-    border: 2px solid ${(props) => hexa(props.theme.brand.primary, 0.5)};
+    border: 2px solid ${(props) => hexa(props.theme.brand.primary, 0.5, true)};
     flex-direction: column;
     align-items: flex-start;
     position: relative;
