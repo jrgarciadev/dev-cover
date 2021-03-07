@@ -139,7 +139,12 @@ export const StyledLinks = styled.div`
 
   .preview-button {
     ${({ theme }) => theme.mixins.smallButton};
+    display: flex;
+    align-items: center;
     margin-left: 15px;
     font-size: ${(props) => props.theme.fontSize.sm};
+    svg {
+      margin-right: 1rem;
+    }
   }
 `;

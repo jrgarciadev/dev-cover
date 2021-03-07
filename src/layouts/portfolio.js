@@ -15,6 +15,7 @@ import Footer from './footer';
 
 const Customizer = dynamic(() => import('@components/Customizer'));
 const VercelButton = dynamic(() => import('@components/VercelButton'));
+const CoffeeButton = dynamic(() => import('@components/CoffeeButton'));
 
 const PorfolioLayout = ({ children, router }) => {
   const isBrowser = typeof window !== `undefined`;
@@ -51,6 +52,7 @@ const PorfolioLayout = ({ children, router }) => {
       {IS_GENERATOR && showDeployButton && <VercelButton />}
       {IS_GENERATOR && showCustomizer && <Customizer />}
       {IS_GENERATOR && <Toasts />}
+      {IS_GENERATOR && <CoffeeButton />}
       <Footer simple={isEmpty(user.username)} user={user} />
     </BaseLayout>
   );

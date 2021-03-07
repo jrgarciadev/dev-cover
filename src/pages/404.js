@@ -4,6 +4,8 @@ import { useRouter } from 'next/router';
 import styled from 'styled-components';
 import { useUIContext } from '@contexts/ui';
 import { prop } from 'styled-tools';
+import { IS_PORTFOLIO } from '@lib/constants';
+import { UserNotFoundView } from '@views';
 
 const StyledMainContainer = styled.main`
   ${({ theme }) => theme.mixins.flexCenter};
@@ -31,10 +33,17 @@ const StyledHomeButton = styled.a`
 const NotFoundPage = () => {
   const { updateValue } = useUIContext();
   const router = useRouter();
+
   const isPreviewPath = router.pathname.includes('preview');
+  const isPortfolioPath = router.pathname.includes('portfolio');
   useEffect(() => {
     updateValue({ showNavbar: false, mainFullHeight: false });
   }, []);
+
+  if (isPortfolioPath && !IS_PORTFOLIO) {
+    const { username } = router.query;
+    return <UserNotFoundView username={username} />;
+  }
 
   return (
     <StyledMainContainer className="fillHeight">

@@ -7,6 +7,7 @@ import { Menu } from '@components';
 import { toLowerCase } from '@utils';
 import { getNavLinks, getKeysMapped, getHeroLink, getObjValue } from '@utils/user-mapping';
 import { useUserDataContext } from '@contexts/user-data';
+import { Show } from 'react-iconly';
 import { get, capitalize, startsWith } from 'lodash';
 import { useUIContext } from '@contexts/ui';
 import { StyledHeader, StyledNav, StyledLinks } from './styles';
@@ -95,6 +96,7 @@ const Nav = ({ isHome }) => {
                       rel="noreferrer"
                       className="preview-button"
                     >
+                      <Show />
                       Preview
                     </a>
                   </div>
