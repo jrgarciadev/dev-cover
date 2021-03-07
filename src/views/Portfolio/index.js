@@ -4,7 +4,7 @@ import { StyledMainContainer } from '@common/styles';
 import PropTypes from 'prop-types';
 import { useUserDataContext } from '@contexts/user-data';
 import { useUIContext } from '@contexts/ui';
-import { IS_PORTFOLIO } from '@lib/constants';
+import { IS_PORTFOLIO, IS_GENERATOR } from '@lib/constants';
 import { useToasts } from '@contexts/toasts';
 import { get } from 'lodash';
 
@@ -17,7 +17,7 @@ const PortfolioView = ({ user, isPreview = false }) => {
 
   useEffect(() => {
     restartValues();
-    updateUI({ isEditable, showDeployButton: isEditable, showCustomizer: isEditable });
+    updateUI({ isEditable, showDeployButton: IS_GENERATOR, showCustomizer: isEditable });
   }, [isEditable]);
 
   useEffect(() => {
