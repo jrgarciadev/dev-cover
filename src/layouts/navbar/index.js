@@ -4,9 +4,11 @@ import { CSSTransition, TransitionGroup } from 'react-transition-group';
 import { LOADER_DELAY } from '@lib/constants';
 import { useScrollDirection } from '@hooks';
 import { Menu } from '@components';
+import { toLowerCase } from '@utils';
 import { getNavLinks, getKeysMapped, getHeroLink, getObjValue } from '@utils/user-mapping';
 import { useUserDataContext } from '@contexts/user-data';
-import { capitalize, startsWith } from 'lodash';
+import { get, capitalize, startsWith } from 'lodash';
+import { useUIContext } from '@contexts/ui';
 import { StyledHeader, StyledNav, StyledLinks } from './styles';
 
 const Nav = ({ isHome }) => {
@@ -16,6 +18,7 @@ const Nav = ({ isHome }) => {
   const scrollDirection = useScrollDirection('down');
   const [scrolledToTop, setScrolledToTop] = useState(true);
   const { user } = useUserDataContext();
+  const { isEditable } = useUIContext();
 
   const handleScroll = () => {
     setScrolledToTop(window.pageYOffset < 50);
@@ -42,6 +45,14 @@ const Nav = ({ isHome }) => {
   const timeout = isHome ? LOADER_DELAY : 0;
   const fadeClass = isHome ? 'fade' : '';
   const fadeDownClass = isHome ? 'fadedown' : '';
+
+  const getPreviewURL = () => {
+    const username = get(user, 'username');
+    if (!username) return '#';
+    const formattedUsername = toLowerCase(username);
+    return `/preview/${formattedUsername}`;
+  };
+
   return (
     <StyledHeader scrollDirection={scrollDirection} scrolledToTop={scrolledToTop}>
       <StyledNav>
@@ -73,6 +84,24 @@ const Nav = ({ isHome }) => {
                 ))}
             </TransitionGroup>
           </ol>
+          {isEditable && (
+            <TransitionGroup component={null}>
+              {isMounted && navLinks.length > 0 && (
+                <CSSTransition classNames={fadeDownClass} timeout={timeout}>
+                  <div style={{ transitionDelay: `${isHome ? navLinks.length * 100 : 0}ms` }}>
+                    <a
+                      href={getPreviewURL()}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="preview-button"
+                    >
+                      Preview
+                    </a>
+                  </div>
+                </CSSTransition>
+              )}
+            </TransitionGroup>
+          )}
         </StyledLinks>
 
         <TransitionGroup component={null}>

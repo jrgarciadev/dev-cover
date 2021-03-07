@@ -1,4 +1,3 @@
-import { toNumber } from 'lodash';
 import { Schema } from 'mongoose';
 
 export const PostSchema = new Schema({

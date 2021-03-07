@@ -6,6 +6,7 @@ export const UIContext = createContext();
 export const useUIContext = () => useContext(UIContext);
 
 const initialData = {
+  isEditable: false,
   mainFullHeight: true,
   showNavbar: true,
   showDeployButton: false,

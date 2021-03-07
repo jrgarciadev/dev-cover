@@ -22,6 +22,7 @@ export default async function handler(req, res) {
         }
         return res.status(200).json({ success: true, data: user });
       } catch (error) {
+        console.error(error.message);
         return res.status(400).json({ success: false, message: error.message });
       }
     case 'PUT' /* Edit a model by its ID */:
@@ -39,6 +40,7 @@ export default async function handler(req, res) {
         await userExists.updateOne(userBody);
         return res.status(200).json({ success: true, data: userExists });
       } catch (error) {
+        console.error(error.message);
         return res.status(400).json({ success: false, message: error.message });
       }
     default:
