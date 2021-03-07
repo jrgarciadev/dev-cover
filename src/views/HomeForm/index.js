@@ -5,6 +5,7 @@ import { Corner } from '@components';
 import { useForm } from 'react-hook-form';
 import rules from '@common/rules';
 import { isEmpty } from 'lodash';
+import { toLowerCase } from '@utils';
 import {
   StyledContainer,
   StyledForm,
@@ -24,7 +25,7 @@ function HomeForm({ theme }) {
 
   const onSubmit = ({ username }) => {
     if (!username) return;
-    const formattedUsername = username.trim().toLowerCase();
+    const formattedUsername = toLowerCase(username);
     if (window !== undefined) window.location = `/portfolio/${formattedUsername}`;
   };
 

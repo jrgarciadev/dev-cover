@@ -7,6 +7,7 @@ import {
   areSimilarStrings,
   cleanGithubUrl,
   mapArrayOrder,
+  toLowerCase,
 } from '@utils';
 import { getGithubReadmeURL, getNameUser, getHashnodePubDomain } from '@utils/user-mapping';
 import { get, map, chunk, first, orderBy, union, size, includes, isEmpty } from 'lodash';
@@ -255,7 +256,7 @@ const fullfillUser = async ({ username, github = {}, hashnode = {}, devto = {} }
   user.name = get(userData, 'name') || getNameUser(user) || '';
   user.readme = get(userData, 'readme', get(user, 'github.readme', ''));
   user.email = get(userData, 'email', null);
-  user.username = username.trim().toLowerCase();
+  user.username = toLowerCase(username);
   user.ga = get(userData, 'ga', null);
   user.repos = selectFirstWithValue(get(userData, 'repos'), get(user, 'github.repos', []));
   user.shortBio = get(userData, 'shortBio', getStringByCriteria(userBioArray, 'shortest')) || '';
