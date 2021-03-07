@@ -148,3 +148,8 @@ export const selectFirstWithValue = (arr1 = [], arr2 = []) => {
   if (arr1 && arr1.length > 0) return arr1;
   return arr2;
 };
+
+export const toLowerCase = (value) => {
+  if (!value || value.length < 1) return value;
+  return value.trim().toLowerCase();
+};

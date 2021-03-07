@@ -1,4 +1,5 @@
 import { isEmpty } from 'lodash';
+import { toLowerCase } from '@utils';
 import dbConnect from '../../../lib/mongodb';
 import User from '../../../models/User';
 
@@ -21,7 +22,7 @@ export default async function handler(req, res) {
         const { body: userBody } = req;
         // Make sure this account doesn't already exist
         const userExists = await User.findOne({
-          username: userBody.username.trim().toLowerCase(),
+          username: toLowerCase(userBody.username),
         });
         if (!isEmpty(userExists)) {
           userBody.updated = new Date();

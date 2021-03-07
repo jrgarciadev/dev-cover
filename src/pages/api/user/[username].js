@@ -1,3 +1,4 @@
+import { toLowerCase } from '@utils';
 import dbConnect from '../../../lib/mongodb';
 import User from '../../../models/User';
 
@@ -7,7 +8,7 @@ export default async function handler(req, res) {
     method,
   } = req;
 
-  const formattedUsername = username.trim().toLowerCase();
+  const formattedUsername = toLowerCase(username);
 
   await dbConnect();
 
