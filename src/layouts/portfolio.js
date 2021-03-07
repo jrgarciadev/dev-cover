@@ -3,11 +3,8 @@ import { useEffect } from 'react';
 import { Toasts } from '@components';
 import { withRouter } from 'next/router';
 import dynamic from 'next/dynamic';
-import { ThemeProvider } from 'styled-components';
-import theme from '@themes/dark';
 import { IS_GENERATOR } from '@lib/constants';
 import { useUIContext } from '@contexts/ui';
-import { useCustomizerContext } from '@contexts/customizer';
 import { useUserDataContext } from '@contexts/user-data';
 import { isEmpty } from 'lodash';
 import { SkipToContentLink } from './styles';
@@ -23,17 +20,7 @@ const PorfolioLayout = ({ children, router }) => {
   const isBrowser = typeof window !== `undefined`;
   const isHome = router.pathname === '/';
   const { showNavbar, showDeployButton, mainFullHeight, showCustomizer } = useUIContext();
-  const { primaryColor, updateValue } = useCustomizerContext();
   const { user } = useUserDataContext();
-
-  const primary = user.primaryColor ? user.primaryColor : primaryColor;
-  const customTheme = { ...theme, brand: { ...theme.brand, primary } };
-
-  if (primary !== primaryColor) {
-    updateValue({ primaryColor: primary });
-  } else if (primary === 'transparent') {
-    updateValue({ primaryColor: '#1ee0e0' });
-  }
 
   useEffect(() => {
     if (!isBrowser) {
@@ -55,19 +42,17 @@ const PorfolioLayout = ({ children, router }) => {
   }, []);
 
   return (
-    <ThemeProvider theme={customTheme}>
-      <BaseLayout isPortfolio>
-        <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
-        {showNavbar && <Navbar isHome={isHome} />}
-        <Main id="content" fullHeight={mainFullHeight} className="fillHeight">
-          {children}
-        </Main>
-        {IS_GENERATOR && showDeployButton && <VercelButton />}
-        {IS_GENERATOR && showCustomizer && <Customizer />}
-        {IS_GENERATOR && <Toasts />}
-        <Footer simple={isEmpty(user.username)} user={user} />
-      </BaseLayout>
-    </ThemeProvider>
+    <BaseLayout isPortfolio>
+      <SkipToContentLink href="#content">Skip to Content</SkipToContentLink>
+      {showNavbar && <Navbar isHome={isHome} />}
+      <Main id="content" fullHeight={mainFullHeight} className="fillHeight">
+        {children}
+      </Main>
+      {IS_GENERATOR && showDeployButton && <VercelButton />}
+      {IS_GENERATOR && showCustomizer && <Customizer />}
+      {IS_GENERATOR && <Toasts />}
+      <Footer simple={isEmpty(user.username)} user={user} />
+    </BaseLayout>
   );
 };
 
