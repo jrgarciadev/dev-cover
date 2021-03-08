@@ -22,7 +22,7 @@ import {
 } from './styles';
 
 function HomeForm({ theme }) {
-  const [remainingPortfolios, setRemainingPortfolios] = useState(0);
+  const [remainingPortfolios, setRemainingPortfolios] = useState('');
   const { register, handleSubmit, formState, errors } = useForm({
     mode: 'onChange',
   });
