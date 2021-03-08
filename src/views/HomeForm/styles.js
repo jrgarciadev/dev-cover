@@ -102,3 +102,9 @@ export const StyledErrorMessage = styled.p`
   font-size: ${(props) => props.theme.fontSize.sm};
   font-family: ${(props) => props.theme.fontFamily.fontMono};
 `;
+
+export const ProductHuntContainer = styled.div`
+  position: absolute;
+  top: 1rem;
+  left: 1.5rem;
+`;
