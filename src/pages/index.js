@@ -2,7 +2,7 @@ import { HomeFormView, UserNotFoundView, PortfolioView } from '@views';
 import { StyledMainContainer } from '@common/styles';
 import PortfolioLayout from '@layouts/portfolio';
 import HomeLayout from '@layouts/home';
-import buildUser from '@lib/user-builder';
+import buildUser, { getIsGithubRateLimited } from '@lib/user-builder';
 import { useChangeRootColor } from '@hooks';
 import { isEnabledUser } from '@utils/user-mapping';
 import { IS_PORTFOLIO } from '@lib/constants';
@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 
 export async function getStaticProps() {
   const username = process.env.NEXT_PUBLIC_USERNAME;
+
   if (IS_PORTFOLIO) {
     const params = { username };
     const user = await buildUser(params);
@@ -19,14 +20,27 @@ export async function getStaticProps() {
       },
     };
   }
-  return {
-    props: {
-      user: null,
-    },
-  };
+  try {
+    const { resources } = await getIsGithubRateLimited(true);
+    const { remaining } = resources.core;
+    return {
+      props: {
+        user: null,
+        remaining,
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        user: null,
+        remaining: 0,
+      },
+    };
+  }
 }
 
-const IndexPage = ({ user }) => {
+const IndexPage = ({ user, remaining }) => {
   if (user) {
     if (!isEnabledUser(user)) {
       return <UserNotFoundView username={user?.username} />;
@@ -36,7 +50,7 @@ const IndexPage = ({ user }) => {
   }
   return (
     <StyledMainContainer className="fillHeight">
-      <HomeFormView />
+      <HomeFormView remaining={remaining} />
     </StyledMainContainer>
   );
 };
@@ -45,5 +59,6 @@ IndexPage.Layout = IS_PORTFOLIO ? PortfolioLayout : HomeLayout;
 
 IndexPage.propTypes = {
   user: PropTypes.object,
+  remaining: PropTypes.number,
 };
 export default IndexPage;
