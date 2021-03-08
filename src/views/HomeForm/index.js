@@ -1,11 +1,14 @@
+import { useEffect, useState } from 'react';
 import { withTheme } from 'styled-components';
 import { ArrowRight } from 'react-iconly';
 import PropTypes from 'prop-types';
-import { Corner } from '@components';
+import { Tooltip, Corner } from '@components';
 import { useForm } from 'react-hook-form';
 import rules from '@common/rules';
 import { isEmpty } from 'lodash';
 import { toLowerCase } from '@utils';
+import { useToasts } from '@contexts/toasts';
+import { getIsGithubRateLimited } from '@lib/user-builder';
 import {
   StyledContainer,
   StyledForm,
@@ -15,17 +18,33 @@ import {
   StyledButton,
   StyledErrorMessage,
   ProductHuntContainer,
+  RemainingPortfolios,
 } from './styles';
 
 function HomeForm({ theme }) {
+  const [remainingPortfolios, setRemainingPortfolios] = useState(0);
   const { register, handleSubmit, formState, errors } = useForm({
     mode: 'onChange',
   });
+  const { ToastsType, addToastWithTimeout } = useToasts();
+
+  useEffect(async () => {
+    try {
+      const { resources } = await getIsGithubRateLimited(true);
+      const { remaining } = resources.core;
+      setRemainingPortfolios(remaining);
+      if (remaining === 0) {
+        addToastWithTimeout(ToastsType.ERROR, 'Github API rate limit exceeded try again in 1 hour');
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }, []);
 
   const { isValid } = formState;
 
   const onSubmit = ({ username }) => {
-    if (!username) return;
+    if (!username || remainingPortfolios === 0) return;
     const formattedUsername = toLowerCase(username);
     if (window !== undefined) window.location = `/portfolio/${formattedUsername}`;
   };
@@ -37,19 +56,47 @@ function HomeForm({ theme }) {
       <HeroTitle>Just type your username and watch the magic</HeroTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <StyledInput
+          disabled={remainingPortfolios === 0}
           placeholder="Github username"
           name="username"
           type="text"
           ref={register(rules.username)}
           error={!isEmpty(errors.username)}
         />
-        <StyledButton type="submit" disabled={!isValid}>
+        <StyledButton type="submit" disabled={!isValid || remainingPortfolios === 0}>
           <ArrowRight set="light" primaryColor={theme.bg.default} />
         </StyledButton>
       </StyledForm>
       <StyledErrorMessage>
         {!isEmpty(errors.username) && errors.username.message}
       </StyledErrorMessage>
+      <RemainingPortfolios>
+        <Tooltip
+          size="big"
+          position="bottom"
+          content="GitHub limits the number of requests per hour to 60 for unauthenticated users"
+        >
+          <RemainingPortfolios>
+            <p>Available requests</p>
+            <p>
+              {remainingPortfolios}
+              /60
+            </p>
+          </RemainingPortfolios>
+        </Tooltip>
+        {remainingPortfolios === 0 && (
+          <p className="github-rate">
+            Github API rate limit exceeded try again in 1 hour&nbsp;
+            <a
+              target="_blank"
+              rel="noreferrer"
+              href="https://docs.github.com/es/github-ae@latest/rest/reference/rate-limit"
+            >
+              Docs
+            </a>
+          </p>
+        )}
+      </RemainingPortfolios>
       <ProductHuntContainer>
         <a
           href="https://www.producthunt.com/posts/devcover?utm_source=badge-review&utm_medium=badge&utm_souce=badge-devcover#discussion-body"
