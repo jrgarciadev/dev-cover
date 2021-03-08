@@ -19,7 +19,7 @@ const Customizer = () => {
   const [, setBodyHidden] = useBodyScroll(null, { scrollLayer: true });
   const { ToastsType, addToastWithTimeout } = useToasts();
   const { user, updateValue: updateUserData } = useUserDataContext();
-  const [localColor, setLocalColor] = useState(user.primaryColor);
+  const [localColor, setLocalColor] = useState(user.primaryColor || '#1ee0e0');
 
   const { register, handleSubmit, formState, errors } = useForm({
     mode: 'onBlur',
