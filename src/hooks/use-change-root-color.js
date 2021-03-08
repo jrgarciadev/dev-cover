@@ -1,6 +1,11 @@
+import { isEmpty } from 'lodash';
+
 export const useChangeRootColor = (color, rootColor = 'primary') => {
-  if (typeof document !== 'undefined' && color) {
+  if (typeof document !== 'undefined' && !isEmpty(color)) {
     const root = document.documentElement;
-    root.style.setProperty(`--colors-${rootColor}`, color);
+    const currentColor = root.style.getPropertyValue(`--colors-${rootColor}`);
+    if (currentColor !== color) {
+      root.style.setProperty(`--colors-${rootColor}`, color);
+    }
   }
 };

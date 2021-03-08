@@ -18,7 +18,7 @@ import {
   extractSocialNetworks,
   getUserFavicon,
 } from '@utils/user-mapping';
-import { get, map, chunk, first, orderBy, union, size, includes, isEmpty } from 'lodash';
+import { get, map, chunk, first, orderBy, union, size, includes, isEmpty, truncate } from 'lodash';
 import { updateUser, upsertUser } from '@services/user';
 import {
   GITHUB_API_URL,
@@ -229,7 +229,10 @@ const getDevcoverUser = async (username, baseUser = {}, userBioArray = [], isPre
   user.username = toLowerCase(username);
   user.ga = get(userData, 'ga', null);
   user.repos = selectFirstWithValue(get(userData, 'repos'), get(user, 'github.repos', []));
-  user.shortBio = get(userData, 'shortBio', getStringByCriteria(userBioArray, 'shortest')) || '';
+  user.shortBio =
+    truncate(get(userData, 'shortBio', getStringByCriteria(userBioArray, 'shortest')), {
+      length: 120,
+    }) || '';
   user.largeBio = get(userData, 'largeBio', getStringByCriteria(userBioArray)) || '';
   user.hasGithub = isPreview
     ? get(userData, 'hasGithub', false)
