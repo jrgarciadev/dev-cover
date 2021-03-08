@@ -160,10 +160,13 @@ export const getReposData = async (username) => {
   }
 };
 
-const getIsGithubRateLimited = async () => {
+export const getIsGithubRateLimited = async (showLimit = false) => {
   try {
     const response = await fetch(`${GITHUB_API_URL}/rate_limit`);
     const limit = await response.json();
+    if (showLimit) {
+      return limit;
+    }
     if (limit.resources.core.remaining < 1) {
       return true;
     }

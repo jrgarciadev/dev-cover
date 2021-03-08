@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 import { Gradient } from '@common/styles';
+import { prop } from 'styled-tools';
 
 export const StyledContainer = styled.div`
   ${({ theme }) => theme.mixins.flexCenter};
@@ -107,4 +108,26 @@ export const ProductHuntContainer = styled.div`
   position: absolute;
   top: 1rem;
   left: 1.5rem;
+`;
+
+export const RemainingPortfolios = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 2rem;
+  left: 46%;
+  p {
+    color: ${prop('theme.text.accent')};
+  }
+  .github-rate {
+    margin-top: 0.5rem;
+    color: ${prop('theme.brand.danger')};
+  }
+  a {
+    color: ${prop('theme.text.accent')};
+    &:hover {
+      color: ${prop('theme.brand.primary')};
+    }
+  }
 `;
