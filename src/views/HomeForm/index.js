@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { withTheme } from 'styled-components';
 import { ArrowRight } from 'react-iconly';
 import PropTypes from 'prop-types';
@@ -8,7 +8,6 @@ import rules from '@common/rules';
 import { isEmpty } from 'lodash';
 import { toLowerCase } from '@utils';
 import { useToasts } from '@contexts/toasts';
-import { getIsGithubRateLimited } from '@lib/user-builder';
 import {
   StyledContainer,
   StyledForm,
@@ -21,30 +20,22 @@ import {
   RemainingPortfolios,
 } from './styles';
 
-function HomeForm({ theme }) {
-  const [remainingPortfolios, setRemainingPortfolios] = useState('');
+function HomeForm({ theme, remaining }) {
   const { register, handleSubmit, formState, errors } = useForm({
     mode: 'onChange',
   });
   const { ToastsType, addToastWithTimeout } = useToasts();
 
   useEffect(async () => {
-    try {
-      const { resources } = await getIsGithubRateLimited(true);
-      const { remaining } = resources.core;
-      setRemainingPortfolios(remaining);
-      if (remaining === 0) {
-        addToastWithTimeout(ToastsType.ERROR, 'Github API rate limit exceeded try again in 1 hour');
-      }
-    } catch (error) {
-      console.log(error);
+    if (remaining === 0) {
+      addToastWithTimeout(ToastsType.ERROR, 'Github API rate limit exceeded try again in 1 hour');
     }
   }, []);
 
   const { isValid } = formState;
 
   const onSubmit = ({ username }) => {
-    if (!username || remainingPortfolios === 0) return;
+    if (!username || remaining === 0) return;
     const formattedUsername = toLowerCase(username);
     if (window !== undefined) window.location = `/portfolio/${formattedUsername}`;
   };
@@ -56,14 +47,14 @@ function HomeForm({ theme }) {
       <HeroTitle>Just type your username and watch the magic</HeroTitle>
       <StyledForm onSubmit={handleSubmit(onSubmit)}>
         <StyledInput
-          disabled={remainingPortfolios === 0}
+          disabled={remaining === 0}
           placeholder="Github username"
           name="username"
           type="text"
           ref={register(rules.username)}
           error={!isEmpty(errors.username)}
         />
-        <StyledButton type="submit" disabled={!isValid || remainingPortfolios === 0}>
+        <StyledButton type="submit" disabled={!isValid || remaining === 0}>
           <ArrowRight set="light" primaryColor={theme.bg.default} />
         </StyledButton>
       </StyledForm>
@@ -79,12 +70,12 @@ function HomeForm({ theme }) {
           <RemainingPortfolios>
             <p>Available requests</p>
             <p>
-              {remainingPortfolios}
+              {remaining}
               /60
             </p>
           </RemainingPortfolios>
         </Tooltip>
-        {remainingPortfolios === 0 && (
+        {remaining === 0 && (
           <p className="github-rate">
             Github API rate limit exceeded try again in 1 hour&nbsp;
             <a
@@ -119,6 +110,7 @@ function HomeForm({ theme }) {
 
 HomeForm.propTypes = {
   theme: PropTypes.object,
+  remaining: PropTypes.number,
 };
 
 export default withTheme(HomeForm);
