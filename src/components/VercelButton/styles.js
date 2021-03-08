@@ -7,7 +7,7 @@ export const ButtonContainer = styled.div`
   width: 100%;
   position: fixed;
   bottom: 2rem;
-  right: 4rem;
+  right: 1rem;
 `;
 
 export const StyledButton = styled.a`
