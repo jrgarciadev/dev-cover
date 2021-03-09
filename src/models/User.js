@@ -11,7 +11,6 @@ const UserSchema = new Schema({
   },
   name: {
     type: String,
-    required: [true, 'Name is required.'],
     maxlength: [40, 'Name cannot be more than 40 characters'],
   },
   avatar: {
