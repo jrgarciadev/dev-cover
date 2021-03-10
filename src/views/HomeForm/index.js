@@ -90,13 +90,13 @@ function HomeForm({ theme, remaining }) {
       </RemainingPortfolios>
       <ProductHuntContainer>
         <a
-          href="https://www.producthunt.com/posts/devcover?utm_source=badge-review&utm_medium=badge&utm_souce=badge-devcover#discussion-body"
+          href="https://www.producthunt.com/posts/devcover?utm_source=badge-featured&utm_medium=badge&utm_souce=badge-devcover"
           target="_blank"
           rel="noreferrer"
           style={{ margin: '1rem 0' }}
         >
           <img
-            src="https://api.producthunt.com/widgets/embed-image/v1/review.svg?post_id=287287&theme=dark"
+            src="https://api.producthunt.com/widgets/embed-image/v1/featured.svg?post_id=287287&theme=dark"
             alt="Devcover - Easiest way to generate a developer portfolio | Product Hunt"
             style={{ width: '250px', height: '54px' }}
             width="250"
